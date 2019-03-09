@@ -190,7 +190,7 @@ class Heartbeat(Schedule):
         return glow
     
     def beat(self):
-        STEPS = 9
+        STEPS = 1
         print("beat")
         for i in range(1, STEPS+1):
             self.then_after(self.TIME_ON, self.glowup(i/STEPS))
