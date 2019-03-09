@@ -87,7 +87,6 @@ class Scheduler:
             cur_utime = time.time()
             sleep = next_utime - cur_utime
             print("Sleeping for " +  str(sleep))
-            automationhat.light.power.write(0)
             time.sleep(sleep)
     
     def add(self, schedule):
