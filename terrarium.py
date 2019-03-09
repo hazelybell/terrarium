@@ -86,8 +86,9 @@ class Scheduler:
             # go to sleep and loop
             cur_utime = time.time()
             sleep = next_utime - cur_utime
-            print("Sleeping for " +  str(sleep))
-            time.sleep(sleep)
+            if sleep > 0:
+                print("Sleeping for " +  str(sleep))
+                time.sleep(sleep)
     
     def add(self, schedule):
         self.schedules.add(schedule)
@@ -189,7 +190,7 @@ class Heartbeat(Schedule):
         return glow
     
     def beat(self):
-        STEPS = 4
+        STEPS = 9
         print("beat")
         for i in range(1, STEPS+1):
             self.then_after(self.TIME_ON, self.glowup(i/STEPS))
