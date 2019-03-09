@@ -152,7 +152,7 @@ class Morse(Schedule):
         self.then_after(TIME_UNIT * 7, self.off) # make sure there's a good space between messages
         self.prev_s = '>'
 
-    def morse(msg):
+    def morse(self, msg):
         msg = msg.upper()
         morsed = ""
         for i in range(0, len(msg)):
