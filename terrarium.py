@@ -181,7 +181,7 @@ class Morse(Schedule):
         self.end_message()
 
 class Heartbeat(Schedule):
-    TIME_ON = 0.05
+    TIME_ON = 0.06
     
     def beat(self):
         print("beat")
