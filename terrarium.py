@@ -223,11 +223,11 @@ class Heartbeat(Schedule):
         self.next_second(self.beat)
         self.pollers = set()
 
-def Outlet(Poller):
-    #def __init__(self, time_on, time_off, hb):
-        #super().__init__(hb)
-        #self.time_on = time_on
-        #self.time_off = time_off
+def Outlet_(Poller):
+    def __init__(self, time_on, time_off, hb):
+        super().__init__(hb)
+        self.time_on = time_on
+        self.time_off = time_off
     
     def poll(self):
         cur_time = datetime.datetime.now().time()
@@ -247,7 +247,7 @@ if __name__=="__main__":
     scheduler = Scheduler()
     morse = Morse(scheduler)
     hb = Heartbeat(scheduler)
-    outlet = Outlet(TIME_ON, TIME_OFF, hb)
+    outlet = Outlet_(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
     print("Ran out of things to do, exiting")
