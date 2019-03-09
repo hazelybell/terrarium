@@ -31,7 +31,9 @@ class Schedulable:
         self.run = fn
 
 class Schedule:
-    def __init__(self):
+    def __init__(self, scheduler):
+        self.scheduler = scheduler
+        self.scheduler.add(self)
         self.queue = []
     
     def add(self, schedable):
@@ -95,9 +97,8 @@ class Scheduler:
 class Morse(Schedule):
     TIME_UNIT = 0.5
     
-    def __init__(self, scheduler):
-        self.scheduler = scheduler
-        self.scheduler.add(self)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.prev_s = '>'
     
     def on(self):
