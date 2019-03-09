@@ -193,6 +193,8 @@ class Heartbeat(Schedule):
         print("beat")
         for i in range(1, STEPS+1):
             self.then_after(self.TIME_ON, self.glowup(i/STEPS))
+        for i in range(1, STEPS):
+            self.then_after(self.TIME_ON, self.glowup((STEPS-i)/STEPS))
         self.then_after(self.TIME_ON, self.unbeat)
     
     def unbeat(self):
