@@ -182,9 +182,9 @@ class Morse(Schedule):
         self.end_message()
 
 class Poller:
-    def __init__(self, heartbeat):
-        self.heartbeat = heartbeat
-        heartbeat.add_poller(self)
+    #def __init__(self, heartbeat):
+        #self.heartbeat = heartbeat
+        #heartbeat.add_poller(self)
 
 class Heartbeat(Schedule):
     TIME_ON = 0.06
