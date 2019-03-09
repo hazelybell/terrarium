@@ -247,7 +247,7 @@ if __name__=="__main__":
     scheduler = Scheduler()
     morse = Morse(scheduler)
     hb = Heartbeat(scheduler)
-    Outlet(TIME_ON, TIME_OFF, hb)
+    outlet = Outlet(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
     print("Ran out of things to do, exiting")
