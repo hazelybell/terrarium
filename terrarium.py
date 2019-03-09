@@ -186,6 +186,7 @@ class Heartbeat(Schedule):
     def glowup(self, level):
         def glow():
             automationhat.light.power.write(level)
+        return glow
     
     def beat(self):
         print("beat")
