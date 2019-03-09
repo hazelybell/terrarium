@@ -96,6 +96,7 @@ class Morse(Schedule):
     TIME_UNIT = 0.5
     
     def __init__(self, scheduler):
+        self.scheduler = scheduler
         self.scheduler.add(self)
         self.prev_s = '>'
     
