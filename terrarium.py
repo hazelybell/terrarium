@@ -223,7 +223,7 @@ class Heartbeat(Schedule):
         self.next_second(self.beat)
         self.pollers = set()
 
-def Outlet_(Poller):
+def Outlet_:
     def __init__(self, time_on, time_off, hb):
         #super().__init__(hb)
         self.time_on = time_on
