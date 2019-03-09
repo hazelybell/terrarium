@@ -46,7 +46,7 @@ class Schedule:
         if len(self.queue) > 0:
             prev = self.queue[-1].utime
         else:
-            prev = time.time()
+            prev = float(time.time())
         when = prev + seconds
         schedable = Schedulable(when, what)
         self.add(schedable)
