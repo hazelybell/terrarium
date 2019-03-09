@@ -189,11 +189,12 @@ class Heartbeat(Schedule):
         self.then_after(self.TIME_ON, self.unbeat)
     
     def unbeat(self):
-        automationhat.light.power.write(0)
+        automationhat.light.power.write(0.1)
         self.next_second(self.beat)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        automationhat.light.on()
         self.next_second(self.beat)
 
 
