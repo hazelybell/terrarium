@@ -190,7 +190,7 @@ class Heartbeat(Schedule):
     def beat(self):
         print("beat")
         for i in range(1, 11):
-            self.then_after(self.TIME_ON, self.glowup(i/10)
+            self.then_after(self.TIME_ON, self.glowup(i/10))
         self.then_after(self.TIME_ON, self.unbeat)
     
     def unbeat(self):
