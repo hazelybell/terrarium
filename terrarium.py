@@ -65,14 +65,16 @@ class Scheduler:
         print("tick: " + str(cur_utime))
         next_utime = math.inf
         for schedule in self.schedules:
-            while len(schedule.queue) > 0:
-                schedulable = schedule.queue[0]
+            i = 0;
+            while i < len(schedule.queue):
+                schedulable = schedule.queue[i]
                 if schedulable.utime < cur_utime:
                     schedulable.run()
-                    schedule.pop(0)
+                    schedule.pop(i)
                 else:
                     if schedulable.utime < next_utime:
                         next_utime = schedulable.utime
+                    i += 1
         return next_utime
     
     def loop(self):
