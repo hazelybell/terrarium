@@ -107,9 +107,9 @@ class Morse(Schedule):
         automationhat.light.comms.write(0)
 
     def emit_dash(self):
-        if prev_s == '.' or prev_s == '-':
+        if self.prev_s == '.' or self.prev_s == '-':
             self.then_after(self.TIME_UNIT, self.on) # inter-symbol space
-        elif prev_s == ' ' or prev_s == '_':
+        elif self.prev_s == ' ' or self.prev_s == '_':
             pass # we already had a space
         else:
             raise ValueError("Invalid morse sequence")
@@ -117,9 +117,9 @@ class Morse(Schedule):
         self.prev_s = '-'
 
     def emit_dot(self):
-        if prev_s == '.' or prev_s == '-':
+        if self.prev_s == '.' or self.prev_s == '-':
             self.then_after(self.TIME_UNIT, self.on) # inter-symbol space
-        elif prev_s == ' ' or prev_s == '_':
+        elif self.prev_s == ' ' or self.prev_s == '_':
             pass # we already had a space
         else:
             raise ValueError("Invalid morse sequence")
@@ -127,14 +127,14 @@ class Morse(Schedule):
         self.prev_s = '.'
     
     def emit_letter_space(self):
-        if prev_s == '.' or prev_s == '-':
+        if self.prev_s == '.' or self.prev_s == '-':
             self.then_after(self.TIME_UNIT * 3, self.on)
         else:
             raise ValueError("Invalid morse sequence")
         self.prev_s = '_'
 
     def emit_word_space(self):
-        if prev_s == '.' or prev_s == '-' or prev_s == '>':
+        if self.prev_s == '.' or self.prev_s == '-' or self.prev_s == '>':
             self.then_after(self.TIME_UNIT * 7, self.on)
         else:
             raise ValueError("Invalid morse sequence")
