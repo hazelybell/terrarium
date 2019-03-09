@@ -183,9 +183,14 @@ class Morse(Schedule):
 class Heartbeat(Schedule):
     TIME_ON = 0.06
     
+    def glowup(self, level):
+        def glow():
+            automationhat.light.power.write(level)
+    
     def beat(self):
         print("beat")
-        automationhat.light.power.write(0.1)
+        for i in range(1, 11):
+            self.then_after(self.TIME_ON, self.glowup(i/10)
         self.then_after(self.TIME_ON, self.unbeat)
     
     def unbeat(self):
