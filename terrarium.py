@@ -48,6 +48,8 @@ class Schedule:
             prev = self.queue[-1].utime
         else:
             prev = time.time()
+        print(repr(prev))
+        print(repr(seconds))
         when = prev + seconds
         schedable = Schedulable(when, what)
         self.add(schedable)
