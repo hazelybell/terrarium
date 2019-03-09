@@ -237,7 +237,7 @@ class Outlet(Poller):
             automationhat.relay.one.off()
 
 class SelfUp(Poller):
-    def __init__(self, time_on, time_off, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_mtime = os.stat(__file__).st_mtime
     
@@ -259,7 +259,7 @@ if __name__=="__main__":
     scheduler = Scheduler()
     morse = Morse(scheduler)
     hb = Heartbeat(scheduler)
-    su = SelfUp(scheduler)
+    su = SelfUp(hb)
     Outlet(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
