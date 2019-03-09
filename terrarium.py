@@ -107,7 +107,7 @@ class Morse(Schedule):
     def emit_dash(self):
         if prev_s == '.' or prev_s == '-':
             self.then_after(TIME_UNIT, self.on) # inter-symbol space
-        elif prev_s = ' ' or prev_s == '_':
+        elif prev_s == ' ' or prev_s == '_':
             pass # we already had a space
         else:
             raise ValueError("Invalid morse sequence")
@@ -117,7 +117,7 @@ class Morse(Schedule):
     def emit_dot(self):
         if prev_s == '.' or prev_s == '-':
             self.then_after(TIME_UNIT, self.on) # inter-symbol space
-        elif prev_s = ' ' or prev_s == '_':
+        elif prev_s == ' ' or prev_s == '_':
             pass # we already had a space
         else:
             raise ValueError("Invalid morse sequence")
