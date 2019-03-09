@@ -75,16 +75,9 @@ class Scheduler:
     
     def loop(self):
         while True:
-            automationhat.light.power.write(1)
             next_utime = self.tick()
             if next_utime == math.inf:
                 return
-            cur_utime = time.time()
-            sleep = next_utime - cur_utime
-            if sleep > 0.1:
-                # heartbeat
-                time.sleep(0.05)
-
             # go to sleep and loop
             cur_utime = time.time()
             sleep = next_utime - cur_utime
