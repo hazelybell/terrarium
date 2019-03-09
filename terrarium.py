@@ -181,9 +181,22 @@ class Morse(Schedule):
                 raise ValueError("Invalid morse sequence: " + morsed)
         self.end_message()
 
+class Poller:
+    def __init__(self, heartbeat):
+        self.heartbeat = heartbeat
+        heartbeat.add_poller(self)
+
 class Heartbeat(Schedule):
     TIME_ON = 0.06
     
+    def poll(self):
+        print("beat")
+        for poller in self.pollers:
+            poller.poll()
+    
+    def add_poller(self, poller):
+        self.pollers.add(poller)
+
     def glowup(self, level):
         def glow():
             automationhat.light.power.write(level)
@@ -191,7 +204,7 @@ class Heartbeat(Schedule):
     
     def beat(self):
         STEPS = 8
-        print("beat")
+        self.poll()
         for i in range(1, STEPS+1):
             self.then_after(self.TIME_ON, self.glowup(i/STEPS))
         for i in range(1, STEPS):
@@ -206,7 +219,22 @@ class Heartbeat(Schedule):
         super().__init__(*args, **kwargs)
         automationhat.light.power.write(1)
         self.next_second(self.beat)
+        self.pollers = set()
 
+def Outlet(Poller):
+    def __init__(self, time_on, time_off, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.time_on = time_on
+        self.time_off = time_off
+    
+    def poll(self):
+        cur_time = datetime.datetime.now().time()
+        if cur_time > self.time_on and cur_time < self.time_off:
+            print("outlet on")
+            automationhat.relay.one.on()
+        else:
+            print("outlet off")
+            automationhat.relay.one.off()
 
 if __name__=="__main__":
     if automationhat.is_automation_hat():
@@ -216,7 +244,8 @@ if __name__=="__main__":
     
     scheduler = Scheduler()
     morse = Morse(scheduler)
-    Heartbeat(scheduler)
+    hb = Heartbeat(scheduler)
+    Outlet(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
     print("Ran out of things to do, exiting")
