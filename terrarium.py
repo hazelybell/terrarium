@@ -223,8 +223,8 @@ class Heartbeat(Schedule):
         self.pollers = set()
 
 def Outlet(Poller):
-    def __init__(self, time_on, time_off):
-        super().__init__(*args, **kwargs)
+    def __init__(self, time_on, time_off, hb):
+        super().__init__(hb)
         self.time_on = time_on
         self.time_off = time_off
     
