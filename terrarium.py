@@ -48,8 +48,6 @@ class Schedule:
             prev = self.queue[-1].utime
         else:
             prev = time.time()
-        print(repr(prev))
-        print(repr(seconds))
         when = prev + seconds
         schedable = Schedulable(when, what)
         self.add(schedable)
@@ -188,7 +186,7 @@ class Heartbeat(Schedule):
     
     def beat(self):
         automationhat.light.power.write(1)
-        self.then_after(TIME_ON, self.unbeat)
+        self.then_after(self.TIME_ON, self.unbeat)
     
     def unbeat(self):
         automationhat.light.power.write(0)
