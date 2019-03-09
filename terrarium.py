@@ -229,7 +229,7 @@ def Outlet_(Poller):
         self.time_on = time_on
         self.time_off = time_off
     
-    def poll(self):
+    def poll_(self):
         cur_time = datetime.datetime.now().time()
         if cur_time > self.time_on and cur_time < self.time_off:
             print("outlet on")
