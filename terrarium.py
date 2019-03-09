@@ -181,7 +181,7 @@ class Morse(Schedule):
         self.end_message()
 
 class Heartbeat(Schedule):
-    TIME_ON = 0.06
+    TIME_ON = 0.05
     
     def glowup(self, level):
         def glow():
@@ -189,9 +189,10 @@ class Heartbeat(Schedule):
         return glow
     
     def beat(self):
+        STEPS = 4
         print("beat")
-        for i in range(1, 11):
-            self.then_after(self.TIME_ON, self.glowup(i/10))
+        for i in range(1, STEPS+1):
+            self.then_after(self.TIME_ON, self.glowup(i/STEPS))
         self.then_after(self.TIME_ON, self.unbeat)
     
     def unbeat(self):
