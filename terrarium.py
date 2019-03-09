@@ -28,6 +28,7 @@ MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
 
 class Schedulable:
     def __init__(self, when, fn):
+        assert isinstance(when, float) or isinstance(when, int)
         self.utime = when
         self.run = fn
 
@@ -46,7 +47,7 @@ class Schedule:
         if len(self.queue) > 0:
             prev = self.queue[-1].utime
         else:
-            prev = float(time.time())
+            prev = time.time()
         when = prev + seconds
         schedable = Schedulable(when, what)
         self.add(schedable)
