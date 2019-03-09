@@ -140,12 +140,12 @@ class Morse(Schedule):
         self.prev_s = ' '
     
     def start_message(self):
-        assert prev_s == '>'
+        assert self.prev_s == '>'
         self.then_after(TIME_UNIT * 7, self.on)
         self.prev_s = ' '
     
     def end_message(self):
-        if prev_s == '.' or prev_s == '-':
+        if self.prev_s == '.' or self.prev_s == '-':
             pass # we already turned off
         else:
             raise ValueError("Invalid morse sequence")
