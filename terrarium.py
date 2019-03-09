@@ -70,7 +70,7 @@ class Scheduler:
                 schedulable = schedule.queue[i]
                 if schedulable.utime < cur_utime:
                     schedulable.run()
-                    schedule.pop(i)
+                    schedule.queue.pop(i)
                 else:
                     if schedulable.utime < next_utime:
                         next_utime = schedulable.utime
