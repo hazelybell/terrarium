@@ -182,11 +182,9 @@ class Morse(Schedule):
         self.end_message()
 
 class Poller:
-    def __init__(self, a, b, c):
-        pass
-    #def __init__(self, heartbeat):
-        #self.heartbeat = heartbeat
-        #heartbeat.add_poller(self)
+    def __init__(self, heartbeat):
+        self.heartbeat = heartbeat
+        heartbeat.add_poller(self)
 
 class Heartbeat(Schedule):
     TIME_ON = 0.06
@@ -223,13 +221,13 @@ class Heartbeat(Schedule):
         self.next_second(self.beat)
         self.pollers = set()
 
-def Outlet_:
-    def __init__(self, time_on, time_off, hb):
-        #super().__init__(hb)
+class Outlet(Poller):
+    def __init__(self, time_on, time_off, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.time_on = time_on
         self.time_off = time_off
     
-    def poll_(self):
+    def poll(self):
         cur_time = datetime.datetime.now().time()
         if cur_time > self.time_on and cur_time < self.time_off:
             print("outlet on")
@@ -247,7 +245,7 @@ if __name__=="__main__":
     scheduler = Scheduler()
     morse = Morse(scheduler)
     hb = Heartbeat(scheduler)
-    outlet = Outlet_(TIME_ON, TIME_OFF, hb)
+    Outlet(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
     print("Ran out of things to do, exiting")
