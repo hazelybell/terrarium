@@ -196,6 +196,8 @@ class Heartbeat(Schedule):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         automationhat.light.power.write(1)
+        time.sleep(1)
+        automationhat.light.power.write(1)
         self.next_second(self.beat)
 
 
