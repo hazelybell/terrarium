@@ -236,6 +236,20 @@ class Outlet(Poller):
             print("outlet off")
             automationhat.relay.one.off()
 
+class SelfUp(Poller):
+    def __init__(self, time_on, time_off, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.original_mtime = os.stat(__file__).st_mtime
+    
+    def poll(self):
+        new_mtime = os.stat(__file__).st_mtime
+        if new_mtime != mtime:
+            args = sys.argv[:]
+            args.insert(0, sys.executable)
+            print('Re-spawning %s' % ' '.join(args))
+            os.execv(sys.executable, args)
+            raise Exception('Unreachable')
+
 if __name__=="__main__":
     if automationhat.is_automation_hat():
         pass
@@ -245,6 +259,7 @@ if __name__=="__main__":
     scheduler = Scheduler()
     morse = Morse(scheduler)
     hb = Heartbeat(scheduler)
+    su = SelfUp(scheduler)
     Outlet(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
