@@ -107,41 +107,41 @@ class Morse(Schedule):
 
     def emit_dash(self):
         if prev_s == '.' or prev_s == '-':
-            self.then_after(TIME_UNIT, self.on) # inter-symbol space
+            self.then_after(self.TIME_UNIT, self.on) # inter-symbol space
         elif prev_s == ' ' or prev_s == '_':
             pass # we already had a space
         else:
             raise ValueError("Invalid morse sequence")
-        self.then_after(TIME_UNIT * 3, self.off) # dash
+        self.then_after(self.TIME_UNIT * 3, self.off) # dash
         self.prev_s = '-'
 
     def emit_dot(self):
         if prev_s == '.' or prev_s == '-':
-            self.then_after(TIME_UNIT, self.on) # inter-symbol space
+            self.then_after(self.TIME_UNIT, self.on) # inter-symbol space
         elif prev_s == ' ' or prev_s == '_':
             pass # we already had a space
         else:
             raise ValueError("Invalid morse sequence")
-        self.then_after(TIME_UNIT, self.off) # dash
+        self.then_after(self.TIME_UNIT, self.off) # dash
         self.prev_s = '.'
     
     def emit_letter_space(self):
         if prev_s == '.' or prev_s == '-':
-            self.then_after(TIME_UNIT * 3, self.on)
+            self.then_after(self.TIME_UNIT * 3, self.on)
         else:
             raise ValueError("Invalid morse sequence")
         self.prev_s = '_'
 
     def emit_word_space(self):
         if prev_s == '.' or prev_s == '-' or prev_s == '>':
-            self.then_after(TIME_UNIT * 7, self.on)
+            self.then_after(self.TIME_UNIT * 7, self.on)
         else:
             raise ValueError("Invalid morse sequence")
         self.prev_s = ' '
     
     def start_message(self):
         assert self.prev_s == '>'
-        self.then_after(TIME_UNIT * 7, self.on)
+        self.then_after(self.TIME_UNIT * 7, self.on)
         self.prev_s = ' '
     
     def end_message(self):
@@ -149,7 +149,7 @@ class Morse(Schedule):
             pass # we already turned off
         else:
             raise ValueError("Invalid morse sequence")
-        self.then_after(TIME_UNIT * 7, self.off) # make sure there's a good space between messages
+        self.then_after(self.TIME_UNIT * 7, self.off) # make sure there's a good space between messages
         self.prev_s = '>'
 
     def morse(self, msg):
