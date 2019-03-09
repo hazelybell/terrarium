@@ -65,9 +65,11 @@ class Scheduler:
         print("tick: " + str(cur_utime))
         next_utime = math.inf
         for schedule in self.schedules:
-            for schedulable in schedule.queue:
+            while len(schedule.queue) > 0:
+                schedulable = schedule.queue[0]
                 if schedulable.utime < cur_utime:
                     schedulable.run()
+                    schedule.pop(0)
                 else:
                     if schedulable.utime < next_utime:
                         next_utime = schedulable.utime
@@ -175,6 +177,22 @@ class Morse(Schedule):
             else:
                 raise ValueError("Invalid morse sequence: " + morsed)
         self.end_message()
+
+class Heartbeat(Schedule):
+    TIME_ON = 0.5
+    
+    def beat(self):
+        automationhat.light.power.write(1)
+        self.then_after(TIME_ON, self.unbeat)
+    
+    def unbeat(self):
+        automationhat.light.power.write(0)
+        self.next_second(self.beat)
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.next_second(self.beat)
+
 
 if __name__=="__main__":
     if automationhat.is_automation_hat():
