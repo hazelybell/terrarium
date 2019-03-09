@@ -225,7 +225,7 @@ class Heartbeat(Schedule):
 
 def Outlet_(Poller):
     def __init__(self, time_on, time_off, hb):
-        super().__init__(hb)
+        #super().__init__(hb)
         self.time_on = time_on
         self.time_off = time_off
     
