@@ -182,7 +182,8 @@ class Morse(Schedule):
         self.end_message()
 
 class Poller:
-    pass
+    def __init__(self):
+        pass
     #def __init__(self, heartbeat):
         #self.heartbeat = heartbeat
         #heartbeat.add_poller(self)
