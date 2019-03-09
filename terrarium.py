@@ -244,7 +244,7 @@ class SelfUp(Poller):
     
     def poll(self):
         new_mtime = os.stat(__file__).st_mtime
-        if new_mtime != mtime:
+        if new_mtime != self.original_mtime:
             args = sys.argv[:]
             args.insert(0, sys.executable)
             print('Re-spawning %s' % ' '.join(args))
