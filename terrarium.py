@@ -11,6 +11,15 @@ import automationhat
 TIME_ON = datetime.time(hour=6, minute=30)
 TIME_OFF = datetime.time(hour=21, minute=0)
 
+import logging
+logger = logging.getLogger(__name__)
+DEBUG = logger.debug
+INFO = logger.info
+WARNING = logger.warning
+ERROR = logger.error
+CRITICAL = logger.critical
+logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
+
 MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
                     'C':'-.-.', 'D':'-..', 'E':'.',
                     'F':'..-.', 'G':'--.', 'H':'....',
@@ -64,7 +73,7 @@ class Scheduler:
     
     def tick(self):
         cur_utime = time.time()
-        print("tick: " + str(cur_utime))
+        DEBUG("tick: " + str(cur_utime))
         next_utime = math.inf
         for schedule in self.schedules:
             i = 0;
@@ -88,7 +97,7 @@ class Scheduler:
             cur_utime = time.time()
             sleep = next_utime - cur_utime
             if sleep > 0:
-                print("Sleeping for " +  str(sleep))
+                DEBUG("Sleeping for " +  str(sleep))
                 time.sleep(sleep)
     
     def add(self, schedule):
@@ -167,7 +176,7 @@ class Morse(Schedule):
         self.emit_morse(morsed)
     
     def emit_morse(self, morsed):
-        print(morsed)
+        DEBUG(morsed)
         self.start_message()
         for c in morsed:
             if c == '.':
@@ -192,7 +201,7 @@ class Heartbeat(Schedule):
     MAX_LEVEL = 0.1
     
     def poll(self):
-        print("beat")
+        DEBUG("beat")
         for poller in self.pollers:
             poller.poll()
     
@@ -235,10 +244,10 @@ class Outlet(Poller):
     def poll(self):
         cur_time = datetime.datetime.now().time()
         if cur_time > self.time_on and cur_time < self.time_off:
-            print("outlet on")
+            DEBUG("outlet on")
             automationhat.relay.one.on()
         else:
-            print("outlet off")
+            DEBUG("outlet off")
             automationhat.relay.one.off()
 
 class SelfUp(Poller):
@@ -251,7 +260,7 @@ class SelfUp(Poller):
         if new_mtime != self.original_mtime:
             args = sys.argv[:]
             args.insert(0, sys.executable)
-            print('Re-spawning %s' % ' '.join(args))
+            DEBUG('Re-spawning %s' % ' '.join(args))
             os.execv(sys.executable, args)
             raise Exception('Unreachable')
 
@@ -268,7 +277,7 @@ if __name__=="__main__":
     Outlet(TIME_ON, TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
-    print("Ran out of things to do, exiting")
+    DEBUG("Ran out of things to do, exiting")
     sys.exit(0)
 
 #automationhat.light.on()
@@ -281,14 +290,14 @@ while True:
     #    automationhat.relay.two.toggle()
     #    automationhat.relay.three.toggle()
     now = datetime.datetime.now()
-    print(str(now));
+    DEBUG(str(now));
     cur_time = now.time()
-    print(str(cur_time))
+    DEBUG(str(cur_time))
     if cur_time > TIME_ON and cur_time < TIME_OFF:
-        print("lights on")
+        DEBUG("lights on")
         automationhat.relay.one.on()
     else:
-        print("lights off")
+        DEBUG("lights off")
         automationhat.relay.one.off()
 
 
