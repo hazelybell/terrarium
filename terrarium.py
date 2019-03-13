@@ -8,8 +8,8 @@ import os
 
 import automationhat
 
-TIME_ON = datetime.time(hour=6, minute=30)
-TIME_OFF = datetime.time(hour=21, minute=0)
+LAMP_TIME_ON = datetime.time(hour=6, minute=30)
+LAMP_TIME_OFF = datetime.time(hour=21, minute=0)
 
 import logging
 logger = logging.getLogger(__name__)
@@ -262,7 +262,7 @@ class SelfUp(Poller):
         if new_mtime != self.original_mtime:
             args = sys.argv[:]
             args.insert(0, sys.executable)
-            DEBUG('Re-spawning %s' % ' '.join(args))
+            INFO('Re-spawning %s' % ' '.join(args))
             os.execv(sys.executable, args)
             raise Exception('Unreachable')
 
@@ -276,31 +276,12 @@ if __name__=="__main__":
     morse = Morse(scheduler)
     hb = Heartbeat(scheduler)
     su = SelfUp(hb)
-    Outlet(TIME_ON, TIME_OFF, hb)
+    Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, hb)
     morse.morse("start")
     scheduler.loop()
-    DEBUG("Ran out of things to do, exiting")
+    CRITICAL("Ran out of things to do, exiting")
     sys.exit(0)
 
-#automationhat.light.on()
-
-morse("ok")
-
-while True:
-    #automationhat.relay.one.toggle()
-    #if automationhat.is_automation_hat():
-    #    automationhat.relay.two.toggle()
-    #    automationhat.relay.three.toggle()
-    now = datetime.datetime.now()
-    DEBUG(str(now));
-    cur_time = now.time()
-    DEBUG(str(cur_time))
-    if cur_time > TIME_ON and cur_time < TIME_OFF:
-        DEBUG("lights on")
-        automationhat.relay.one.on()
-    else:
-        DEBUG("lights off")
-        automationhat.relay.one.off()
 
 
 
