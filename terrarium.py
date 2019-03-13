@@ -18,7 +18,7 @@ INFO = logger.info
 WARNING = logger.warning
 ERROR = logger.error
 CRITICAL = logger.critical
-logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
+logging.basicConfig(stream=sys.stderr,level=logging.INFO)
 
 MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
                     'C':'-.-.', 'D':'-..', 'E':'.',
@@ -176,7 +176,7 @@ class Morse(Schedule):
         self.emit_morse(morsed)
     
     def emit_morse(self, morsed):
-        DEBUG(morsed)
+        INFO(morsed)
         self.start_message()
         for c in morsed:
             if c == '.':
@@ -244,10 +244,12 @@ class Outlet(Poller):
     def poll(self):
         cur_time = datetime.datetime.now().time()
         if cur_time > self.time_on and cur_time < self.time_off:
-            DEBUG("outlet on")
+            if automationhat.relay.one.is_off():
+                INFO("turning outlet on")
             automationhat.relay.one.on()
         else:
-            DEBUG("outlet off")
+            if automationhat.relay.one.is_on():
+                INFO("turning outlet off")
             automationhat.relay.one.off()
 
 class SelfUp(Poller):
