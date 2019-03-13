@@ -188,7 +188,8 @@ class Poller:
         heartbeat.add_poller(self)
 
 class Heartbeat(Schedule):
-    TIME_ON = 0.06
+    TIME_ON = 0.1
+    MAX_LEVEL = 0.1
     
     def poll(self):
         print("beat")
@@ -200,21 +201,24 @@ class Heartbeat(Schedule):
 
     def glowup(self, level):
         def glow():
-            automationhat.light.power.write(level)
+            automationhat.light.power.write(self.MAX_LEVEL*level)
         return glow
     
     def beat(self):
         STEPS = 1
         self.poll()
         for i in range(1, STEPS+1):
-            self.then_after(self.TIME_ON, self.glowup(i/STEPS))
-        for i in range(1, STEPS):
+            if i == 1:
+                # this is the first brigtness change we can do it now
+                self.glowup(i/STEPS)
+            else:
+                self.then_after(self.TIME_ON, self.glowup(i/STEPS))
+        for i in range(1, STEPS+1):
             self.then_after(self.TIME_ON, self.glowup((STEPS-i)/STEPS))
-        self.then_after(self.TIME_ON, self.unbeat)
+        self.next_second(self.beat)
     
     def unbeat(self):
         automationhat.light.power.write(0)
-        self.next_second(self.beat)
     
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
