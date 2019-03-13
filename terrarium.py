@@ -4,6 +4,7 @@ import datetime
 import math
 import sys
 import os
+import time
 
 import automationhat
 import gevent
@@ -267,19 +268,30 @@ class SelfUp(Poller):
             os.execv(sys.executable, args)
             raise Exception('Unreachable')
 
-if __name__=="__main__":
-    if automationhat.is_automation_hat():
-        pass
-    else:
-        raise ValueError("no automationhat")
+class Terrarium:
+    __instance = None
+    def __init__(self):
+        assert self.__instance is None
+        self.__instance = self
+        if automationhat.is_automation_hat():
+            pass
+        else:
+            raise ValueError("no automationhat")
+        self.scheduler = Scheduler()
+        self.morse = Morse(self.scheduler)
+        self.heartbeat = Heartbeat(self.scheduler)
+        self.selfup = SelfUp(self.heartbeat)
+        self.lamp = Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, self.heartbeat)
+        self.morse.morse("start")
     
-    scheduler = Scheduler()
-    morse = Morse(scheduler)
-    hb = Heartbeat(scheduler)
-    su = SelfUp(hb)
-    Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, hb)
-    morse.morse("start")
-    sched_let = gevent.spawn(scheduler.loop())
+    def run_forever(self):
+        self.scheduler.loop()
+        raise Exception('Unreachable')
+
+
+if __name__=="__main__":
+    terrarium = Terrarium()
+    sched_let = gevent.spawn(terrarium.run_forever())
     greenlets = [sched_let]
     gevent.joinall(greenlets)
     CRITICAL("Ran out of things to do, exiting")
