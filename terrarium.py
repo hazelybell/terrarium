@@ -97,10 +97,10 @@ class Scheduler:
                 return
             # go to sleep and loop
             cur_utime = time.time()
-            sleep = next_utime - cur_utime
-            if sleep > 0:
-                DEBUG("Sleeping for " +  str(sleep))
-                sleep(sleep)
+            sleep_time = next_utime - cur_utime
+            if sleep_time > 0:
+                DEBUG("Sleeping for " +  str(sleep_time))
+                sleep(sleep_time)
     
     def add(self, schedule):
         self.schedules.add(schedule)
