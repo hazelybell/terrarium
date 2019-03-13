@@ -258,18 +258,22 @@ class SelfUp(Poller):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_mtime = os.stat(__file__).st_mtime
+        self.files = dict()
         for m in sys.modules.values():
             if hasattr(m, "__file__"):
-                DEBUG(m.__file__)
+                f = m.__file__
+                self.files[f] = os.stat(f).st_mtime
     
     def poll(self):
-        new_mtime = os.stat(__file__).st_mtime
-        if new_mtime != self.original_mtime:
-            args = sys.argv[:]
-            args.insert(0, sys.executable)
-            INFO('Re-spawning %s' % ' '.join(args))
-            os.execv(sys.executable, args)
-            raise Exception('Unreachable')
+        for f, original_mtime in self.files.items():
+            new_mtime = os.stat(f).st_mtime
+            if new_mtime != original_mtime:
+                INFO(f + ' changed')
+                args = sys.argv[:]
+                args.insert(0, sys.executable)
+                INFO('Re-spawning %s' % ' '.join(args))
+                os.execv(sys.executable, args)
+                raise Exception('Unreachable')
 
 class Terrarium:
     __instance = None
