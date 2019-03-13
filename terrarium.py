@@ -210,7 +210,7 @@ class Heartbeat(Schedule):
         for i in range(1, STEPS+1):
             if i == 1:
                 # this is the first brigtness change we can do it now
-                self.glowup(i/STEPS)
+                self.glowup(i/STEPS)()
             else:
                 self.then_after(self.TIME_ON, self.glowup(i/STEPS))
         for i in range(1, STEPS+1):
