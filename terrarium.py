@@ -20,7 +20,6 @@ INFO = logger.info
 WARNING = logger.warning
 ERROR = logger.error
 CRITICAL = logger.critical
-logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
 
 MORSE_CODE_DICT = { 'A':'.-', 'B':'-...',
                     'C':'-.-.', 'D':'-..', 'E':'.',

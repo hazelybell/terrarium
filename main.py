@@ -6,6 +6,15 @@ from gevent.pywsgi import WSGIServer
 import terrarium
 import web
 
+import logging
+logger = logging.getLogger(__name__)
+DEBUG = logger.debug
+INFO = logger.info
+WARNING = logger.warning
+ERROR = logger.error
+CRITICAL = logger.critical
+logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
+
 if __name__=="__main__":
     terrarium = terrarium.Terrarium()
     sched_let = gevent.spawn(terrarium.run_forever)
