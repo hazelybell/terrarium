@@ -1,4 +1,3 @@
-automationhat==0.1.0
-pkg-resources==0.0.0
-RPi.GPIO==0.6.5
-sn3218==1.2.7
+automationhat>=0.1.0
+gevent>=1.4.0
+Flask>=1.0.2

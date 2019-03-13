@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
-import time
 import datetime
 import math
 import sys
 import os
 
 import automationhat
+import gevent
+from gevent import sleep
 
 LAMP_TIME_ON = datetime.time(hour=6, minute=30)
 LAMP_TIME_OFF = datetime.time(hour=21, minute=0)
@@ -98,7 +99,7 @@ class Scheduler:
             sleep = next_utime - cur_utime
             if sleep > 0:
                 DEBUG("Sleeping for " +  str(sleep))
-                time.sleep(sleep)
+                sleep(sleep)
     
     def add(self, schedule):
         self.schedules.add(schedule)
@@ -278,7 +279,9 @@ if __name__=="__main__":
     su = SelfUp(hb)
     Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, hb)
     morse.morse("start")
-    scheduler.loop()
+    sched_let = gevent.spawn(scheduler.loop())
+    greenlets = [sched_let]
+    gevent.joinall(greenlets)
     CRITICAL("Ran out of things to do, exiting")
     sys.exit(0)
 
