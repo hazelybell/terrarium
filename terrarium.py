@@ -258,6 +258,8 @@ class SelfUp(Poller):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.original_mtime = os.stat(__file__).st_mtime
+        for m in sys.modules.values():
+            DEBUG(m.__file__)
     
     def poll(self):
         new_mtime = os.stat(__file__).st_mtime
