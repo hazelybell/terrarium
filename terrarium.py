@@ -257,7 +257,6 @@ class Outlet(Poller):
 class SelfUp(Poller):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.original_mtime = os.stat(__file__).st_mtime
         self.files = dict()
         for m in sys.modules.values():
             if hasattr(m, "__file__"):
