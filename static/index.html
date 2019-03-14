@@ -13,42 +13,27 @@
     overflow: scroll;
     font-family: "DejaVu Sans Mono", "Lucida Console", "Monaco", monospace;
   }
-  #log p {
+  #log tr {
     margin: 0;
     padding: 0;
   }
-  #log p.DEBUG .level {
+  #log .DEBUG .level {
     color: rgb(127,127,255);
   }
-  #log p.INFO .level {
+  #log .INFO .level {
     color: rgb(127,255,127);
   }
-  #log p.WARNING .level {
+  #log .WARNING .level {
     color: rgb(255,255,127);
   }
-  #log p.ERROR .level {
+  #log .ERROR .level {
     color: rgb(255,127,127);
   }
-  #log p.CRITICAL .level {
+  #log .CRITICAL .level {
     color: rgb(255,0,0);
   }
   
-  #log p .level {
-    display: inline-block;
-    width: 6em;
-  }
-  
-  #log p .time {
-    display: inline-block;
-    width: 12em;
-  }
-  
-  #log p .module {
-    display: inline-block;
-    width: 6em;
-  }
-
-  #log p.terrarium .module {
+  #log .terrarium .module {
     color: rgb(127,255,255);
   }
   </style>
