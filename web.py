@@ -1,4 +1,4 @@
-from flask import Flask
+import flask
 
 import logging
 logger = logging.getLogger(__name__)
@@ -8,7 +8,7 @@ WARNING = logger.warning
 ERROR = logger.error
 CRITICAL = logger.critical
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 bag = None
 
