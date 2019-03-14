@@ -26,7 +26,7 @@ class WebSocketObserver:
         if self.ws.closed:
             self.observable.unobserve(self)
             return
-        ws.send(json.dumps(e))
+        self.ws.send(json.dumps(e))
 
 @sockets.route('/log')
 def log_socket(ws):
