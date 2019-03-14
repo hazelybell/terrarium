@@ -307,6 +307,9 @@ class CPUTemp(Poller):
     def unobserve(self, observer):
         self.observers.remove(observer)
     
+    def refresh(self, observer):
+        observer.notify(self.json())    
+    
 class Terrarium:
     __instance = None
     def __init__(self):

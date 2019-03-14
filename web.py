@@ -18,11 +18,20 @@ bag = None
 cputemp = None
 
 class WebSocketObserver:
-    def __init__(self, ws, observable):
+    views = dict()
+    
+    def __init__(self, ws, observable, view_id):
         self.ws = ws
         assert observable is not None
         self.observable = observable
         self.observable.observe(self)
+        self.oid = id(observable)
+        if self.oid not in self.views:
+            self.views[self.oid] = set()
+        if view_id not in self.views[self.oid]:
+            # either the page refreshed or the server restarted
+            self.views[self.oid].add(view_id)
+            self.refresh() # initial load, send full state
     
     def notify(self, e):
         if self.ws.closed:
@@ -32,17 +41,18 @@ class WebSocketObserver:
     
     def refresh(self):
         self.observable.refresh(self)
-
+    
 @sockets.route('/log')
 def log_socket(ws):
-    logobserver = WebSocketObserver(ws, bag)
-    cpuobserver = WebSocketObserver(ws, cputemp)
+    logobserver = None
+    cpuobserver = None
     while not ws.closed:
         message = ws.receive()
         message = json.loads(message)
-        if message == 'refresh':
-            logobserver.refresh()
-            cpuobserver.refresh()
+        if 'viewID' in message:
+            view_id = message['viewID']
+            logobserver = WebSocketObserver(ws, bag, view_id)
+            cpuobserver = WebSocketObserver(ws, cputemp, view_id)
         else:
             ValueError("Got bad command over websocket: " + str(message))
 

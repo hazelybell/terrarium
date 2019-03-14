@@ -100,9 +100,9 @@
         (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
       )
     }    
-    var myID = uuidv4();
+    var viewID = uuidv4();
     
-    console.log(myID);
+    console.log(viewID);
     
     function add_to_log(l) {
       let p = document.createElement('tr');
@@ -167,7 +167,7 @@
       
       ws.addEventListener('open', (openEvent) => {
         let msg = 'refresh';
-        ws.send(JSON.stringify(msg));
+        ws.send(JSON.stringify({'viewID': viewID}));
       });
       
       return ws;

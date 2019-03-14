@@ -41,7 +41,9 @@ class BagHandler(logging.Handler):
     
     def observe(self, observer):
         self.observers.add(observer)
-        observer.notify(self.logs)
     
     def unobserve(self, observer):
         self.observers.remove(observer)
+    
+    def refresh(self, observer):
+        observer.notify(self.logs)
