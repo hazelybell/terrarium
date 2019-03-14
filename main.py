@@ -4,6 +4,7 @@ import sys
 
 import gevent
 from gevent.pywsgi import WSGIServer
+from geventwebsocket.handler import WebSocketHandler
 
 import terrarium
 import web
@@ -23,7 +24,7 @@ if __name__=="__main__":
     sched_let = gevent.spawn(terrarium.run_forever)
     greenlets = [sched_let]
     
-    web_server = WSGIServer(('', 5000), web.app)
+    web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
     web_let = gevent.spawn(web_server.serve_forever)
     greenlets.append(web_let)
     

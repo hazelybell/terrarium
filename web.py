@@ -1,4 +1,5 @@
 import flask
+import flask_sockets
 
 import logging
 logger = logging.getLogger(__name__)
@@ -9,8 +10,14 @@ ERROR = logger.error
 CRITICAL = logger.critical
 
 app = flask.Flask(__name__)
+sockets = flask_sockets.Sockets(app)
 
 bag = None
+
+@sockets.route('/log')
+def log_socket(ws):
+    for l in bag.get_logs():
+        ws.send(l)
 
 @app.route('/')
 def index():

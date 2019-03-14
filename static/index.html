@@ -5,5 +5,18 @@
 </head>
 <body>
   <div id="log"></div>
+  <script>
+    function start_logging() {
+      let ws = new WebSocket('/log');
+      
+      socket.addEventListener('message', (msg) => {
+        console.log("log: " msg.data);
+      }
+    }
+    
+    document.addEventListener('DOMContentLoaded', function(){ 
+      start_logging();
+    }, false);
+  </script>
 </body>
 </html>
