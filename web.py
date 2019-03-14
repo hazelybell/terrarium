@@ -13,6 +13,9 @@ app = Flask(__name__)
 bag = None
 
 @app.route('/')
+def index():
+    flask.send_file('static/index.html')
+
 def hello_world():
     if bag is None:
         raise Exception("Bag unset!")
