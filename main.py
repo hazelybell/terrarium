@@ -29,7 +29,7 @@ def main():
     greenlets = [sched_let]
     
     web.observables['cputemp'] = t.cputemp
-    #web.observables.append(t.lamp)
+    #web.observables['lamp'] = t.lamp
     
     web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
     web_let = gevent.spawn(web_server.serve_forever)

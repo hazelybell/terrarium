@@ -11,6 +11,8 @@ import automationhat
 import gevent
 from gevent import sleep
 
+from observable import Observable
+
 LAMP_TIME_ON = datetime.time(hour=6, minute=30)
 LAMP_TIME_OFF = datetime.time(hour=21, minute=0)
 
@@ -274,7 +276,7 @@ class SelfUp(Poller):
                 os.execv(sys.executable, args)
                 raise Exception('Unreachable')
 
-class CPUTemp(Poller):
+class CPUTemp(Poller, Observable):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.temp = None
