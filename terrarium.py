@@ -280,11 +280,11 @@ class CPUTemp(Poller):
         self.temp = None
     
     def poll(self):
-        r = subprocess.run(
+        r = subprocess.check_output(
             ["/opt/vc/bin/vcgencmd", "measure_temp"], 
             capture_output=True
             )
-        DEBUG(r.stdout)
+        DEBUG(r)
 
 class Terrarium:
     __instance = None
