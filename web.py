@@ -48,6 +48,7 @@ def log_socket(ws):
     cpuobserver = None
     while not ws.closed:
         message = ws.receive()
+        DEBUG("ws recv: " + message)
         message = json.loads(message)
         if 'viewID' in message:
             view_id = message['viewID']
