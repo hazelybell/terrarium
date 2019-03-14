@@ -58,7 +58,7 @@ def log_socket(ws):
         message = json.loads(message)
         if 'viewID' in message:
             view_id = message['viewID']
-            for name, observable in observables:
+            for name, observable in observables.items():
                 observer = WebSocketObserver(ws, observable, view_id, name)
         else:
             ValueError("Got bad command over websocket: " + str(message))
