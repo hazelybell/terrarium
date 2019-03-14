@@ -26,6 +26,7 @@ class JsonFormatter(logging.Formatter):
 class BagHandler(logging.Handler, Observable):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Observable.__init__(self)
         self.setFormatter(JsonFormatter)
         self.logs = list()
     
