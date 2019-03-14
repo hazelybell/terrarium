@@ -32,6 +32,8 @@ class BagHandler(logging.Handler):
     def emit(self, record):
         formatted = self.format(record)
         self.logs.append(formatted)
+        if len(self.logs) > 1000:
+            self.logs.pop(0)
     
     def get_logs(self):
         return self.logs
