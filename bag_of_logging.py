@@ -1,5 +1,7 @@
 import time
 
+from observable import Observable
+
 import logging
 logger = logging.getLogger(__name__)
 DEBUG = logger.debug
@@ -21,29 +23,24 @@ class JsonFormatter(logging.Formatter):
         }
         return o
 
-class BagHandler(logging.Handler):
+class BagHandler(logging.Handler, Observable):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setFormatter(JsonFormatter)
         self.logs = list()
-        self.observers = set()
     
     def emit(self, record):
         formatted = self.format(record)
         self.logs.append(formatted)
         if len(self.logs) > 1000:
             self.logs.pop(0)
-        for observer in list(self.observers): # make a copy here
-            observer.notify(formatted)
+        self.notify_all()
     
     def get_logs(self):
         return self.logs
     
-    def observe(self, observer):
-        self.observers.add(observer)
-    
-    def unobserve(self, observer):
-        self.observers.remove(observer)
+    def json(self):
+        return self.logs[-1]
     
     def refresh(self, observer):
         observer.notify(self.logs)
