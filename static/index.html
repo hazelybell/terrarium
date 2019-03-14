@@ -9,7 +9,7 @@
     function start_logging() {
       let ws = new WebSocket('ws://tart:5000/log');
       
-      socket.addEventListener('message', (msg) => {
+      ws.addEventListener('message', (msg) => {
         console.log("log: " + msg.data);
       });
     }
