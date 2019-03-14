@@ -239,9 +239,10 @@ class Heartbeat(Schedule):
         self.next_second(self.beat)
         self.pollers = set()
 
-class Outlet(Poller):
+class Outlet(Poller, Observable):
     def __init__(self, time_on, time_off, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Observable.__init__(self)
         self.time_on = time_on
         self.time_off = time_off
     
@@ -255,6 +256,12 @@ class Outlet(Poller):
             if automationhat.relay.one.is_on():
                 INFO("turning outlet off")
             automationhat.relay.one.off()
+    
+    def json(self):
+        if automationhat.relay.one.is_on():
+            return {'power': 'on'}
+        else:
+            return {'power': 'off'}
 
 class SelfUp(Poller):
     def __init__(self, *args, **kwargs):
