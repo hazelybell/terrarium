@@ -20,9 +20,11 @@
       let ws = new WebSocket('ws://' + location.host + '/log');
       
       ws.addEventListener('message', (msg) => {
-        console.log("log: " + msg.data);
+        l = JSON.parse(msg.data);
+        console.log("log: " + l.msg);
         p = document.createElement('p');
-        p.innerText = msg.data;
+        p.innerText = l.msg;
+        p.class = l.level;
         document.getElementById('log').appendChild(p);
       });
     }
