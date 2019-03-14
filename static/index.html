@@ -15,19 +15,19 @@
     margin: 0;
     padding: 0;
   }
-  #log p.DEBUG {
+  #log p.DEBUG msg {
     color: rgb(127,127,255);
   }
-  #log p.INFO {
+  #log p.INFO msg {
     color: rgb(127,255,127);
   }
-  #log p.WARNING {
+  #log p.WARNING msg {
     color: rgb(255,255,127);
   }
-  #log p.ERROR {
+  #log p.ERROR msg {
     color: rgb(255,127,127);
   }
-  #log p.CRITICAL {
+  #log p.CRITICAL msg {
     color: rgb(255,0,0);
   }
   </style>
@@ -44,6 +44,11 @@
         let l = JSON.parse(msg.data);
         //console.log("log: " + l.msg);
         let p = document.createElement('p');
+        
+        let lev = document.createElement('span');
+        lev.className = "level";
+        lev.innexText = l.level;
+        p.appendChild(lev);
         
         let m = document.createElement('span');
         m.className = "msg";
