@@ -8,14 +8,14 @@
     color: white;
     font-family: "DejaVu Sans", "Arial", "Helvetica", sans-serif;
   }
-  #log {
+  #log tbody {
     height: 40ex;
     overflow: scroll;
+    font-family: "DejaVu Sans Mono", "Lucida Console", "Monaco", monospace;
   }
   #log tr {
     margin: 0;
     padding: 0;
-    font-family: "DejaVu Sans Mono", "Lucida Console", "Monaco", monospace;
   }
   #log td {
     padding-left: 0.25em;
@@ -55,6 +55,7 @@
         <td>Message</td>
       </tr>
     </thead>
+    <tbody id="logbody"></tbody>
   </table>
   <script>
     'use strict';
@@ -87,7 +88,7 @@
         p.appendChild(m);
         
         p.className = l.level + " " + l.module;
-        var logDiv = document.getElementById('log')
+        var logDiv = document.getElementById('logbody')
         logDiv.appendChild(p);
         var pOffset = p.offsetTop;
         logDiv.scrollTop = pOffset;
