@@ -35,14 +35,21 @@
 <body>
   <div id="log"></div>
   <script>
+    'use strict';
+    
     function start_logging() {
       let ws = new WebSocket('ws://' + location.host + '/log');
       
       ws.addEventListener('message', (msg) => {
-        l = JSON.parse(msg.data);
+        let l = JSON.parse(msg.data);
         console.log("log: " + l.msg);
-        p = document.createElement('p');
-        p.innerText = l.msg;
+        let p = document.createElement('p');
+        
+        let m = document.createElement('span');
+        m.className = "msg";
+        m.innerText = l.msg;
+        p.appendChild(m);
+        
         p.className = l.level;
         var logDiv = document.getElementById('log')
         logDiv.appendChild(p);
