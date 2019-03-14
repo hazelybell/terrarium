@@ -15,7 +15,7 @@ class JsonFormatter(logging.Formatter):
             'pathname': record.pathname,
             'lineno': record.lineno,
             'msg': record.getMessage(),
-            'func': recordfunc,
+            'func': record.func,
             'time': record.created,
             'module': record.module,
         }
