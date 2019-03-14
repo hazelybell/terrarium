@@ -86,38 +86,48 @@
   <script>
     'use strict';
     
+    function add_to_log(l) {
+      let p = document.createElement('tr');
+      
+      let lev = document.createElement('td');
+      lev.className = "level";
+      lev.innerText = l.level;
+      p.appendChild(lev);
+      
+      let t = document.createElement('td');
+      t.className = "time";
+      t.innerText = l.time;
+      p.appendChild(t);
+      
+      let mod = document.createElement('td');
+      mod.className = "module";
+      mod.innerText = l.module;
+      p.appendChild(mod);
+      
+      let m = document.createElement('td');
+      m.className = "msg";
+      m.innerText = l.msg;
+      p.appendChild(m);
+      
+      p.className = l.level + " " + l.module;
+      var logDiv = document.getElementById('logbody')
+      logDiv.appendChild(p);
+      var pOffset = p.offsetTop;
+      document.getElementById('loginner').scrollTop = pOffset;
+    }
+    
     function start_logging() {
       let ws = new WebSocket('ws://' + location.host + '/log');
       
       ws.addEventListener('message', (msg) => {
         let l = JSON.parse(msg.data);
-        let p = document.createElement('tr');
-        
-        let lev = document.createElement('td');
-        lev.className = "level";
-        lev.innerText = l.level;
-        p.appendChild(lev);
-        
-        let t = document.createElement('td');
-        t.className = "time";
-        t.innerText = l.time;
-        p.appendChild(t);
-        
-        let mod = document.createElement('td');
-        mod.className = "module";
-        mod.innerText = l.module;
-        p.appendChild(mod);
-        
-        let m = document.createElement('td');
-        m.className = "msg";
-        m.innerText = l.msg;
-        p.appendChild(m);
-        
-        p.className = l.level + " " + l.module;
-        var logDiv = document.getElementById('logbody')
-        logDiv.appendChild(p);
-        var pOffset = p.offsetTop;
-        document.getElementById('loginner').scrollTop = pOffset;
+        if (Array.isArray(l)) {
+          for (let i of l) {
+            add_to_log(i);
+          }
+        } else {
+          add_to_log(l);
+        }
       });
     }
     
