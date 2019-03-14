@@ -68,8 +68,3 @@ def log_socket(ws):
 @app.route('/')
 def index():
     return flask.send_file('static/index.html')
-
-def hello_world():
-    if bag is None:
-        raise Exception("Bag unset!")
-    return "\n".join(bag.get_logs())
