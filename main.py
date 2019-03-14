@@ -24,11 +24,11 @@ def main():
     logging.getLogger().addHandler(log_handler)
     web.bag = log_handler
 
-    terrarium = terrarium.Terrarium()
-    sched_let = gevent.spawn(terrarium.run_forever)
+    t = terrarium.Terrarium()
+    sched_let = gevent.spawn(t.run_forever)
     greenlets = [sched_let]
     
-    web.cputemp = terrarium.cputemp
+    web.cputemp = t.cputemp
     
     web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
     web_let = gevent.spawn(web_server.serve_forever)
