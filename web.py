@@ -25,6 +25,8 @@ class WebSocketObserver:
         self.ws = ws
         assert observable is not None
         self.observable = observable
+        self.view_id = view_id
+        self.name = name
         self.observable.observe(self)
         self.oid = id(observable)
         if self.oid not in self.views:
@@ -39,10 +41,10 @@ class WebSocketObserver:
             self.observable.unobserve(self)
             return
         if isinstance(e, list):
-            named = [{name: v for v in e}]
+            named = [{self.name: v for v in e}]
             self.ws.send(json.dumps(named))
         else:
-            named = {name: e}
+            named = {self.name: e}
             self.ws.send(json.dumps(named))
     
     def refresh(self):
