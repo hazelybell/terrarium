@@ -46,4 +46,5 @@ class BagHandler(logging.Handler):
         self.observers.remove(observer)
     
     def refresh(self, observer):
+        print(self.logs)
         observer.notify(self.logs)
