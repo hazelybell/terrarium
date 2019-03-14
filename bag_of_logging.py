@@ -11,12 +11,13 @@ CRITICAL = logger.critical
 class JsonFormatter(logging.Formatter):
     def format(record):
         o = {
-            level: record.level,
+            level: record.levelname,
             pathname: record.pathname,
             lineno: record.lineno,
             msg: record.getMessage(),
-            func: func,
-            time: time.time()
+            func: recordfunc,
+            time: record.created,
+            module: record.module,
         }
         j = json.dumps(o)
         return j
