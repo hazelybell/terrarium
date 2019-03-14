@@ -54,6 +54,11 @@
         lev.innerText = l.level;
         p.appendChild(lev);
         
+        let t = document.createElement('span');
+        t.className = "time";
+        t.innerText = l.time;
+        p.appendChild(t);
+        
         let m = document.createElement('span');
         m.className = "msg";
         m.innerText = l.msg;
