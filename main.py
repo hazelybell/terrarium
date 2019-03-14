@@ -7,6 +7,7 @@ from gevent.pywsgi import WSGIServer
 
 import terrarium
 import web
+import bag_of_logging
 
 import logging
 logger = logging.getLogger(__name__)
@@ -25,6 +26,9 @@ if __name__=="__main__":
     web_server = WSGIServer(('', 5000), web.app)
     web_let = gevent.spawn(web_server.serve_forever)
     greenlets.append(web_let)
+    
+    log_handler = bag_of_logging.BagHandler()
+    logging.getLogger().addHandler(log_handler)
     
     gevent.joinall(greenlets)
     CRITICAL("Ran out of things to do, exiting")
