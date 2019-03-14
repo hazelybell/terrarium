@@ -116,6 +116,12 @@
       document.getElementById('loginner').scrollTop = pOffset;
     }
     
+    handle_message(o) {
+      if (o.log) {
+        add_to_log(o.log);
+      }
+    }
+    
     function start_logging() {
       let ws = new WebSocket('ws://' + location.host + '/log');
       
@@ -123,10 +129,10 @@
         let l = JSON.parse(msg.data);
         if (Array.isArray(l)) {
           for (let i of l) {
-            add_to_log(i);
+            handle_message(i);
           }
         } else {
-          add_to_log(l);
+          handle_message(l);
         }
       });
     }

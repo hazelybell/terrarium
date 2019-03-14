@@ -23,7 +23,6 @@ class WebSocketObserver:
         self.observable.observe(self)
     
     def notify(self, e):
-        print(e)
         if self.ws.closed:
             self.observable.unobserve(self)
             return
