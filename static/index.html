@@ -10,7 +10,7 @@
       let ws = new WebSocket('/log');
       
       socket.addEventListener('message', (msg) => {
-        console.log("log: " msg.data);
+        console.log("log: " + msg.data);
       }
     }
     
