@@ -23,8 +23,8 @@ class JsonFormatter(logging.Formatter):
 
 class BagHandler(logging.Handler):
     def __init__(self, *args, **kwargs):
-        self.setFormatter(JsonFormatter)
         super().__init__(*args, **kwargs)
+        self.setFormatter(JsonFormatter)
         self.logs = list()
     
     def emit(self, record):
