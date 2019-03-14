@@ -54,7 +54,7 @@
   </style>
 </head>
 <body>
-  <div id="log"></div>
+  <table id="log"></table>
   <script>
     'use strict';
     
@@ -63,24 +63,24 @@
       
       ws.addEventListener('message', (msg) => {
         let l = JSON.parse(msg.data);
-        let p = document.createElement('p');
+        let p = document.createElement('tr');
         
-        let lev = document.createElement('span');
+        let lev = document.createElement('td');
         lev.className = "level";
         lev.innerText = l.level;
         p.appendChild(lev);
         
-        let t = document.createElement('span');
+        let t = document.createElement('td');
         t.className = "time";
         t.innerText = l.time;
         p.appendChild(t);
         
-        let mod = document.createElement('span');
+        let mod = document.createElement('td');
         mod.className = "module";
         mod.innerText = l.module;
         p.appendChild(mod);
         
-        let m = document.createElement('span');
+        let m = document.createElement('td');
         m.className = "msg";
         m.innerText = l.msg;
         p.appendChild(m);
