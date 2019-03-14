@@ -7,7 +7,7 @@
   <div id="log"></div>
   <script>
     function start_logging() {
-      let ws = new WebSocket('ws://tart:5000/log');
+      let ws = new WebSocket('ws://' + location.host + '/log');
       
       ws.addEventListener('message', (msg) => {
         console.log("log: " + msg.data);
