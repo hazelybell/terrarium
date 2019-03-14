@@ -288,8 +288,9 @@ class CPUTemp(Poller):
         r = r.replace("temp=", "")
         r = r.replace("'C\n", "")
         r = float(r)
-        self.temp = r
-        DEBUG(r)
+        if r != self.temp:
+            self.temp = r
+            self.notify_all()
     
     def json(self):
         return {'cputemp': {'temp': self.temp}}
