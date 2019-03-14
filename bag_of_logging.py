@@ -19,7 +19,7 @@ class JsonFormatter(logging.Formatter):
             'time': record.created,
             'module': record.module,
         }
-        return {'log': o}
+        return o
 
 class BagHandler(logging.Handler):
     def __init__(self, *args, **kwargs):

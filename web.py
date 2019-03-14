@@ -16,12 +16,12 @@ sockets = flask_sockets.Sockets(app)
 
 bag = None
 cputemp = None
-observables = list()
+observables = dict()
 
 class WebSocketObserver:
     views = dict()
     
-    def __init__(self, ws, observable, view_id):
+    def __init__(self, ws, observable, view_id, name):
         self.ws = ws
         assert observable is not None
         self.observable = observable
@@ -38,7 +38,12 @@ class WebSocketObserver:
         if self.ws.closed:
             self.observable.unobserve(self)
             return
-        self.ws.send(json.dumps(e))
+        if isinstance(e, list):
+            named = [{name: v for v in e}]
+            self.ws.send(json.dumps(named))
+        else:
+            named = {name: e}
+            self.ws.send(json.dumps(named))
     
     def refresh(self):
         self.observable.refresh(self)
@@ -53,8 +58,8 @@ def log_socket(ws):
         message = json.loads(message)
         if 'viewID' in message:
             view_id = message['viewID']
-            for observable in observables:
-                observer = WebSocketObserver(ws, observable, view_id)
+            for name, observable in observables:
+                observer = WebSocketObserver(ws, observable, view_id, name)
         else:
             ValueError("Got bad command over websocket: " + str(message))
 

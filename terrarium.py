@@ -293,7 +293,7 @@ class CPUTemp(Poller):
             self.notify_all()
     
     def json(self):
-        return {'cputemp': {'temp': self.temp}}
+        return {'temp': self.temp}
     
     def notify_all(self):
         o = self.json()

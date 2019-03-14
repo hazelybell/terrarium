@@ -22,13 +22,13 @@ logging.basicConfig(stream=sys.stderr,level=logging.DEBUG)
 def main():
     log_handler = bag_of_logging.BagHandler()
     logging.getLogger().addHandler(log_handler)
-    web.observables.append(log_handler)
+    web.observables['log'] = log_handler
 
     t = terrarium.Terrarium()
     sched_let = gevent.spawn(t.run_forever)
     greenlets = [sched_let]
     
-    web.observables.append(t.cputemp)
+    web.observables['cputemp'] = t.cputemp
     #web.observables.append(t.lamp)
     
     web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
