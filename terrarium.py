@@ -280,7 +280,6 @@ class CPUTemp(Poller, Observable):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.temp = None
-        self.observers = set()
     
     def poll(self):
         r = subprocess.check_output(
@@ -297,20 +296,6 @@ class CPUTemp(Poller, Observable):
     def json(self):
         return {'temp': self.temp}
     
-    def notify_all(self):
-        o = self.json()
-        for observer in list(self.observers): # make a copy so it doesnt break
-            observer.notify(o)
-    
-    def observe(self, observer):
-        self.observers.add(observer)
-        observer.notify(self.json())
-    
-    def unobserve(self, observer):
-        self.observers.remove(observer)
-    
-    def refresh(self, observer):
-        observer.notify(self.json())    
     
 class Terrarium:
     __instance = None
