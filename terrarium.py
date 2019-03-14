@@ -252,10 +252,12 @@ class Outlet(Poller, Observable):
             if automationhat.relay.one.is_off():
                 INFO("turning outlet on")
             automationhat.relay.one.on()
+            self.notify_all()
         else:
             if automationhat.relay.one.is_on():
                 INFO("turning outlet off")
             automationhat.relay.one.off()
+            self.notify_all()
     
     def json(self):
         if automationhat.relay.one.is_on():

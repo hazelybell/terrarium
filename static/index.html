@@ -70,10 +70,13 @@
   </style>
 </head>
 <body>
+  <div id="lamp" class="box">
+    <span class="caption">Lamp</span>
+    <div class="boxinner"></div>
+  </div>
   <div id="cputemp" class="box">
     <span class="caption">CPU Temperature</span>
-    <div class="boxinner">0°C
-    </div>
+    <div class="boxinner"></div>
   </div>
   <div id="log" class="box">
     <span class="caption">Log</span>
@@ -139,11 +142,21 @@
       d.innerText = o.temp;
     }
     
+    function lamp(o) {
+      let d = document.querySelector('#lamp .boxinner');
+      d.innerText = "Outlet: " + o.outlet;
+    }
+
+    
     function handle_message(o) {
       if (o.log) {
         add_to_log(o.log);
       } else if (o.cputemp) {
         cputemp(o.cputemp);
+      } else if (o.lamp) {
+        lamp(o.lamp);
+      } else {
+        console.log("Unknown state!");
       }
     }
     
