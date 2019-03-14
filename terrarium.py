@@ -74,7 +74,7 @@ class Scheduler:
     
     def tick(self):
         cur_utime = time.time()
-        DEBUG("tick: " + str(cur_utime))
+        #DEBUG("tick: " + str(cur_utime))
         next_utime = math.inf
         for schedule in self.schedules:
             i = 0;
@@ -98,7 +98,7 @@ class Scheduler:
             cur_utime = time.time()
             sleep_time = next_utime - cur_utime
             if sleep_time > 0:
-                DEBUG("Sleeping for " +  str(sleep_time))
+                #DEBUG("Sleeping for " +  str(sleep_time))
                 sleep(sleep_time)
     
     def add(self, schedule):
@@ -202,7 +202,7 @@ class Heartbeat(Schedule):
     MAX_LEVEL = 0.1
     
     def poll(self):
-        DEBUG("beat")
+        #DEBUG("beat")
         for poller in self.pollers:
             poller.poll()
     
