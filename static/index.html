@@ -11,6 +11,9 @@
       
       ws.addEventListener('message', (msg) => {
         console.log("log: " + msg.data);
+        p = document.createElement('p');
+        p.innerText = msg.data;
+        document.getElementByID('log').appendChild(p);
       });
     }
     
