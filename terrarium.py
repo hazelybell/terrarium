@@ -202,7 +202,7 @@ class Heartbeat(Schedule):
     MAX_LEVEL = 0.1
     
     def poll(self):
-        DEBUG("beat")
+        #DEBUG("beat")
         for poller in self.pollers:
             poller.poll()
     
