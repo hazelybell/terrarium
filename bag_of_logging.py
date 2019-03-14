@@ -33,7 +33,7 @@ class BagHandler(logging.Handler):
         self.logs.append(formatted)
         if len(self.logs) > 1000:
             self.logs.pop(0)
-        for observer in [self.observers]: # make a copy here
+        for observer in list(self.observers): # make a copy here
             observer.notify(formatted)
     
     def get_logs(self):
