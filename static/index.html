@@ -163,12 +163,12 @@
       
       ws.addEventListener('close', (closeEvent) => {
         resume_logging();
-      }
+      });
       
       ws.addEventListener('open', (openEvent) => {
         let msg = 'refresh';
         ws.send(JSON.stringify(msg));
-      }
+      });
       
       return ws;
     }
