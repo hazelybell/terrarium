@@ -53,16 +53,22 @@ class WebSocketObserver:
             self.views[self.oid].add(view_id)
             self.refresh() # initial load, send full state
     
+    def send(self, msg):
+        try:
+            self.ws.send(json.dumps(msg))
+        except WebSocketError:
+            self.observable.unobserve(self)
+    
     def notify(self, e):
         if self.ws.closed:
             self.observable.unobserve(self)
             return
         if isinstance(e, list):
             named = [{self.name: v} for v in e]
-            self.ws.send(json.dumps(named))
+            self.send(named)
         else:
             named = {self.name: e}
-            self.ws.send(json.dumps(named))
+            self.send(named)
     
     def refresh(self):
         self.observable.refresh(self)
