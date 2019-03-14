@@ -9,7 +9,7 @@ ERROR = logger.error
 CRITICAL = logger.critical
 
 class JsonFormatter(logging.Formatter):
-    def format(self, record):
+    def format(record):
         o = {
             level: record.level,
             pathname: record.pathname,
