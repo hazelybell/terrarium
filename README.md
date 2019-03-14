@@ -9,6 +9,7 @@ Runs my terrarium from my Raspberry Pi.
     * CPU Temperature
     * Outlet status
     * Flask
+    * Single static page
     * Communicates via websockets
 * Asynchronous
     * Single-threaded multi-tasking
@@ -21,3 +22,9 @@ Runs my terrarium from my Raspberry Pi.
 * Lamp
     * Controlls a lamp via [Automation Hat](https://shop.pimoroni.com/products/automation-hat) relay
     * Turns on and off at specified times of day
+* Logging
+    * Logs to console and web UI using Python's built-in logging framework
+* Object-oriented
+    * Observer pattern
+    * Schedule events
+    * Polling
