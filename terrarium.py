@@ -282,7 +282,6 @@ class CPUTemp(Poller):
     def poll(self):
         r = subprocess.check_output(
             ["/opt/vc/bin/vcgencmd", "measure_temp"], 
-            capture_output=True
             )
         DEBUG(r)
 
