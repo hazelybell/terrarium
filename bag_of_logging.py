@@ -1,5 +1,4 @@
 import time
-import json
 
 import logging
 logger = logging.getLogger(__name__)
@@ -20,20 +19,28 @@ class JsonFormatter(logging.Formatter):
             'time': record.created,
             'module': record.module,
         }
-        j = json.dumps(o)
-        return j
+        return o
 
 class BagHandler(logging.Handler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setFormatter(JsonFormatter)
         self.logs = list()
+        self.observers = set()
     
     def emit(self, record):
         formatted = self.format(record)
         self.logs.append(formatted)
         if len(self.logs) > 1000:
             self.logs.pop(0)
+        for observer in self.observers:
+            observer.notify(formatted)
     
     def get_logs(self):
         return self.logs
+    
+    def observe(self, observer):
+        self.observers.add(observer)
+    
+    def unobserve(self, observer):
+        self.observers.remove(observer)

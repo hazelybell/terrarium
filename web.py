@@ -1,3 +1,5 @@
+import json
+
 import flask
 import flask_sockets
 
@@ -14,10 +16,21 @@ sockets = flask_sockets.Sockets(app)
 
 bag = None
 
+class WebSocketObserver:
+    def __init__(self, ws, observable):
+        self.ws = ws
+        self.observable = observable
+        self.observable.observe(self)
+    
+    def notify(self, e):
+        if self.ws.closed:
+            self.observable.unobserve(self)
+            return
+        ws.send(json.dumps(e))
+
 @sockets.route('/log')
 def log_socket(ws):
-    for l in bag.get_logs():
-        ws.send(l)
+    observer = WebSocketObserver(ws, bag)
 
 @app.route('/')
 def index():
