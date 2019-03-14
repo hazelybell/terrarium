@@ -297,7 +297,7 @@ class CPUTemp(Poller):
     
     def notify_all(self):
         o = self.json()
-        for observer in self.observers:
+        for observer in list(self.observers): # make a copy so it doesnt break
             observer.notify(o)
     
     def observe(self, observer):
