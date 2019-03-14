@@ -33,7 +33,7 @@ class WebSocketObserver:
 def log_socket(ws):
     observer = WebSocketObserver(ws, bag)
     while not ws.closed:
-        message = ws.recieve()
+        message = ws.receive()
 
 @app.route('/')
 def index():
