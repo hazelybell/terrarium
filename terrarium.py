@@ -283,6 +283,9 @@ class CPUTemp(Poller):
         r = subprocess.check_output(
             ["/opt/vc/bin/vcgencmd", "measure_temp"], 
             )
+        r = r.decode()
+        r = r.replace("temp=", "")
+        r = r.replace("'C\n", "")
         DEBUG(r)
 
 class Terrarium:
