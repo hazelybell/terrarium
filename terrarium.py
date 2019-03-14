@@ -279,6 +279,7 @@ class SelfUp(Poller):
 class CPUTemp(Poller, Observable):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        Observable.__init__(self)
         self.temp = None
     
     def poll(self):
