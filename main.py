@@ -29,6 +29,7 @@ if __name__=="__main__":
     
     log_handler = bag_of_logging.BagHandler()
     logging.getLogger().addHandler(log_handler)
+    web_server.bag = log_handler
     
     gevent.joinall(greenlets)
     CRITICAL("Ran out of things to do, exiting")

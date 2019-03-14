@@ -9,8 +9,11 @@ CRITICAL = logger.critical
 class BagHandler(logging.Handler):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.records = list()
+        self.logs = list()
     
     def emit(self, record):
         formatted = self.format(record)
-        self.records.append(formatted)
+        self.logs.append(formatted)
+    
+    def get_logs(self):
+        return self.logs

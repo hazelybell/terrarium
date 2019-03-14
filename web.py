@@ -10,6 +10,10 @@ CRITICAL = logger.critical
 
 app = Flask(__name__)
 
+bag = None
+
 @app.route('/')
 def hello_world():
-    return 'Hello, World!'
+    if bag is None:
+        raise Exception("Bag unset!")
+    return "\n".join(bag.get_logs())
