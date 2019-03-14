@@ -11,10 +11,12 @@
   #loginner {
     height: 40ex;
     overflow-y: scroll;
+  }
+  .boxinner {
     padding: 0.5ex;
     margin-top: -1.75ex;
   }
-  #log {
+  .box {
     border: 1px solid white;
     margin: 0.5ex;
   }
@@ -52,7 +54,7 @@
     color: rgb(127,255,255);
   }
   
-  #log .caption {
+  .box .caption {
     display: block;
     position: relative;
     text-align: left;
@@ -67,9 +69,14 @@
   </style>
 </head>
 <body>
-  <div id="log">
+  <div id="cputemp" class="box">
+    <span class="">CPU Temperature</span>
+    <div class="boxinner">0°C
+    </div>
+  </div>
+  <div id="log" class="box">
     <span class="caption">Log</span>
-    <div id="loginner">
+    <div id="loginner" class="boxinner">
       <table>
         <thead>
           <tr>
