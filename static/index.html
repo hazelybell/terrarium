@@ -46,6 +46,10 @@
     display: inline-block;
     width: 6em;
   }
+
+  #log p.terrarium .module {
+    color: rgb(127,127,255);
+  }
   </style>
 </head>
 <body>
@@ -80,7 +84,7 @@
         m.innerText = l.msg;
         p.appendChild(m);
         
-        p.className = l.level;
+        p.className = l.level + " " + l.module;
         var logDiv = document.getElementById('log')
         logDiv.appendChild(p);
         var pOffset = p.offsetTop;
