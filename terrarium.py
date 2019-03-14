@@ -5,6 +5,7 @@ import math
 import sys
 import os
 import time
+import subprocess
 
 import automationhat
 import gevent
@@ -273,6 +274,18 @@ class SelfUp(Poller):
                 os.execv(sys.executable, args)
                 raise Exception('Unreachable')
 
+class CPUTemp(Poller):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.temp = None
+    
+    def poll(self):
+        r = subprocess.run(
+            ["/opt/vc/bin/vcgencmd", "measure_temp"], 
+            capture_output=True
+            )
+        DEBUG(r.stdout)
+
 class Terrarium:
     __instance = None
     def __init__(self):
@@ -287,6 +300,8 @@ class Terrarium:
         self.heartbeat = Heartbeat(self.scheduler)
         self.selfup = SelfUp(self.heartbeat)
         self.lamp = Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, self.heartbeat)
+        self.cputemp = CPUTemp(self.heartbeat)
+        
         self.morse.morse("start")
     
     def run_forever(self):

@@ -15,10 +15,12 @@ app = flask.Flask(__name__)
 sockets = flask_sockets.Sockets(app)
 
 bag = None
+cputemp = None
 
 class WebSocketObserver:
     def __init__(self, ws, observable):
         self.ws = ws
+        assert observable is not None
         self.observable = observable
         self.observable.observe(self)
     
@@ -31,6 +33,7 @@ class WebSocketObserver:
 @sockets.route('/log')
 def log_socket(ws):
     observer = WebSocketObserver(ws, bag)
+    cpuobserver = WebSocketObserver(ws, cputemp)
     while not ws.closed:
         message = ws.receive()
 

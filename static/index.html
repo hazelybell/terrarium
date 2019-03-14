@@ -124,9 +124,16 @@
       document.getElementById('loginner').scrollTop = pOffset;
     }
     
+    function cputemp(o) {
+      d = document.querySelector('#cputemp .boxinner');
+      d.innerText = o.temp;
+    }
+    
     function handle_message(o) {
       if (o.log) {
         add_to_log(o.log);
+      } else if (o.cputemp) {
+        cputemp(o.cputemp);
       }
     }
     
