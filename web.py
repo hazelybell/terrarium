@@ -42,7 +42,6 @@ class WebSocketObserver:
             return
         if isinstance(e, list):
             named = [{self.name: v} for v in e]
-            print(named)
             self.ws.send(json.dumps(named))
         else:
             named = {self.name: e}
