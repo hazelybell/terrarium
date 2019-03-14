@@ -1,3 +1,5 @@
+import time
+
 import logging
 logger = logging.getLogger(__name__)
 DEBUG = logger.debug
@@ -6,8 +8,22 @@ WARNING = logger.warning
 ERROR = logger.error
 CRITICAL = logger.critical
 
+class JsonFormatter(logging.Formatter):
+    def format(self, record):
+        o = {
+            level: record.level,
+            pathname: record.pathname,
+            lineno: record.lineno,
+            msg: record.getMessage(),
+            func: func,
+            time: time.time()
+        }
+        j = json.dumps(o)
+        return j
+
 class BagHandler(logging.Handler):
     def __init__(self, *args, **kwargs):
+        self.setFormatter(JsonFormatter)
         super().__init__(*args, **kwargs)
         self.logs = list()
     
