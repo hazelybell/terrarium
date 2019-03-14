@@ -29,13 +29,22 @@ class WebSocketObserver:
             self.observable.unobserve(self)
             return
         self.ws.send(json.dumps(e))
+    
+    def refresh(self):
+        self.observable.refresh(self)
 
 @sockets.route('/log')
 def log_socket(ws):
-    observer = WebSocketObserver(ws, bag)
+    logobserver = WebSocketObserver(ws, bag)
     cpuobserver = WebSocketObserver(ws, cputemp)
     while not ws.closed:
         message = ws.receive()
+        message = json.loads(message)
+        if message == 'refresh':
+            logobserver.refresh()
+            cpuobserver.refresh()
+        else:
+            ValueError("Got bad command over websocket: " + str(message))
 
 @app.route('/')
 def index():

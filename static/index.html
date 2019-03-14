@@ -94,6 +94,16 @@
   <script>
     'use strict';
     
+    
+    function uuidv4() { /* https://stackoverflow.com/a/2117523 2019-03-14 */
+      return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
+        (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+      )
+    }    
+    var myID = uuidv4();
+    
+    console.log(myID);
+    
     function add_to_log(l) {
       let p = document.createElement('tr');
       
@@ -137,7 +147,7 @@
       }
     }
     
-    function start_logging() {
+    function resume_logging() {
       let ws = new WebSocket('ws://' + location.host + '/log');
       
       ws.addEventListener('message', (msg) => {
@@ -150,10 +160,21 @@
           handle_message(l);
         }
       });
+      
+      ws.addEventListener('close', (closeEvent) => {
+        resume_logging();
+      }
+      
+      ws.addEventListener('open', (openEvent) => {
+        let msg = 'refresh';
+        ws.send(JSON.stringify(msg));
+      }
+      
+      return ws;
     }
     
-    document.addEventListener('DOMContentLoaded', function(){ 
-      start_logging();
+    document.addEventListener('DOMContentLoaded', function(){
+      let ws = resume_logging();
     }, false);
   </script>
 </body>
