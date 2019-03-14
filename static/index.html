@@ -44,7 +44,10 @@
         p = document.createElement('p');
         p.innerText = l.msg;
         p.className = l.level;
-        document.getElementById('log').appendChild(p);
+        var logDiv = document.getElementById('log')
+        logDiv.appendChild(p);
+        var pOffset = p.offsetTop;
+        logDiv.scrollTop = pOffset;
       });
     }
     
