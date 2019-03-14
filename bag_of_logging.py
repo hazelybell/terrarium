@@ -11,6 +11,6 @@ class BagHandler(logging.Handler):
         super().__init__(*args, **kwargs)
         self.records = list()
     
-    def emit(record):
+    def emit(self, record):
         formatted = self.format(record)
         self.records.append(formatted)
