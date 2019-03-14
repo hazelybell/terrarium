@@ -65,6 +65,11 @@
         t.innerText = l.time;
         p.appendChild(t);
         
+        let mod = document.createElement('span');
+        mod.className = "module";
+        mod.innerText = l.module;
+        p.appendChild(mod);
+        
         let m = document.createElement('span');
         m.className = "msg";
         m.innerText = l.msg;
