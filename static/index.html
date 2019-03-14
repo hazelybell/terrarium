@@ -55,6 +55,13 @@
     color: rgb(127,255,255);
   }
   
+  .lamp .on {
+    color: rgb(127,255,127);
+  }
+  .lamp .off {
+    color: rgb(127,127,255);
+  }
+
   .box .caption {
     display: block;
     position: relative;
@@ -145,6 +152,7 @@
     function lamp(o) {
       let d = document.querySelector('#lamp .boxinner');
       d.innerText = "Outlet: power " + o.power;
+      d.className = "boxinner " + o.power;
     }
 
     
