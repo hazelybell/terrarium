@@ -16,6 +16,7 @@ sockets = flask_sockets.Sockets(app)
 
 bag = None
 cputemp = None
+observables = list()
 
 class WebSocketObserver:
     views = dict()
@@ -44,8 +45,7 @@ class WebSocketObserver:
     
 @sockets.route('/log')
 def log_socket(ws):
-    logobserver = None
-    cpuobserver = None
+    observers = list()
     while not ws.closed:
         message = ws.receive()
         if message is None:
@@ -53,8 +53,8 @@ def log_socket(ws):
         message = json.loads(message)
         if 'viewID' in message:
             view_id = message['viewID']
-            logobserver = WebSocketObserver(ws, bag, view_id)
-            cpuobserver = WebSocketObserver(ws, cputemp, view_id)
+            for observable in observables:
+                observer = WebSocketObserver(ws, observable, view_id)
         else:
             ValueError("Got bad command over websocket: " + str(message))
 
