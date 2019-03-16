@@ -269,7 +269,7 @@
     
     
     function cputemp_plot_init() {
-      let ctime = Date().now() / 1000;
+      let ctime = Date.now() / 1000;
       let since = ctime - (60*60*24);
       fetch("/storage/cputemp?since=" + since).then((response) => {
         return response.json();
