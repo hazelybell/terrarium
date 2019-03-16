@@ -236,6 +236,7 @@ class Heartbeat(Schedule):
     def beat(self):
         STEPS = 1
         self.poll()
+        DEBUG(automationhat.analog.one.read())
         for i in range(1, STEPS+1):
             if i == 1:
                 # this is the first brigtness change we can do it now
