@@ -199,6 +199,7 @@
 //         console.log(cputemp_data.series[0].data);
         let now = Date.now();
         while (data[0].time < now - cputemp_tspan) {
+          console.log("shifting out");
           data.shift();
         }
         cputemp_chart.update(cputemp_data);
