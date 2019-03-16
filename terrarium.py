@@ -365,7 +365,7 @@ class Terrarium:
         self.selfup = SelfUp(self.heartbeat)
         self.lamp = Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, self.heartbeat)
         self.cputemp = CPUTemp(self.heartbeat)
-        self.sm_one = SoilMoist(1)
+        self.sm_one = SoilMoist(1, self.heartbeat)
         
         self.morse.morse("start")
     
