@@ -5,7 +5,9 @@
   <title>Terrarium</title>
   <meta name="author" content="Hazel Victoria Campbell">
   <meta name="robots" content="noindex">
-  <style>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
+    <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+    <style>
     body {
       background-color: black;
       color: white;
@@ -106,7 +108,10 @@
   </div>
   <div id="cputemp" class="box">
     <span class="caption">CPU Temperature</span>
-    <div class="boxinner"></div>
+    <div class="boxinner">
+      Current: <span id="cputemp_current"></span>
+      <div class="ct-chart ct-perfect-fourth"></div>
+    </div>
   </div>
   <div id="log" class="box">
     <span class="caption">Log</span>
@@ -177,7 +182,7 @@
     }
     
     function cputemp(o) {
-      let d = document.querySelector('#cputemp .boxinner');
+      let d = document.querySelector('#cputemp_current');
       d.innerText = o.temp + " °C";
     }
     
@@ -246,8 +251,25 @@
       return ws;
     }
     
+    function cputemp_plot() {
+      var data = {
+        // A labels array that can contain any sort of values
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
+        // Our series array that contains series objects or in this case series data arrays
+        series: [
+          [5, 2, 4, 2, 0]
+        ]
+      };
+
+      // Create a new line chart object where as first parameter we pass in a selector
+      // that is resolving to our chart container element. The Second parameter
+      // is the actual data object.
+      new Chartist.Line('.ct-chart', data);
+    }
+    
     document.addEventListener('DOMContentLoaded', function(){
       let ws = resume_logging();
+      cputemp_plot();
     }, false);
   </script>
 </body>
