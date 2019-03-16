@@ -177,6 +177,8 @@
     function sm(o, n) {
       let d = document.querySelector('#sm #sm' + n);
       let v = Math.round(o.v * 100)/100;
+      let min = Math.round(o.min * 100)/100;
+      let max = Math.round(o.max * 100)/100;
       let pct = Math.round(o.pct * 10)/10;
       let word;
       if (pct > 66.6) {
@@ -186,7 +188,7 @@
       } else {
         word = "wet";
       }
-      d.innerText = v + "V " + pct + "% " + word;
+      d.innerText = v + "V (" + min + "-" + max + ") " + pct + "% " + word;
     }
   
     
