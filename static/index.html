@@ -65,6 +65,16 @@
       color: rgb(127,127,255);
     }
 
+    #lamp .wet {
+      color: rgb(127,255,127);
+    }
+    #lamp .water {
+      color: rgb(127,127,255);
+    }
+    #lamp .dry {
+      color: rgb(255,255,127);
+    }
+
     .box .caption {
       display: block;
       position: relative;
@@ -188,6 +198,7 @@
       } else {
         word = "wet";
       }
+      d.className = word;
       d.innerText = v + "V (" + min + "-" + max + ") " + pct + "% " + word;
     }
   
