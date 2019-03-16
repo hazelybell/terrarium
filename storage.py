@@ -64,8 +64,8 @@ class StorageObserver:
         cols = []
         vals = []
         placeholders = []
-        if ('time' not in e) or (e[time] is None):
-            e[time] = time.time()
+        if ('time' not in e) or (e['time'] is None):
+            e['time'] = time.time()
         for col, val in e.items():
             cols.append(col)
             vals.append(val)
