@@ -53,6 +53,7 @@ def main():
     #web.observables['sm3'] = t.sm_three
     
     storage_ = storage.Storage(web.observables)
+    web.storage = storage_
     
     web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
     web_let = gevent.spawn(web_server.serve_forever)
