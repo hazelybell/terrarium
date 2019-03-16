@@ -103,6 +103,21 @@ class StorageObserver:
         results = c.fetchall()
         return results
 
+    def since(self, since, until):
+        c = self.storage.conn.cursor()
+        if until:
+            until_clause = " AND time <= " + str(until)
+        else:
+            until_clause = ""
+        command = (
+            "SELECT * FROM " + self.name 
+            + " WHERE time " + " >= " + str(since)
+            + until_clause
+            + " ORDER BY time DESC"
+            )
+        c.execute(command)
+        results = c.fetchall()
+        return results
 
 class Storage:
     def create(self):

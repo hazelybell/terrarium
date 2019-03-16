@@ -96,9 +96,13 @@ def index():
 def get_storage(name):
     storage_observer = storage.observers[name]
     number = flask.request.args.get('number', None)
+    since = flask.request.args.get('since', None)
+    until = flask.request.args.get('until', None)
     records = None
     if number:
         records = storage_observer.last(number)
+    elif since:
+        records = storage_observer.since(since, until)
     else:
         abort(400) # Bad Request
     return flask.jsonify(records)
