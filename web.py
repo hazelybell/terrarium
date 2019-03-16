@@ -19,7 +19,7 @@ import json
 
 import flask
 import flask_sockets
-import gevent_websocket
+import geventwebsocket
 
 import logging
 logger = logging.getLogger(__name__)
