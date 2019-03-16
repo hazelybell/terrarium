@@ -117,8 +117,7 @@
     <span class="caption">CPU Temperature</span>
     <div class="boxinner">
       Current: <span id="cputemp_current"></span>
-      <div class="chartainer"></div>
-      <div class=""></div>
+      <div class="ct-chart ct-double-octave" id="cputemp_ct"></div>
     </div>
   </div>
   <div id="log" class="box">
@@ -304,12 +303,7 @@
             }
           }
         };
-        let chartainer = document.querySelector("#cputemp .chartainer");
-        let chartdiv = document.createElement("div");
-        chartdiv.className = "ct-chart ct-double-octave";
-        chartdiv.id = "cputemp_chartist";
-        chartainer.appendChild(chartdiv);
-        cputemp_chart = new Chartist.Line('#cputemp_chartist', cputemp_data, config);
+        cputemp_chart = new Chartist.Line('#cputemp_ct', cputemp_data, config);
       });
     }
     
