@@ -177,7 +177,15 @@
     function sm(o, n) {
       let d = document.querySelector('#sm #sm' + n);
       let pct = Math.round(o.pct * 10)/10
-      d.innerText = o.v + "V " + pct + "%";
+      let word;
+      if (pct > 66.6) {
+        word = "water";
+      } else if (pct < 33.3) {
+        word = "dry";
+      } else {
+        word = "wet";
+      }
+      d.innerText = o.v + "V " + pct + "% " + word;
     }
   
     
