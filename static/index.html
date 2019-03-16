@@ -282,8 +282,8 @@
           values.push(r.temp);
         }
         let data = {
-          labels: labels;
-          series: [values];
+          labels: labels,
+          series: [values],
         };
         new Chartist.Line('.ct-chart', data);
       });
