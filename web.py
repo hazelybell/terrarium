@@ -19,6 +19,7 @@ import json
 
 import flask
 import flask_sockets
+import gevent_websocket
 
 import logging
 logger = logging.getLogger(__name__)
@@ -55,7 +56,7 @@ class WebSocketObserver:
     def send(self, msg):
         try:
             self.ws.send(json.dumps(msg))
-        except WebSocketError:
+        except gevent_websocket.WebSocketError:
             self.observable.unobserve(self)
     
     def notify(self, e):
