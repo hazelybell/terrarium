@@ -53,7 +53,7 @@ class StorageObserver:
                     pass
                 else:
                     raise e
-        self.conn.commit()
+        self.storage.conn.commit()
         self.observable.observe(self)
         self.refresh()
     
