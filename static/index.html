@@ -288,8 +288,9 @@
         };
         let config = {
           axisX: {
-            type: Chartist.AutoScaleAxis({divisor: 8}),
+            type: Chartist.AutoScaleAxis,
             onlyInteger: true,
+            divisor: 8,
           },
           series: {
             'temperature': {
