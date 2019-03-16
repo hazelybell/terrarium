@@ -28,7 +28,7 @@ CRITICAL = logger.critical
 class Storage:
     def create(self):
         c = self.conn.cursor()
-        for name, o in self.observables:
+        for name, o in self.observables.items():
             command = (
                 "CREATE TABLE IF NOT EXISTS "
                 + name
@@ -37,7 +37,7 @@ class Storage:
             c.execute(command)
             
             json = o.json()
-            for k, v in json:
+            for k, v in json.items():
                 col = k + " "
                 if isinstance(v, str):
                     col = col + "text"
