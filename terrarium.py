@@ -22,6 +22,7 @@ import sys
 import os
 import time
 import subprocess
+import statistics
 
 import automationhat
 import gevent
@@ -236,9 +237,6 @@ class Heartbeat(Schedule):
     def beat(self):
         STEPS = 1
         self.poll()
-        DEBUG("one: " + repr(automationhat.analog.one.read()))
-        DEBUG("two: " + repr(automationhat.analog.two.read()))
-        DEBUG("three: " + repr(automationhat.analog.three.read()))
         for i in range(1, STEPS+1):
             if i == 1:
                 # this is the first brigtness change we can do it now
@@ -324,6 +322,32 @@ class CPUTemp(Poller, Observable):
     
     def json(self):
         return {'temp': self.temp}
+
+class SoilMoist(Poller, Observable):
+    def __init__(self, number, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        Observable.__init__(self)
+        self.readings = []
+        self.number = number
+        if number == 1:
+            self.sensor = automationhat.analog.one
+        elif number == 2:
+            self.sensor = automationhat.analog.two
+        elif number == 3:
+            self.sensor = automationhat.analog.three
+        else:
+            raise ValueError("Bad soil moisture probe number")
+    
+    def poll(self):
+        reading = self.sensor.read()
+        self.readings.append(reading)
+        if len(self.readings) > 100:
+            self.readings.pop(0)
+        median = statistics.median(self.readings)
+        DEBUG("Soil moisture reading #" + str(self.number)
+              + ": " + str(reading)
+              + " median " + str(median)
+              )
     
     
 class Terrarium:
@@ -341,6 +365,7 @@ class Terrarium:
         self.selfup = SelfUp(self.heartbeat)
         self.lamp = Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, self.heartbeat)
         self.cputemp = CPUTemp(self.heartbeat)
+        self.sm_one = SoilMoist(1)
         
         self.morse.morse("start")
     
