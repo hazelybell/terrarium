@@ -297,7 +297,10 @@
           series: {
             'temperature': {
               showLine: true,
-              lineSmooth: false,
+              lineSmooth: Chartist.Interpolation.simple({
+                divisor: 2,
+                fillHoles: true,
+              }),
             }
           }
         };
