@@ -51,6 +51,8 @@ def main():
     #web.observables['sm2'] = t.sm_two
     #web.observables['sm3'] = t.sm_three
     
+    storage = storage.Storage(web.observables)
+    
     web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
     web_let = gevent.spawn(web_server.serve_forever)
     greenlets.append(web_let)
