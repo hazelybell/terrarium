@@ -56,7 +56,7 @@ class WebSocketObserver:
     def send(self, msg):
         try:
             self.ws.send(json.dumps(msg))
-        except gevent_websocket.WebSocketError:
+        except geventwebsocket.WebSocketError:
             self.observable.unobserve(self)
     
     def notify(self, e):
