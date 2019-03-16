@@ -31,8 +31,7 @@ CRITICAL = logger.critical
 app = flask.Flask(__name__)
 sockets = flask_sockets.Sockets(app)
 
-bag = None
-cputemp = None
+storage = None
 observables = dict()
 
 class WebSocketObserver:
@@ -91,3 +90,15 @@ def log_socket(ws):
 @app.route('/')
 def index():
     return flask.send_file('static/index.html')
+
+@app.route('/storage/<name>')
+def get_storage(name):
+    storage_observer = storage.observer[name]
+    number = request.args.get('number', None)
+    records = None
+    if number:
+        records = storage_observer.last(number)
+    else:
+        abort(400) # Bad Request
+    return flask.jsonify(records)
+

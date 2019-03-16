@@ -85,16 +85,33 @@ class StorageObserver:
     def refresh(self):
         self.observable.refresh(self)
 
+    def last(self, number):
+        c = self.storage.conn.cursor()
+        command = (
+            "SELECT * FROM " + self.name 
+            + " ORDER BY time DESC"
+            + " LIMIT " + str(number)
+            )
+        c.execute(command)
+        results = c.fetchall()
+        return results
 
 
 class Storage:
     def create(self):
         for name, o in self.observables.items():
             observer = StorageObserver(self, name, o)
+            self.observers[name] = observer
             
         
     def __init__(self, observables):
         self.observables = observables
-        self.observers = []
+        self.observers = dict()
         self.conn = sqlite3.connect('terrarium.sqlite3')
+        def dict_factory(cursor, row):
+            d = {}
+            for idx, col in enumerate(cursor.description):
+                d[col[0]] = row[idx]
+            return d
+        self.conn.row_factory = dict_factory
         self.create()
