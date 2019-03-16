@@ -176,7 +176,8 @@
     
     function sm(o, n) {
       let d = document.querySelector('#sm #sm' + n);
-      d.innerText = o.v + "V " + o.pct + "%";
+      let pct = Math.round(o.pct * 10)/10
+      d.innerText = o.v + "V " + pct + "%";
     }
   
     
