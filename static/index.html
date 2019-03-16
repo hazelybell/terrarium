@@ -281,10 +281,15 @@
           values.push({x: r.time, y: r.temp});
         }
         let data = {
-          labels: labels,
           series: [values],
         };
-        new Chartist.Line('.ct-chart', data);
+        let config = {
+          axisX: {
+            type: Chartist.AutoScaleAxis,
+            onlyInteger: true,
+          },
+        };
+        new Chartist.Line('.ct-chart', data, config);
       });
     }
     
