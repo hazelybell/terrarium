@@ -358,13 +358,18 @@ class SoilMoist(Poller, Observable):
     def poll(self):
         self.read()
         median = self.read()
+        do_notify = False
         if len(self.readings) > 90:
             if median < self.min_med:
                 self.min_med = median
+                do_notify = True
             if median > self.max_med:
                 self.max_med = median
+                do_notify = True
         if median != self.median:
             self.median = median
+            do_notify = True
+        if do_notify:
             self.notify_all()
     
     def json(self):
