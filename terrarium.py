@@ -351,13 +351,14 @@ class SoilMoist(Poller, Observable):
               + ": " + str(reading)
               + " median " + str(median)
               )
-        if median != self.median:
-            self.median = median
-            self.notify_all()
+        return median
     
     def poll(self):
         self.read()
-        self.read()
+        median = self.read()
+        if median != self.median:
+            self.median = median
+            self.notify_all()
     
     def json(self):
         pct = self.median - self.min_
