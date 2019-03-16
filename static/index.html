@@ -284,13 +284,21 @@
           values.push({x: r.time, y: r.temp});
         }
         let data = {
-          series: [values],
+          series: [{
+            name: 'temperature',
+            data: values
+          }],
         };
         let config = {
           axisX: {
             type: Chartist.AutoScaleAxis,
             onlyInteger: true,
           },
+          series: {
+            'temperature': {
+              showLine: true,
+            }
+          }
         };
         new Chartist.Line('.ct-chart', data, config);
       });
