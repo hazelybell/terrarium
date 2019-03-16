@@ -288,7 +288,7 @@
         };
         let config = {
           axisX: {
-            type: Chartist.AutoScaleAxis,
+            type: Chartist.AutoScaleAxis({divisor: 8}),
             onlyInteger: true,
           },
           series: {
