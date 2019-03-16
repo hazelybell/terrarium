@@ -65,7 +65,7 @@ class StorageObserver:
         for col, val in e.items():
             cols.append(col)
             vals.append(val)
-            placeholds.append("?")
+            placeholders.append("?")
         command = (
             "INSERT INTO " + self.name 
             + " (" + ", ".join(cols) + ") "
