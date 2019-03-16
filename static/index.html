@@ -117,6 +117,8 @@
     <span class="caption">CPU Temperature</span>
     <div class="boxinner">
       Current: <span id="cputemp_current"></span>
+      <button type="button" id="cputemp_day">1 day</button>
+      <button type="button" id="cputemp_hour">1 hour</button>
       <div class="ct-chart ct-double-octave" id="cputemp_ct"></div>
     </div>
   </div>
@@ -268,9 +270,9 @@
     var cputemp_chart;
     
     
-    function cputemp_plot_init() {
+    function cputemp_plot_init(tspan) {
       let ctime = Date.now() / 1000;
-      let since = ctime - (60*60*24);
+      let since = ctime - (tspan);
       fetch("/storage/cputemp?since=" + since).then((response) => {
         return response.json();
       }).then((json) => {
@@ -303,14 +305,27 @@
             }
           }
         };
+        if (cputemp_chart) {
+          cputemp_chart.detach();
+        }
         cputemp_chart = new Chartist.Line('#cputemp_ct', cputemp_data, config);
       });
     }
     
     document.addEventListener('DOMContentLoaded', function(){
       let ws = resume_logging();
-      cputemp_plot_init();
     }, false);
+    
+    document.getElementById("cputemp_day").addEventListener("click",
+      function() {
+        cputemp_plot_init(60*60*24);
+      }
+    );
+    document.getElementById("cputemp_hour").addEventListener("click",
+      function() {
+        cputemp_plot_init(60*60);
+      }
+    );
   </script>
 </body>
 </html>
