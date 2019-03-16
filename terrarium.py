@@ -332,6 +332,8 @@ class SoilMoist(Poller, Observable):
         self.median = 0
         if number == 1:
             self.sensor = automationhat.analog.one
+            self.max_ = 1.3
+            self.min_ = 2.74
         elif number == 2:
             self.sensor = automationhat.analog.two
         elif number == 3:
@@ -358,7 +360,9 @@ class SoilMoist(Poller, Observable):
         self.read()
     
     def json(self):
-        return {'v': self.median}
+        pct = self.max_ - self.median - self.min_
+        pct = pct * 100 / (self.max_ - self.min_)
+        return {'v': self.median, 'pct': pct}
     
     
 class Terrarium:
