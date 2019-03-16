@@ -360,8 +360,8 @@ class SoilMoist(Poller, Observable):
         self.read()
     
     def json(self):
-        pct = self.max_ - self.median - self.min_
-        pct = pct * 100 / (self.max_ - self.min_)
+        pct = self.min_ - self.median - self.max_
+        pct = pct * 100 / (self.min_ - self.max_)
         return {'v': self.median, 'pct': pct}
     
     
