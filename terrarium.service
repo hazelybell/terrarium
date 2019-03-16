@@ -2,6 +2,9 @@
 Description=Terrarium Manager
 After=syslog.target network.target
 
+[Install]
+WantedBy=multi-user.target
+
 [Service]
 Type=simple
 ExecStart=/home/wz/terrarium/venv/bin/python3 /home/wz/terrarium/main.py
