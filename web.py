@@ -94,7 +94,7 @@ def index():
 @app.route('/storage/<name>')
 def get_storage(name):
     storage_observer = storage.observers[name]
-    number = request.args.get('number', None)
+    number = flask.request.args.get('number', None)
     records = None
     if number:
         records = storage_observer.last(number)
