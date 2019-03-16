@@ -278,8 +278,7 @@
         let labels = [];
         let values = [];
         for (let r of json) {
-          labels.push(parseFloat(r.time));
-          values.push(r.temp);
+          values.push({x: r.time, y: r.temp});
         }
         let data = {
           labels: labels,
