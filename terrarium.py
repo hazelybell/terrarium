@@ -307,6 +307,7 @@ class CPUTemp(Poller, Observable):
         super().__init__(*args, **kwargs)
         Observable.__init__(self)
         self.temp = None
+        self.time = None
     
     def poll(self):
         r = subprocess.check_output(
@@ -318,12 +319,16 @@ class CPUTemp(Poller, Observable):
         r = float(r)
         if r != self.temp:
             self.temp = r
+            self.time = time.time()
             self.notify_all()
     
     def json(self):
         if self.temp is None:
             self.poll()
-        return {'temp': self.temp}
+        return {
+            'temp': self.temp,
+            'time': self.time,
+            }
 
 class SoilMoist(Poller, Observable):
     def __init__(self, number, *args, **kwargs):
