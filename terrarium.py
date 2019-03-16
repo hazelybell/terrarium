@@ -321,6 +321,8 @@ class CPUTemp(Poller, Observable):
             self.notify_all()
     
     def json(self):
+        if self.temp is None:
+            self.poll()
         return {'temp': self.temp}
 
 class SoilMoist(Poller, Observable):
