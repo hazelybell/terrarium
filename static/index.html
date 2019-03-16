@@ -272,7 +272,7 @@
     }
     
     function cputemp_plot_init() {
-      fetch("/storage/cputemp?number=10").then((response) => {
+      fetch("/storage/cputemp?number=100").then((response) => {
         return response.json();
       }).then((json) => {
         let labels = [];
