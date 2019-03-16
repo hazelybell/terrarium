@@ -15,6 +15,8 @@
 #    You should have received a copy of the GNU Affero General Public License
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import time
+
 import sqlite3
 
 import logging
@@ -34,7 +36,7 @@ class StorageObserver:
         command = (
             "CREATE TABLE IF NOT EXISTS "
             + name
-            + " (time real)"
+            + " (time real NOT NULL)"
             )
         c.execute(command)
         
@@ -62,6 +64,8 @@ class StorageObserver:
         cols = []
         vals = []
         placeholders = []
+        if ('time' not in e) or (e[time] is None):
+            e[time] = time.time()
         for col, val in e.items():
             cols.append(col)
             vals.append(val)
