@@ -47,6 +47,9 @@ def main():
     
     web.observables['cputemp'] = t.cputemp
     web.observables['lamp'] = t.lamp
+    web.observables['sm1'] = t.sm_one
+    #web.observables['sm2'] = t.sm_two
+    #web.observables['sm3'] = t.sm_three
     
     web_server = WSGIServer(('', 5000), web.app, handler_class=WebSocketHandler)
     web_let = gevent.spawn(web_server.serve_forever)

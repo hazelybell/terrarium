@@ -84,6 +84,13 @@
     <span class="caption">Lamp</span>
     <div class="boxinner"></div>
   </div>
+  <div id="sm" class="box">
+    <span class="caption">Soil Moisture</span>
+    <div class="boxinner">
+      <p>Sensor 1: <span id="sm1"></span></p>
+      <p>Sensor 2: <span id="sm2"></span></p>
+    </div>
+  </div>
   <div id="cputemp" class="box">
     <span class="caption">CPU Temperature</span>
     <div class="boxinner"></div>
@@ -166,7 +173,12 @@
       d.innerText = "Outlet: power " + o.power;
       d.className = "boxinner " + o.power;
     }
-
+    
+    function sm(o, n) {
+      let d = document.querySelector('#sm #sm' + n);
+      d.innerText = o.v + "V";
+    }
+  
     
     function handle_message(o) {
       if (o.log) {
@@ -175,6 +187,8 @@
         cputemp(o.cputemp);
       } else if (o.lamp) {
         lamp(o.lamp);
+      } else if (o.sm1) {
+        sm(o.sm1, 1);
       } else {
         console.log("Unknown state!");
       }

@@ -329,6 +329,7 @@ class SoilMoist(Poller, Observable):
         Observable.__init__(self)
         self.readings = []
         self.number = number
+        self.median = 0
         if number == 1:
             self.sensor = automationhat.analog.one
         elif number == 2:
@@ -348,6 +349,12 @@ class SoilMoist(Poller, Observable):
               + ": " + str(reading)
               + " median " + str(median)
               )
+        if median != self.median:
+            self.median = median
+            self.notify_all()
+    
+    def json(self):
+        return {'v': self.median}
     
     
 class Terrarium:
