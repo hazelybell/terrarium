@@ -271,9 +271,27 @@
       new Chartist.Line('.ct-chart', data);
     }
     
+    function cputemp_plot_init() {
+      fetch("/storage/cputemp?number=10").then((response) => {
+        return response.json();
+      }).then((json) => {
+        let labels = [];
+        let values = [];
+        for (let r of json) {
+          labels.push(r.time);
+          values.push(r.temp);
+        }
+        let data = {
+          labels: labels;
+          series: [values];
+        };
+        new Chartist.Line('.ct-chart', data);
+      });
+    }
+    
     document.addEventListener('DOMContentLoaded', function(){
       let ws = resume_logging();
-      cputemp_plot();
+      cputemp_plot_init();
     }, false);
   </script>
 </body>
