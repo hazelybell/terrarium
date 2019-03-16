@@ -46,9 +46,11 @@ class Storage:
                 command = "ALTER TABLE " + name + " ADD COLUMN " + col
                 try:
                     c.execute(command)
-                except sqlite3.ProgrammingError as e:
-                    WARN("ProgrammingError!")
-                    raise e
+                except sqlite3.OperationalError as e:
+                    if 'duplicate column' in str(e):
+                        pass
+                    else:
+                        raise e
             
         
     def __init__(self, observables):
