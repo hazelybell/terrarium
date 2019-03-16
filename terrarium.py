@@ -339,7 +339,7 @@ class SoilMoist(Poller, Observable):
         else:
             raise ValueError("Bad soil moisture probe number")
     
-    def poll(self):
+    def read(self):
         reading = self.sensor.read()
         self.readings.append(reading)
         if len(self.readings) > 100:
@@ -352,6 +352,10 @@ class SoilMoist(Poller, Observable):
         if median != self.median:
             self.median = median
             self.notify_all()
+    
+    def poll(self):
+        self.read()
+        self.read()
     
     def json(self):
         return {'v': self.median}
