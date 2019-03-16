@@ -197,6 +197,10 @@
         let data = cputemp_data.series[0].data;
         data.push({x: o.time, y: o.temp});
 //         console.log(cputemp_data.series[0].data);
+        let now = Date.now();
+        while (data[0].time < now - cputemp_tspan) {
+          data.shift();
+        }
         cputemp_chart.update(cputemp_data);
       }
     }
@@ -268,6 +272,7 @@
     
     var cputemp_data;
     var cputemp_chart;
+    var cputemp_tspan;
     
     
     function cputemp_plot_init(tspan) {
@@ -309,6 +314,7 @@
           cputemp_chart.detach();
         }
         cputemp_chart = new Chartist.Line('#cputemp_ct', cputemp_data, config);
+        cputemp_tspan = tspan;
       });
     }
     
