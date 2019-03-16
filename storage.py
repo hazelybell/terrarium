@@ -67,6 +67,9 @@ class StorageObserver:
         if ('time' not in e) or (e['time'] is None):
             e['time'] = time.time()
         for col, val in e.items():
+            if val is None:
+                DEBUG("Null value in " + self.name + " column: " + col)
+                return
             cols.append(col)
             vals.append(val)
             placeholders.append("?")
