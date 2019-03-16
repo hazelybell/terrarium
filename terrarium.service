@@ -1,0 +1,13 @@
+[Unit]
+Description=Terrarium Manager
+After=syslog.target network.target
+
+[Service]
+Type=simple
+ExecStart=/home/wz/terrarium/venv/bin/python3 /home/wz/terrarium/main.py
+Restart=always
+WorkingDirectory=/home/wz/terrarium
+User=wz
+Group=wz
+StandardOutput=journal
+StandardError=journal
