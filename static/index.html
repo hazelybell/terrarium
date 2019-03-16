@@ -276,6 +276,7 @@
         for (let r of json) {
           values.push({x: r.time, y: r.temp});
         }
+        values.reverse();
         cputemp_data = {
           series: [{
             name: 'temperature',
