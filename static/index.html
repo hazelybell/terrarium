@@ -191,7 +191,7 @@
     function cputemp(o) {
       let d = document.querySelector('#cputemp_current');
       d.innerText = o.temp + " °C";
-      if (o.time) {
+      if (cputemp_data) {
         let data = cputemp_data.series[0].data;
         data.push({x: o.time, y: o.temp});
 //         console.log(cputemp_data.series[0].data);
