@@ -347,10 +347,10 @@ class SoilMoist(Poller, Observable):
         if len(self.readings) > 100:
             self.readings.pop(0)
         median = statistics.median(self.readings)
-        DEBUG("Soil moisture reading #" + str(self.number)
-              + ": " + str(reading)
-              + " median " + str(median)
-              )
+        #DEBUG("Soil moisture reading #" + str(self.number)
+              #+ ": " + str(reading)
+              #+ " median " + str(median)
+              #)
         return median
     
     def poll(self):
