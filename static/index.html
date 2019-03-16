@@ -191,6 +191,8 @@
     function cputemp(o) {
       let d = document.querySelector('#cputemp_current');
       d.innerText = o.temp + " °C";
+      cputemp_data.series[0].data.push({x: o.time, y: o.temp});
+      cputemp_chart.update(cputemp_data);
     }
     
     function lamp(o) {
@@ -258,21 +260,9 @@
       return ws;
     }
     
-    function cputemp_plot() {
-      var data = {
-        // A labels array that can contain any sort of values
-        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'],
-        // Our series array that contains series objects or in this case series data arrays
-        series: [
-          [5, 2, 4, 2, 0]
-        ]
-      };
-
-      // Create a new line chart object where as first parameter we pass in a selector
-      // that is resolving to our chart container element. The Second parameter
-      // is the actual data object.
-      new Chartist.Line('.ct-chart', data);
-    }
+    var cputemp_data;
+    var cputemp_chart;
+    
     
     function cputemp_plot_init() {
       fetch("/storage/cputemp?number=100").then((response) => {
@@ -283,7 +273,7 @@
         for (let r of json) {
           values.push({x: r.time, y: r.temp});
         }
-        let data = {
+        cputemp_data = {
           series: [{
             name: 'temperature',
             data: values
@@ -305,7 +295,7 @@
             }
           }
         };
-        new Chartist.Line('.ct-chart', data, config);
+        cputemp_chart = new Chartist.Line('.ct-chart', cputemp_data, config);
       });
     }
     
