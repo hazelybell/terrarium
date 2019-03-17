@@ -150,7 +150,7 @@ function smooth(data, selector) {
     let x_min = Infinity;
     let x_max = -Infinity;
     for (let i of raw) {
-      let x = raw.x;
+      let x = i.x;
       if (x < x_min) {
         x_min = x;
       }
