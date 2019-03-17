@@ -234,6 +234,7 @@ function smooth(data, selector) {
     for (let i = 0; i < raw.length; i++) {
       if (raw[i].x - prev_x > every) {
         point(i);
+        prev_x = raw[i].x;
       }
     }
 //     console.log("new length: " + smoothed.length);
