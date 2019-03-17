@@ -199,24 +199,26 @@ function smooth(data, selector) {
           });
         }
         // start a new point
+        let weight;
         if (prev_x === -Infinity) {
-          count = 1;
+          weight = 1;
         } else {
-          count = x - prev_x;
+          weight = x - prev_x;
         }
-        x_acc = x;
-        y_acc = y;
+        count = weight;
+        x_acc = x * weight;
+        y_acc = y * weight;
         y_min = Infinity;
         y_max = -Infinity;
         prev_x = x;
         prev_x2 = x;
       } else {
         // accumulate
-        count = count + (x - prev_x2);
-        console.log(count);
+        let weight = x - prev_x2;
+        count = count + weight;
         prev_x2 = x;
-        x_acc = x_acc + x;
-        y_acc = y_acc + y;
+        x_acc = x_acc + x * weight;
+        y_acc = y_acc + y * weight;
         if (y > y_max) {
           y_max = y;
         }
