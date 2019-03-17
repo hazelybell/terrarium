@@ -107,3 +107,6 @@ def get_storage(name):
         abort(400) # Bad Request
     return flask.jsonify(records)
 
+@app.route('/static/<path:path>')
+def get_static(path):
+    return send_from_directory('static', path)
