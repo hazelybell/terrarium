@@ -138,7 +138,8 @@ function smooth(data, selector) {
   let serieses = data.series;
   let elt = document.querySelector(selector);
   let width = elt.clientWidth;
-  console.log("width " + width);
+  let goal = (width - 200) / 5; // TODO: get actual width of inner plot
+  console.log("goal " + goal);
   for (let series of serieses) {
     let name = series.name;
     let raw = series.data;
