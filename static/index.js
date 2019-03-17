@@ -136,7 +136,7 @@ var cputemp_tspan;
 
 function smooth(data, selector) {
   let serieses = data.series;
-  elt = document.querySelector(selector);
+  let elt = document.querySelector(selector);
   width = elt.clientWidth;
   console.log("width " + width);
   for (let series of serieses) {
