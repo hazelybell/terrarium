@@ -140,11 +140,61 @@ function smooth(data, selector) {
   let width = elt.clientWidth;
   let goal = (width - 200) / 5; // TODO: get actual width of inner plot
   console.log("goal " + goal);
+  
+  let new_data = {};
+  Object.assign(new_data, data);
+  let new_serises = [];
+  
   for (let series of serieses) {
-    let name = series.name;
     let raw = series.data;
+    let x_min = Infinity;
+    let x_max = -Infinity;
+    for (let i of raw) {
+      let x = raw.x;
+      if (x < x_min) {
+        x_min = x;
+      }
+      if (x > x_max) {
+        x_max = x;
+      }
+    }
+    let x_width = x_max - x_min;
+    let every = x_width / goal;
+    let smoothed = [];
+    let prev_x = -Infinity;
+    let count = 0;
+    let x_acc = 0;
+    let y_acc = 0;
+    for (let i of raw) {
+      let x = i.x;
+      let y = i.y;
+      if (x > prev_x + every) {
+        // emit previous point
+        if (count != 0) {
+          smoothed.push({
+            x: x_acc / count;
+            y: y_acc / count;
+          });
+        }
+        // start a new point
+        count = 1;
+        x_acc = x;
+        y_acc = y;
+      } else {
+        // accumulate
+        count = count + 1;
+        x_acc = x_acc + x;
+        y_acc = y_acc + y;
+      }
+    }
     
+    let new_series = {};
+    Object.assign(new_series, series);
+    new_series.data = smoothed;
+    new_serieses.push(new_series);
   }
+  new_data.series = new_serieses;
+  return new_data;
 }
 
 function cputemp_plot_init(tspan) {
@@ -165,7 +215,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
-    smooth(cputemp_data, "#cputemp_ct");
+    cputemp_data = smooth(cputemp_data, "#cputemp_ct");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
