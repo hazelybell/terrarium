@@ -173,7 +173,7 @@ function smooth(data, selector) {
     let mined = [];
     function point(center_i) {
       let center_x = raw[center_i].x;
-      let center_y = raw[center_y].x;
+      let center_y = raw[center_i].x;
       let count = 1;
       let x_acc = 0;
       let y_acc = 0;
