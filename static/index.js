@@ -86,7 +86,8 @@ function sm(o, n) {
     while (data[0].x < now - sm_tspan) {
       data.shift();
     }
-    sm_chart.update(sm_data);
+    let smoothed = smooth(sm_data, '#sm_ct');
+    sm_chart.update(smoothed);
   }
 }
 
@@ -294,6 +295,7 @@ function sm_plot_init(tspan) {
         data: values
       }],
     };
+    let smoothed = smooth(sm_data, "#sm_ct");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
@@ -310,7 +312,7 @@ function sm_plot_init(tspan) {
     if (sm_chart) {
       sm_chart.detach();
     }
-    sm_chart = new Chartist.Line('#sm_ct', sm_data, config);
+    sm_chart = new Chartist.Line('#sm_ct', smoothed, config);
     sm_tspan = tspan;
   });
 }
