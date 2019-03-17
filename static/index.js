@@ -249,7 +249,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
-    let smoothed = smooth(smoothed, "#cputemp_ct");
+    let smoothed = smooth(cputemp_data, "#cputemp_ct");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
@@ -267,7 +267,7 @@ function cputemp_plot_init(tspan) {
     if (cputemp_chart) {
       cputemp_chart.detach();
     }
-    cputemp_chart = new Chartist.Line('#cputemp_ct', cputemp_data, config);
+    cputemp_chart = new Chartist.Line('#cputemp_ct', smoothed, config);
     cputemp_tspan = tspan;
   });
 }
