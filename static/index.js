@@ -183,7 +183,7 @@ function smooth(data, selector) {
       if (x > prev_x + every) {
         // emit previous point
         if (count != 0) {
-          console.log(count);
+//           console.log(count);
           smoothed.push({
             x: x_acc / count,
             y: y_acc / count,
@@ -217,7 +217,7 @@ function smooth(data, selector) {
         }
       }
     }
-    console.log(smoothed.length);
+    console.log("new length: " + smoothed.length);
     let new_series = {};
     Object.assign(new_series, series);
     new_series.data = smoothed;
@@ -308,7 +308,8 @@ function sm_plot_init(tspan) {
       series: {
         'sm1': {
           showLine: true,
-          lineSmooth: false,
+          showPoint: false,
+          lineSmooth: true,
         }
       }
     };
