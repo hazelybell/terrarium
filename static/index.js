@@ -52,7 +52,8 @@ function cputemp(o) {
 //           console.log("shifting out");
       data.shift();
     }
-    cputemp_chart.update(cputemp_data);
+    smoothed = smooth(cputemp_data, '#cputemp_ct');
+    cputemp_chart.update(smoothed);
   }
 }
 
@@ -248,7 +249,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
-    cputemp_data = smooth(cputemp_data, "#cputemp_ct");
+    smoothed = smooth(smoothed, "#cputemp_ct");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
@@ -259,11 +260,7 @@ function cputemp_plot_init(tspan) {
         'temperature': {
           showLine: true,
           showPoint: false,
-          lineSmooth: false,
-//               lineSmooth: Chartist.Interpolation.simple({
-//                 divisor: 4,
-//                 fillHoles: true,
-//               }),
+          lineSmooth: true,
         }
       }
     };
