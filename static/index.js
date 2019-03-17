@@ -147,6 +147,7 @@ function smooth(data, selector) {
   
   for (let series of serieses) {
     let raw = series.data;
+    let name = series.name;
     let x_min = Infinity;
     let x_max = -Infinity;
     for (let i of raw) {
@@ -163,10 +164,14 @@ function smooth(data, selector) {
     console.log(
       "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
     let smoothed = [];
+    let maxed = [];
+    let mined = [];
     let prev_x = -Infinity;
     let count = 0;
     let x_acc = 0;
     let y_acc = 0;
+    let y_min = Infinity;
+    let y_max = -Infinity;
     for (let i of raw) {
       let x = i.x;
       let y = i.y;
@@ -177,6 +182,14 @@ function smooth(data, selector) {
           smoothed.push({
             x: x_acc / count,
             y: y_acc / count,
+          });
+          maxed.push({
+            x: x_acc / count,
+            y: y_max,
+          });
+          mined.push({
+            x: x_acc / count,
+            y: y_min,
           });
         }
         // start a new point
@@ -189,6 +202,12 @@ function smooth(data, selector) {
         count = count + 1;
         x_acc = x_acc + x;
         y_acc = y_acc + y;
+        if (y > y_max) {
+          y_max = y;
+        }
+        if (y < y_min) {
+          y_min = y;
+        }
       }
     }
     console.log(smoothed.length);
@@ -196,6 +215,14 @@ function smooth(data, selector) {
     Object.assign(new_series, series);
     new_series.data = smoothed;
     new_serieses.push(new_series);
+    let max_series = {};
+    Object.assign(max_series, series);
+    max_series.data = maxed;
+    new_serieses.push(max_series);
+    let min_series = {};
+    Object.assign(min_series, series);
+    min_series.data = mined;
+    new_serieses.push(min_series);
   }
   new_data.series = new_serieses;
   return new_data;
