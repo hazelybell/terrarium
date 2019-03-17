@@ -172,6 +172,7 @@ function smooth(data, selector) {
     let maxed = [];
     let mined = [];
     let prev_x = -Infinity;
+    let prev_x2;
     let count = 0;
     let x_acc = 0;
     let y_acc = 0;
@@ -198,15 +199,21 @@ function smooth(data, selector) {
           });
         }
         // start a new point
-        count = 1;
+        if (prev_x === -Infinity) {
+          count = 1;
+        } else {
+          count = x - prev_x;
+        }
         x_acc = x;
         y_acc = y;
         y_min = Infinity;
         y_max = -Infinity;
         prev_x = x;
+        prev_x2 = x;
       } else {
         // accumulate
-        count = count + 1;
+        count = count + (x - prev_x2);
+        prev_x2 = x;
         x_acc = x_acc + x;
         y_acc = y_acc + y;
         if (y > y_max) {
