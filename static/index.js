@@ -258,6 +258,7 @@ function cputemp_plot_init(tspan) {
       series: {
         'temperature': {
           showLine: true,
+          showPoints: false,
           lineSmooth: false,
 //               lineSmooth: Chartist.Interpolation.simple({
 //                 divisor: 4,
