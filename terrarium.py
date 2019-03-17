@@ -377,6 +377,8 @@ class SoilMoist(Poller, Observable):
     def json(self):
         pct = self.median - self.min_
         pct = pct * 100 / (self.max_ - self.min_)
+        while len(self.readings) < 90:
+            self.read()
         while self.time is None:
             self.poll()
         return {
