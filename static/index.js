@@ -134,6 +134,18 @@ var cputemp_data;
 var cputemp_chart;
 var cputemp_tspan;
 
+function smooth(data, selector) {
+  let serieses = data.series;
+  elt = document.querySelector(selector);
+  width = elt.clientWidth;
+  console.log("width " + width);
+  for let series of serieses {
+    let name = series.name;
+    let raw = series.data;
+    
+  }
+}
+
 function cputemp_plot_init(tspan) {
   let ctime = Date.now() / 1000;
   let since = ctime - (tspan);
@@ -152,6 +164,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
+    smooth(cputemp_data, "#cputemp .ct-chart-line")
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
