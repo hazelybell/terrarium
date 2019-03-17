@@ -196,6 +196,8 @@ function smooth(data, selector) {
         count = 1;
         x_acc = x;
         y_acc = y;
+        y_min = Infinity;
+        y_max = -Infinity;
         prev_x = x;
       } else {
         // accumulate
