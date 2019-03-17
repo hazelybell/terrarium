@@ -111,6 +111,9 @@
     <div class="boxinner">
       <p>Sensor 1: <span id="sm1"></span></p>
       <p>Sensor 2: <span id="sm2"></span></p>
+      <button type="button" id="sm_day">1 day</button>
+      <button type="button" id="sm_hour">1 hour</button>
+      <div class="ct-chart ct-double-octave" id="sm_ct"></div>
     </div>
   </div>
   <div id="cputemp" class="box">
@@ -140,12 +143,19 @@
   </div>
   <small class="license">
     <a rel="license" href="https://www.gnu.org/licenses/agpl.html">
-      <img alt="Affero General Public License Logo" style="border-width:0" src="https://www.gnu.org/graphics/agplv3-with-text-162x68.png" />
+      <img
+        alt="Affero General Public License Logo" style="border-width:0" 
+        src="https://www.gnu.org/graphics/agplv3-with-text-162x68.png"
+      />
     </a>
     <br>
-    This work is licensed under the <a rel="license" href="https://www.gnu.org/licenses/agpl.html">GNU Affero General Public License version 3</a>.
+    This work is licensed under the
+    <a rel="license" href="https://www.gnu.org/licenses/agpl.html">GNU
+      Affero General Public License version 3</a>.
     <br>
-    Source code is available at: <a href="https://github.com/hazelybell/terrarium">https://github.com/hazelybell/terrarium</a>.
+    Source code is available at:
+    <a href="https://github.com/hazelybell/terrarium"
+      >https://github.com/hazelybell/terrarium</a>.
   </small>
   <script>
     'use strict';
@@ -229,6 +239,15 @@
       }
       d.className = word;
       d.innerText = v + "V (" + min + "-" + max + ") " + pct + "% " + word;
+      if (sm_data && sm_chart) {
+        let data = sm_data.series[0].data;
+        data.push({x: o.time, y: o.v});
+        let now = Date.now() / 1000;
+        while (data[0].x < now - sm_tspan) {
+          data.shift();
+        }
+        sm_chart.update(sm_data);
+      }
     }
   
     
@@ -276,7 +295,6 @@
     var cputemp_chart;
     var cputemp_tspan;
     
-    
     function cputemp_plot_init(tspan) {
       let ctime = Date.now() / 1000;
       let since = ctime - (tspan);
@@ -320,6 +338,49 @@
       });
     }
     
+    var sm_data;
+    var sm_chart;
+    var sm_tspan;
+    
+    function sm_plot_init(tspan) {
+      let ctime = Date.now() / 1000;
+      let since = ctime - (tspan);
+      fetch("/storage/sm1?since=" + since).then((response) => {
+        return response.json();
+      }).then((json) => {
+        let labels = [];
+        let values = [];
+        for (let r of json) {
+          values.push({x: r.time, y: r.v});
+        }
+        values.reverse();
+        sm_data = {
+          series: [{
+            name: 'sm1',
+            data: values
+          }],
+        };
+        let config = {
+          axisX: {
+            type: Chartist.AutoScaleAxis,
+            onlyInteger: true,
+            scaleMinSpace: 100,
+          },
+          series: {
+            'sm1': {
+              showLine: true,
+              lineSmooth: false,
+            }
+          }
+        };
+        if (sm_chart) {
+          sm_chart.detach();
+        }
+        sm_chart = new Chartist.Line('#sm_ct', sm_data, config);
+        sm_tspan = tspan;
+      });
+    }
+    
     document.addEventListener('DOMContentLoaded', function(){
       let ws = resume_logging();
     }, false);
@@ -332,6 +393,17 @@
     document.getElementById("cputemp_hour").addEventListener("click",
       function() {
         cputemp_plot_init(60*60);
+      }
+    );
+    
+    document.getElementById("sm_day").addEventListener("click",
+      function() {
+        sm_plot_init(60*60*24);
+      }
+    );
+    document.getElementById("sm_hour").addEventListener("click",
+      function() {
+        sm_plot_init(60*60);
       }
     );
   </script>
