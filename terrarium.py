@@ -317,10 +317,9 @@ class CPUTemp(Poller, Observable):
         r = r.replace("temp=", "")
         r = r.replace("'C\n", "")
         r = float(r)
-        if r != self.temp:
-            self.temp = r
-            self.time = time.time()
-            self.notify_all()
+        self.temp = r
+        self.time = time.time()
+        self.notify_all()
     
     def json(self):
         if self.temp is None:
@@ -366,20 +365,14 @@ class SoilMoist(Poller, Observable):
     def poll(self):
         self.read()
         median = self.read()
-        do_notify = False
         if len(self.readings) > 90:
             if median < self.min_med:
                 self.min_med = median
-                do_notify = True
             if median > self.max_med:
                 self.max_med = median
-                do_notify = True
-        if median != self.median:
-            self.median = median
-            self.time = time.time()
-            do_notify = True
-        if do_notify:
-            self.notify_all()
+        self.median = median
+        self.time = time.time()
+        self.notify_all()
     
     def json(self):
         pct = self.median - self.min_
