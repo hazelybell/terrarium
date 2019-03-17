@@ -181,6 +181,7 @@ function smooth(data, selector) {
         count = 1;
         x_acc = x;
         y_acc = y;
+        prev_x = x;
       } else {
         // accumulate
         count = count + 1;
