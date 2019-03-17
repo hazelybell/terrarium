@@ -283,7 +283,7 @@ function cputemp_plot_init(tspan) {
         'temperature': {
           showLine: true,
           showPoint: false,
-          lineSmooth: true,
+          lineSmooth: false,
         }
       }
     };
@@ -328,7 +328,7 @@ function sm_plot_init(tspan) {
         'sm1': {
           showLine: true,
           showPoint: false,
-          lineSmooth: true,
+          lineSmooth: false,
         }
       }
     };
