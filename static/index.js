@@ -174,7 +174,7 @@ function smooth(data, selector) {
     function point(center_i) {
       let center_x = raw[center_i].x;
       let center_y = raw[center_i].x;
-      let count = 1;
+      let count = 0;
       let x_acc = 0;
       let y_acc = 0;
       let y_min = center_y;
@@ -217,6 +217,7 @@ function smooth(data, selector) {
         count += weight;
       }
       // emit point
+      console.log(count);
       smoothed.push({
         x: center_x,
         y: y_acc / count,
