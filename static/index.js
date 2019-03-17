@@ -171,6 +171,7 @@ function smooth(data, selector) {
       if (x > prev_x + every) {
         // emit previous point
         if (count != 0) {
+          console.log(count);
           smoothed.push({
             x: x_acc / count,
             y: y_acc / count,
