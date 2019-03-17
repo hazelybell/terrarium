@@ -52,7 +52,7 @@ function cputemp(o) {
 //           console.log("shifting out");
       data.shift();
     }
-    smoothed = smooth(cputemp_data, '#cputemp_ct');
+    let smoothed = smooth(cputemp_data, '#cputemp_ct');
     cputemp_chart.update(smoothed);
   }
 }
@@ -249,7 +249,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
-    smoothed = smooth(smoothed, "#cputemp_ct");
+    let smoothed = smooth(smoothed, "#cputemp_ct");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
