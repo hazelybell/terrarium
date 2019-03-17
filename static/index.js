@@ -160,6 +160,8 @@ function smooth(data, selector) {
     }
     let x_width = x_max - x_min;
     let every = x_width / goal;
+    console.log(
+      "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
     let smoothed = [];
     let prev_x = -Infinity;
     let count = 0;
