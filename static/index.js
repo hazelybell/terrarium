@@ -178,9 +178,9 @@ function smooth(data, selector) {
     let y_acc = 0;
     let y_min = Infinity;
     let y_max = -Infinity;
-    for (let i of raw) {
-      let x = i.x;
-      let y = i.y;
+    for (let i = 0; i++; i < raw.length) {
+      let x = raw[i].x;
+      let y = raw[i].y;
       if (x > prev_x + every) {
         // emit previous point
         if (count != 0) {
