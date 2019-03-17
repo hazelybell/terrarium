@@ -339,6 +339,7 @@ class SoilMoist(Poller, Observable):
         self.median = 0
         self.min_med = 100
         self.max_med = -100
+        self.time = None
         if number == 1:
             self.sensor = automationhat.analog.one
             self.max_ = 1.29
@@ -375,6 +376,7 @@ class SoilMoist(Poller, Observable):
                 do_notify = True
         if median != self.median:
             self.median = median
+            self.time = time.time()
             do_notify = True
         if do_notify:
             self.notify_all()
@@ -382,11 +384,14 @@ class SoilMoist(Poller, Observable):
     def json(self):
         pct = self.median - self.min_
         pct = pct * 100 / (self.max_ - self.min_)
+        while self.time is None:
+            self.poll()
         return {
             'v': self.median, 
             'pct': pct,
             'min': self.min_med,
             'max': self.max_med,
+            'time': self.time
             }
     
     
