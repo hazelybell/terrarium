@@ -212,8 +212,8 @@ function smooth(data, selector) {
         prev_x2 = x;
       } else {
         // accumulate
-        console.log(x - prev_x2);
         count = count + (x - prev_x2);
+        console.log(count);
         prev_x2 = x;
         x_acc = x_acc + x;
         y_acc = y_acc + y;
