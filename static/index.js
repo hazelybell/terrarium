@@ -139,7 +139,7 @@ function smooth(data, selector) {
   elt = document.querySelector(selector);
   width = elt.clientWidth;
   console.log("width " + width);
-  for let series of serieses {
+  for (let series of serieses) {
     let name = series.name;
     let raw = series.data;
     
@@ -164,7 +164,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
-    smooth(cputemp_data, "#cputemp .ct-chart-line")
+    smooth(cputemp_data, "#cputemp .ct-chart-line");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
