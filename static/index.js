@@ -52,8 +52,8 @@ function cputemp(o) {
 //           console.log("shifting out");
       data.shift();
     }
-//     let smoothed = smooth(cputemp_data, '#cputemp_ct');
-//     cputemp_chart.update(smoothed);
+    let smoothed = smooth(cputemp_data, '#cputemp_ct');
+    cputemp_chart.update(smoothed);
   }
 }
 
@@ -86,8 +86,8 @@ function sm(o, n) {
     while (data[0].x < now - sm_tspan) {
       data.shift();
     }
-//     let smoothed = smooth(sm_data, '#sm_ct');
-//     sm_chart.update(smoothed);
+    let smoothed = smooth(sm_data, '#sm_ct');
+    sm_chart.update(smoothed);
   }
 }
 
