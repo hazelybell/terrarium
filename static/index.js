@@ -141,7 +141,7 @@ function smooth(data, selector) {
   let elt = document.querySelector(selector);
   let width = elt.clientWidth;
   let goal = (width - 200) / 5; // TODO: get actual width of inner plot
-  console.log("goal " + goal);
+//   console.log("goal " + goal);
   
   let new_data = {};
   Object.assign(new_data, data);
@@ -166,8 +166,8 @@ function smooth(data, selector) {
     }
     let x_width = x_max - x_min;
     let every = x_width / goal;
-    console.log(
-      "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
+//     console.log(
+//       "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
     let smoothed = [];
     let maxed = [];
     let mined = [];
@@ -217,7 +217,7 @@ function smooth(data, selector) {
         }
       }
     }
-    console.log("new length: " + smoothed.length);
+//     console.log("new length: " + smoothed.length);
     let new_series = {};
     Object.assign(new_series, series);
     new_series.data = smoothed;
