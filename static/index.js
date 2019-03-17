@@ -152,6 +152,7 @@ function smooth(data, selector) {
     let name = series.name;
     let x_min = Infinity;
     let x_max = -Infinity;
+    console.log("length: " + raw.length)
     for (let i of raw) {
       let x = i.x;
       if (x < x_min) {
