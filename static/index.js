@@ -214,19 +214,19 @@ function smooth(data, selector) {
         if (raw[j].y < y_min) {
           y_min = raw[j].y;
         }
-        count + weight;
+        count += weight;
       }
       // emit point
       smoothed.push({
-        x: x_acc / count,
+        x: centre_x,
         y: y_acc / count,
       });
       maxed.push({
-        x: x_acc / count,
+        x: centre_x,
         y: y_max,
       });
       mined.push({
-        x: x_acc / count,
+        x: centre_x,
         y: y_min,
       });
     }
