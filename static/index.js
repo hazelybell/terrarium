@@ -217,7 +217,6 @@ function smooth(data, selector) {
         count += weight;
       }
       // emit point
-      console.log(count);
       smoothed.push({
         x: center_x,
         y: y_acc / count,
