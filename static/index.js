@@ -171,60 +171,69 @@ function smooth(data, selector) {
     let smoothed = [];
     let maxed = [];
     let mined = [];
-    let prev_x = -Infinity;
-    let prev_x2;
-    let count = 0;
-    let x_acc = 0;
-    let y_acc = 0;
-    let y_min = Infinity;
-    let y_max = -Infinity;
-    for (let i = 0; i < raw.length; i++) {
-      let x = raw[i].x;
-      let y = raw[i].y;
-      if (x > prev_x + every) {
-        // emit previous point
-        if (count != 0) {
-//           console.log(count);
-          smoothed.push({
-            x: x_acc / count,
-            y: y_acc / count,
-          });
-          maxed.push({
-            x: x_acc / count,
-            y: y_max,
-          });
-          mined.push({
-            x: x_acc / count,
-            y: y_min,
-          });
+    function point(center_i) {
+      let center_x = raw[center_i].x;
+      let center_y = raw[center_y].x;
+      let count = 1;
+      let x_acc = 0;
+      let y_acc = 0;
+      let y_min = center_y;
+      let y_max = center_y;
+      for (
+        let j = center_i-1; // start at the point before the center
+        (j - 1 > 0) && (center_x - raw[j-1].x < every);
+        j--
+      ) { // left side
+        let weight = raw[j].x - raw[j-1].x;
+        x_acc = x_acc + (raw[j].x * weight);
+        y_acc = y_acc + (raw[j].y * weight);
+        if (raw[j].y > y_max) {
+          y_max = raw[j].y;
         }
-        // start a new point
+        if (raw[j].y < y_min) {
+          y_min = raw[j].y;
+        }
+        count += weight;
+      }
+      for (
+        let j = center_i;
+        (j < raw.length) && (raw[j].x - center_x < every);
+        j++
+      ) { // right side
         let weight;
-        if (prev_x === -Infinity) {
-          weight = 1;
+        if (j-1 >= 0) {
+          weight = raw[j].x - raw[j-1].x;
         } else {
-          weight = x - prev_x;
+          weight = 1;
         }
-        count = weight;
-        x_acc = x * weight;
-        y_acc = y * weight;
-        y_min = Infinity;
-        y_max = -Infinity;
-        prev_x = x;
-        prev_x2 = x;
-      } else {
-        // accumulate
-        let weight = x - prev_x2;
-        count = count + weight;
-        prev_x2 = x;
-        x_acc = x_acc + x * weight;
-        y_acc = y_acc + y * weight;
-        if (y > y_max) {
-          y_max = y;
+        x_acc = x_acc + (raw[j].x * weight);
+        y_acc = y_acc + (raw[j].y * weight);
+        if (raw[j].y > y_max) {
+          y_max = raw[j].y;
         }
-        if (y < y_min) {
-          y_min = y;
+        if (raw[j].y < y_min) {
+          y_min = raw[j].y;
         }
+        count + weight;
+      }
+      // emit point
+      smoothed.push({
+        x: x_acc / count,
+        y: y_acc / count,
+      });
+      maxed.push({
+        x: x_acc / count,
+        y: y_max,
+      });
+      mined.push({
+        x: x_acc / count,
+        y: y_min,
+      });
+    }
+    let prev_x = 0;
+    for (let i = 0; i < raw.length; i++) {
+      if (raw[i].x - prev_x > every) {
+        point(i);
       }
     }
 //     console.log("new length: " + smoothed.length);
