@@ -187,7 +187,7 @@ function smooth(data, selector) {
         y_acc = y_acc + y;
       }
     }
-    console.log(smoothed.length());
+    console.log(smoothed.length);
     let new_series = {};
     Object.assign(new_series, series);
     new_series.data = smoothed;
