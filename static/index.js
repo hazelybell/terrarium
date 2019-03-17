@@ -218,15 +218,15 @@ function smooth(data, selector) {
       }
       // emit point
       smoothed.push({
-        x: centre_x,
+        x: center_x,
         y: y_acc / count,
       });
       maxed.push({
-        x: centre_x,
+        x: center_x,
         y: y_max,
       });
       mined.push({
-        x: centre_x,
+        x: center_x,
         y: y_min,
       });
     }
