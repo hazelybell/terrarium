@@ -143,7 +143,7 @@ function smooth(data, selector) {
   
   let new_data = {};
   Object.assign(new_data, data);
-  let new_serises = [];
+  let new_serieses = [];
   
   for (let series of serieses) {
     let raw = series.data;
