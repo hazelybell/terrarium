@@ -178,7 +178,7 @@ function smooth(data, selector) {
     let y_acc = 0;
     let y_min = Infinity;
     let y_max = -Infinity;
-    for (let i = 0; i++; i < raw.length) {
+    for (let i = 0; i < raw.length; i++) {
       let x = raw[i].x;
       let y = raw[i].y;
       if (x > prev_x + every) {
