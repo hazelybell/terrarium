@@ -164,7 +164,7 @@ function cputemp_plot_init(tspan) {
         data: values
       }],
     };
-    smooth(cputemp_data, "#cputemp .ct-chart-line");
+    smooth(cputemp_data, "#cputemp_ct");
     let config = {
       axisX: {
         type: Chartist.AutoScaleAxis,
