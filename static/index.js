@@ -222,26 +222,26 @@ function sm_plot_init(tspan) {
 
 document.addEventListener('DOMContentLoaded', function(){
   let ws = resume_logging();
+
+  document.getElementById("cputemp_day").addEventListener("click",
+    function() {
+      cputemp_plot_init(60*60*24);
+    }
+  );
+  document.getElementById("cputemp_hour").addEventListener("click",
+    function() {
+      cputemp_plot_init(60*60);
+    }
+  );
+
+  document.getElementById("sm_day").addEventListener("click",
+    function() {
+      sm_plot_init(60*60*24);
+    }
+  );
+  document.getElementById("sm_hour").addEventListener("click",
+    function() {
+      sm_plot_init(60*60);
+    }
+  );
 }, false);
-
-document.getElementById("cputemp_day").addEventListener("click",
-  function() {
-    cputemp_plot_init(60*60*24);
-  }
-);
-document.getElementById("cputemp_hour").addEventListener("click",
-  function() {
-    cputemp_plot_init(60*60);
-  }
-);
-
-document.getElementById("sm_day").addEventListener("click",
-  function() {
-    sm_plot_init(60*60*24);
-  }
-);
-document.getElementById("sm_hour").addEventListener("click",
-  function() {
-    sm_plot_init(60*60);
-  }
-);
