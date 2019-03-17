@@ -172,8 +172,8 @@ function smooth(data, selector) {
         // emit previous point
         if (count != 0) {
           smoothed.push({
-            x: x_acc / count;
-            y: y_acc / count;
+            x: x_acc / count,
+            y: y_acc / count,
           });
         }
         // start a new point
