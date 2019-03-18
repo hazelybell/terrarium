@@ -345,6 +345,8 @@ class SoilMoist(Poller, Observable):
             self.min_ = 2.74
         elif number == 2:
             self.sensor = automationhat.analog.two
+            self.max_ = 1.29
+            self.min_ = 2.74
         elif number == 3:
             self.sensor = automationhat.analog.three
         else:
@@ -410,6 +412,7 @@ class Terrarium:
         self.lamp = Outlet(LAMP_TIME_ON, LAMP_TIME_OFF, self.heartbeat)
         self.cputemp = CPUTemp(self.heartbeat)
         self.sm_one = SoilMoist(1, self.heartbeat)
+        self.sm_two = SoilMoist(2, self.heartbeat)
         
         self.morse.morse("start")
     

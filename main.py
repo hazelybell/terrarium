@@ -49,7 +49,7 @@ def main():
     web.observables['cputemp'] = t.cputemp
     web.observables['lamp'] = t.lamp
     web.observables['sm1'] = t.sm_one
-    #web.observables['sm2'] = t.sm_two
+    web.observables['sm2'] = t.sm_two
     #web.observables['sm3'] = t.sm_three
     
     storage_ = storage.Storage(web.observables)
