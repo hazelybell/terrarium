@@ -370,9 +370,13 @@ class SoilMoist(Poller, Observable):
                 self.min_med = median
             if median > self.max_med:
                 self.max_med = median
-        self.median = median
-        self.time = time.time()
-        self.notify_all()
+        cur_time = time.time()
+        if (self.median != median 
+            or self.time is None
+            or cur_time - 60 > self.time):
+            self.median = median
+            self.time = cur_time
+            self.notify_all()
     
     def json(self):
         pct = self.median - self.min_
