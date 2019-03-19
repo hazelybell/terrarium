@@ -94,10 +94,10 @@ class SoilMoist(Poller, Observable):
             self.notify_all()
     
     def json(self):
-        pct = self.reading - self.min_
-        pct = pct * 100 / (self.max_ - self.min_)
         while self.time is None:
             self.poll()
+        pct = self.reading - self.min_
+        pct = pct * 100 / (self.max_ - self.min_)
         return {
             'v': self.reading, 
             'pct': pct,
