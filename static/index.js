@@ -347,7 +347,7 @@ function sm_plot_init(tspan) {
           showLine: true,
           showPoint: false,
           lineSmooth: false,
-        }
+        },
         'sm2': {
           showLine: true,
           showPoint: false,
