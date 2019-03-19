@@ -63,7 +63,7 @@ class SoilMoist(Poller, Observable):
     
     def read_mean(self):
         readings = []
-        while len(readings) < READINGS_GOOD:
+        while len(readings) < self.READINGS_GOOD:
             reading = self.read_analog()
             readings.append(reading)
             if (reading < self.READING_MIN
