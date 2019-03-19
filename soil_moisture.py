@@ -20,6 +20,8 @@ import time
 from observable import Observable
 from schedule import Poller
 
+import automationhat
+
 import logging
 logger = logging.getLogger(__name__)
 DEBUG = logger.debug
