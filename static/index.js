@@ -326,14 +326,16 @@ function sm_plot_init(tspan) {
     }
     values2.reverse();
     sm_data = {
-      series: [{
-        name: 'sm1',
-        data: values1
-      }],
-      series: [{
-        name: 'sm2',
-        data: values2
-      }],
+      series: [
+        {
+          name: 'sm1',
+          data: values1
+        },
+        series: [{
+          name: 'sm2',
+          data: values2
+        }
+      ],
     };
     let smoothed = smooth(sm_data, "#sm_ct");
     let config = {
