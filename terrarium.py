@@ -345,8 +345,8 @@ class SoilMoist(Poller, Observable):
             self.min_ = 2.74
         elif number == 2:
             self.sensor = automationhat.analog.two
-            self.max_ = 2.48
-            self.min_ = 0.97
+            self.max_ = 0.97
+            self.min_ = 2.48
         elif number == 3:
             self.sensor = automationhat.analog.three
         else:
