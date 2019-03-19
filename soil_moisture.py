@@ -65,7 +65,13 @@ class SoilMoist(Poller, Observable):
             # throw out bogus reading from the automationhat
             reading = self.sensor.read()
             reading2 = self.sensor.read()
-            if reading != reading2:
+            if (
+                reading != reading2
+                or reading < self.READING_MIN
+                or reading > self.READING_MAX
+                or reading2 < self.READING_MIN
+                or reading2 > self.READING_MAX
+                ):
                 DEBUG("Soil moisture reading #" + str(self.number)
                     + ": " + str(reading)
                     + " " + str(reading2)
