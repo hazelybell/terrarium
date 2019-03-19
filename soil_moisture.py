@@ -31,6 +31,10 @@ WARNING = logger.warning
 ERROR = logger.error
 CRITICAL = logger.critical
 
+class AnalogIn:
+    def __init__(self, channel, max_voltage):
+        pass
+
 class SoilMoist(Poller, Observable):
     READINGS_GOOD = 20 # readings before considering the median good data
     READINGS_MAX = 30 # max n readings to take the median of

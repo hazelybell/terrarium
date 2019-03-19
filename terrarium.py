@@ -17,12 +17,10 @@
 
 
 import datetime
-import math
 import sys
 import os
 import time
 import subprocess
-import statistics
 
 import automationhat
 import gevent
