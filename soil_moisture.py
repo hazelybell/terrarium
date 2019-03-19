@@ -40,11 +40,10 @@ class SoilMoist(Poller, Observable):
     def __init__(self, number, *args, **kwargs):
         super().__init__(*args, **kwargs)
         Observable.__init__(self)
-        self.readings = []
+        self.reading = None
         self.number = number
-        self.median = 0
-        self.min_med = 100
-        self.max_med = -100
+        self.min_read = 100
+        self.max_read = -100
         self.time = None
         if number == 1:
             self.sensor = automationhat.analog.one
@@ -62,58 +61,45 @@ class SoilMoist(Poller, Observable):
     def read_analog(self):
         return self.sensor.read()
     
-    def read(self):
-        reading = 0
-        while reading < self.READING_MIN or reading > self.READING_MAX:
-            # throw out bogus reading from the automationhat
+    def read_mean(self):
+        readings = []
+        while len(readings) < READINGS_GOOD:
             reading = self.read_analog()
-            reading2 = self.read_analog()
-            if (
-                abs(reading - reading2) > 0.01
-                or reading < self.READING_MIN
+            readings.append(reading)
+            if (reading < self.READING_MIN
                 or reading > self.READING_MAX
-                or reading2 < self.READING_MIN
-                or reading2 > self.READING_MAX
                 ):
-                DEBUG("Soil moisture reading #" + str(self.number)
-                    + ": " + str(reading)
-                    + "-" + str(reading2)
-                    + ": " + str(reading - reading2)
-                    )
-        self.readings.append(reading)
-        if len(self.readings) > self.READINGS_MAX:
-            self.readings.pop(0)
-        median = statistics.median(self.readings)
-        #DEBUG("Soil moisture reading #" + str(self.number)
-              #+ ": " + str(reading)
-              #+ " median " + str(median)
-              #)
-        return median
+                WARNING("Bogus value from A/D converter: " + str(reading))
+                return None
+        if (max(readings) - min(readings) > 0.01):
+            WARNING("Bogus range from A/D converter: " + 
+                    str(max(readings)) + "-" + str(min(readings)))
+            return None
+        return statistics.mean(readings)
+    
+    def read_good(self):
+        reading = None
+        while reading is None:
+            reading = self.read_mean()
+        return reading
     
     def poll(self):
-        median = self.read()
-        if len(self.readings) > self.READINGS_GOOD:
-            if median < self.min_med:
-                self.min_med = median
-            if median > self.max_med:
-                self.max_med = median
+        reading = self.read_good()
         cur_time = time.time()
-        if (self.median != median 
+        if (self.reading != reading
             or self.time is None
             or cur_time - 60 > self.time):
-            self.median = median
+            self.reading = reading
             self.time = cur_time
             self.notify_all()
     
     def json(self):
-        pct = self.median - self.min_
+        pct = self.reading - self.min_
         pct = pct * 100 / (self.max_ - self.min_)
-        while len(self.readings) < self.READINGS_GOOD:
-            self.read()
         while self.time is None:
             self.poll()
         return {
-            'v': self.median, 
+            'v': self.reading, 
             'pct': pct,
             'min': self.min_med,
             'max': self.max_med,
