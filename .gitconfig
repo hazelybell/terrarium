@@ -1,0 +1,10 @@
+[status]
+	submodulesummary = 1
+[recieve]
+	denyCurrentBranch = updateInstead
+[diff]
+	submodule = log
+[push]
+	recurseSubmodules = on-demand
+[fetch]
+	recurseSubmodules = on-demand
