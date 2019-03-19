@@ -69,7 +69,7 @@ class SoilMoist(Poller, Observable):
             reading = self.read_analog()
             reading2 = self.read_analog()
             if (
-                reading != reading2
+                abs(reading - reading2) > 0.01
                 or reading < self.READING_MIN
                 or reading > self.READING_MAX
                 or reading2 < self.READING_MIN
