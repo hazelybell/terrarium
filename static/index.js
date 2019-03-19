@@ -81,7 +81,7 @@ function sm(o, n) {
   d.innerText = v + "V (" + min + "-" + max + ") " + pct + "% " + word;
   if (sm_data && sm_chart) {
     let data = sm_data.series[n-1].data;
-    data.push({x: o.time, y: o.v});
+    data.push({x: o.time, y: o.pct});
     let now = Date.now() / 1000;
     while (data[0].x < now - sm_tspan) {
       data.shift();
@@ -318,11 +318,11 @@ function sm_plot_init(tspan) {
     let json1 = jsons[0];
     let json2 = jsons[1];
     for (let r of json1) {
-      values1.push({x: r.time, y: r.v});
+      values1.push({x: r.time, y: r.pct});
     }
     values1.reverse();
     for (let r of json2) {
-      values2.push({x: r.time, y: r.v});
+      values2.push({x: r.time, y: r.pct});
     }
     values2.reverse();
     sm_data = {
