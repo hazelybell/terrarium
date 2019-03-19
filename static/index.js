@@ -80,7 +80,7 @@ function sm(o, n) {
   d.className = word;
   d.innerText = v + "V (" + min + "-" + max + ") " + pct + "% " + word;
   if (sm_data && sm_chart) {
-    let data = sm_data.series[0].data;
+    let data = sm_data.series[n-1].data;
     data.push({x: o.time, y: o.v});
     let now = Date.now() / 1000;
     while (data[0].x < now - sm_tspan) {
@@ -305,19 +305,34 @@ var sm_tspan;
 function sm_plot_init(tspan) {
   let ctime = Date.now() / 1000;
   let since = ctime - (tspan);
-  fetch("/storage/sm1?since=" + since).then((response) => {
+  let p1 = fetch("/storage/sm1?since=" + since).then((response) => {
     return response.json();
-  }).then((json) => {
+  });
+  let p2 = fetch("/storage/sm2?since=" + since).then((response) => {
+    return response.json();
+  });
+  Promise.all([p1, p2]).then((jsons) => {
     let labels = [];
-    let values = [];
-    for (let r of json) {
-      values.push({x: r.time, y: r.v});
+    let values1 = [];
+    let values2 = [];
+    let json1 = jsons[0];
+    let json2 = jsons[1];
+    for (let r of json1) {
+      values1.push({x: r.time, y: r.v});
     }
-    values.reverse();
+    values1.reverse();
+    for (let r of json2) {
+      values2.push({x: r.time, y: r.v});
+    }
+    values2.reverse();
     sm_data = {
       series: [{
         name: 'sm1',
-        data: values
+        data: values1
+      }],
+      series: [{
+        name: 'sm2',
+        data: values2
       }],
     };
     let smoothed = smooth(sm_data, "#sm_ct");
@@ -329,6 +344,11 @@ function sm_plot_init(tspan) {
       },
       series: {
         'sm1': {
+          showLine: true,
+          showPoint: false,
+          lineSmooth: false,
+        }
+        'sm2': {
           showLine: true,
           showPoint: false,
           lineSmooth: false,
