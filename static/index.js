@@ -101,6 +101,8 @@ function handle_message(o) {
     lamp(o.lamp);
   } else if (o.sm1) {
     sm(o.sm1, 1);
+  } else if (o.sm2) {
+    sm(o.sm2, 2);
   } else {
     console.log("Unknown state!");
   }
