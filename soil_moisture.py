@@ -59,12 +59,15 @@ class SoilMoist(Poller, Observable):
         else:
             raise ValueError("Bad soil moisture probe number")
     
+    def read_analog(self):
+        return self.sensor.read()
+    
     def read(self):
         reading = 0
         while reading < self.READING_MIN or reading > self.READING_MAX:
             # throw out bogus reading from the automationhat
-            reading = self.sensor.read()
-            reading2 = self.sensor.read()
+            reading = read_analog()
+            reading2 = read_analog()
             if (
                 reading != reading2
                 or reading < self.READING_MIN
