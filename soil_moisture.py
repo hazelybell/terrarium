@@ -77,7 +77,8 @@ class SoilMoist(Poller, Observable):
                 ):
                 DEBUG("Soil moisture reading #" + str(self.number)
                     + ": " + str(reading)
-                    + " " + str(reading2)
+                    + "-" + str(reading2)
+                    + ": " + str(reading - reading2)
                     )
         self.readings.append(reading)
         if len(self.readings) > self.READINGS_MAX:
