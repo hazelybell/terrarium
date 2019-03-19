@@ -331,7 +331,7 @@ function sm_plot_init(tspan) {
           name: 'sm1',
           data: values1
         },
-        series: [{
+        {
           name: 'sm2',
           data: values2
         }
