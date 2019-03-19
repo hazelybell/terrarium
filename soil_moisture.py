@@ -16,6 +16,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import time
+import statistics
 
 from observable import Observable
 from schedule import Poller
