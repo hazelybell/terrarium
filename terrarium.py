@@ -330,6 +330,11 @@ class CPUTemp(Poller, Observable):
             }
 
 class SoilMoist(Poller, Observable):
+    READINGS_GOOD = 20 # readings before considering the median good data
+    READINGS_MAX = 30 # max n readings to take the median of
+    READING_MIN = 0.5 # readings under this are considered bogus
+    READING_MAX = 3.5 # readings over this are considered bogus
+    
     def __init__(self, number, *args, **kwargs):
         super().__init__(*args, **kwargs)
         Observable.__init__(self)
@@ -353,9 +358,12 @@ class SoilMoist(Poller, Observable):
             raise ValueError("Bad soil moisture probe number")
     
     def read(self):
-        reading = self.sensor.read()
+        reading = 0
+        while reading < self.READING_MIN or reading > self.READING_MAX:
+            # throw out bogus reading from the automationhat
+            reading = self.sensor.read()
         self.readings.append(reading)
-        if len(self.readings) > 100:
+        if len(self.readings) > READINGS_MAX:
             self.readings.pop(0)
         median = statistics.median(self.readings)
         #DEBUG("Soil moisture reading #" + str(self.number)
@@ -367,7 +375,7 @@ class SoilMoist(Poller, Observable):
     def poll(self):
         self.read()
         median = self.read()
-        if len(self.readings) > 90:
+        if len(self.readings) > READINGS_GOOD:
             if median < self.min_med:
                 self.min_med = median
             if median > self.max_med:
@@ -383,7 +391,7 @@ class SoilMoist(Poller, Observable):
     def json(self):
         pct = self.median - self.min_
         pct = pct * 100 / (self.max_ - self.min_)
-        while len(self.readings) < 90:
+        while len(self.readings) < READINGS_GOOD:
             self.read()
         while self.time is None:
             self.poll()
