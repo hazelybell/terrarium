@@ -101,8 +101,8 @@ class SoilMoist(Poller, Observable):
         return {
             'v': self.reading, 
             'pct': pct,
-            'min': self.min_med,
-            'max': self.max_med,
+            'min': self.min_read,
+            'max': self.max_read,
             'time': self.time
             }
     
