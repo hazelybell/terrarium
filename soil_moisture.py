@@ -31,10 +31,6 @@ WARNING = logger.warning
 ERROR = logger.error
 CRITICAL = logger.critical
 
-class AnalogIn:
-    def __init__(self, channel, max_voltage):
-        pass
-
 class SoilMoist(Poller, Observable):
     READINGS_GOOD = 20 # readings before considering the median good data
     READINGS_MAX = 30 # max n readings to take the median of
@@ -68,6 +64,7 @@ class SoilMoist(Poller, Observable):
         while reading < self.READING_MIN or reading > self.READING_MAX:
             # throw out bogus reading from the automationhat
             reading = self.sensor.read()
+            DEBUG("Soil moisture reading #" + str(self.reading))
         self.readings.append(reading)
         if len(self.readings) > self.READINGS_MAX:
             self.readings.pop(0)
