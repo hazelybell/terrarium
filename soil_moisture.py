@@ -66,8 +66,8 @@ class SoilMoist(Poller, Observable):
         reading = 0
         while reading < self.READING_MIN or reading > self.READING_MAX:
             # throw out bogus reading from the automationhat
-            reading = read_analog()
-            reading2 = read_analog()
+            reading = self.read_analog()
+            reading2 = self.read_analog()
             if (
                 reading != reading2
                 or reading < self.READING_MIN
