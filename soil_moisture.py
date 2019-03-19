@@ -64,9 +64,12 @@ class SoilMoist(Poller, Observable):
         while reading < self.READING_MIN or reading > self.READING_MAX:
             # throw out bogus reading from the automationhat
             reading = self.sensor.read()
-            DEBUG("Soil moisture reading #" + str(self.number)
-                  + ": " + str(reading)
-                  )
+            reading2 = self.sensor.read()
+            if reading != reading2:
+                DEBUG("Soil moisture reading #" + str(self.number)
+                    + ": " + str(reading)
+                    + " " + str(reading2)
+                    )
         self.readings.append(reading)
         if len(self.readings) > self.READINGS_MAX:
             self.readings.pop(0)
@@ -78,7 +81,6 @@ class SoilMoist(Poller, Observable):
         return median
     
     def poll(self):
-        self.read()
         median = self.read()
         if len(self.readings) > self.READINGS_GOOD:
             if median < self.min_med:
