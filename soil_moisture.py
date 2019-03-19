@@ -64,7 +64,7 @@ class SoilMoist(Poller, Observable):
         while reading < self.READING_MIN or reading > self.READING_MAX:
             # throw out bogus reading from the automationhat
             reading = self.sensor.read()
-            DEBUG("Soil moisture reading #" + str(self.reading))
+            DEBUG("Soil moisture reading #" + str(reading))
         self.readings.append(reading)
         if len(self.readings) > self.READINGS_MAX:
             self.readings.pop(0)
