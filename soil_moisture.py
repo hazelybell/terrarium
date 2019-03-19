@@ -16,7 +16,7 @@
 #    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from observable import Observable
-from terrarium import Poller
+from schedule import Poller
 
 import logging
 logger = logging.getLogger(__name__)
