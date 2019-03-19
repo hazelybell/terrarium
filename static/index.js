@@ -66,8 +66,6 @@ function lamp(o) {
 function sm(o, n) {
   let d = document.querySelector('#sm #sm' + n);
   let v = Math.round(o.v * 100)/100;
-  let min = Math.round(o.min * 100)/100;
-  let max = Math.round(o.max * 100)/100;
   let pct = Math.round(o.pct * 10)/10;
   let word;
   if (pct > 66.6) {
@@ -78,7 +76,7 @@ function sm(o, n) {
     word = "wet";
   }
   d.className = word;
-  d.innerText = v + "V (" + min + "-" + max + ") " + pct + "% " + word;
+  d.innerText = v + "V " + pct + "% " + word;
   if (sm_data && sm_chart) {
     let data = sm_data.series[n-1].data;
     data.push({x: o.time, y: o.pct});
