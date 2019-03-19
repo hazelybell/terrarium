@@ -33,7 +33,6 @@ CRITICAL = logger.critical
 
 class SoilMoist(Poller, Observable):
     READINGS_GOOD = 20 # readings before considering the median good data
-    READINGS_MAX = 30 # max n readings to take the median of
     READING_MIN = 0.5 # readings under this are considered bogus
     READING_MAX = 3.5 # readings over this are considered bogus
     
@@ -52,7 +51,7 @@ class SoilMoist(Poller, Observable):
         elif number == 2:
             self.sensor = automationhat.analog.two
             self.max_ = 0.97
-            self.min_ = 2.62
+            self.min_ = 2.54
         elif number == 3:
             self.sensor = automationhat.analog.three
         else:
