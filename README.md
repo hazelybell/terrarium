@@ -7,6 +7,7 @@ Runs my terrarium from my Raspberry Pi.
 * Web UI
     * Logging via customised logger
     * CPU Temperature
+    * Soil Moisture
     * Outlet status
     * Flask
     * Single static page
@@ -23,6 +24,10 @@ Runs my terrarium from my Raspberry Pi.
 * Lamp
     * Controlls a lamp via [Automation Hat](https://shop.pimoroni.com/products/automation-hat) relay
     * Turns on and off at specified times of day
+* Soil Moisture
+    * Logs soil moisture readings
+    * Two capacative probes
+    * Uses Automation Hat's analog inputs
 * Logging
     * Logs to console and web UI using Python's built-in logging framework
 * Object-oriented
