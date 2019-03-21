@@ -240,8 +240,8 @@ class Plot {
       }
       let x_width = x_max - x_min;
       let every = x_width / goal;
-      console.log(
-        "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
+//       console.log(
+//         "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
       let smoothed = [];
       let maxed = [];
       let mined = [];
@@ -346,6 +346,7 @@ class Plot {
       }
     };
     let n = 0;
+    console.log(rawData);
     for (let series of this.rawData) {
       let series_name = 'plot' + (++n);
       for (let r of series) {
