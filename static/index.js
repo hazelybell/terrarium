@@ -28,6 +28,7 @@ class RemoteObserver {
     this.ws.addEventListener('message', (msg) => {
       let new_state = JSON.parse(msg.data);
       this.setState(new_state);
+      console.log(new_state);
     });
   }
   
