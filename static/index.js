@@ -128,14 +128,16 @@ let observableMixin = Base => class extends Base {
     this.notify_all();
   }
   
-  observe(observer) {
-    this.observers.push(observer);
+  observe(observer, key) {
+    this.observers.push([observer, key]);
   }
   
   notify_all() {
     let state = this.getState();
-    for (let observer of this.observers) {
-      observer.notify(state);
+    for (let observerKey of this.observers) {
+      let observer = observerKey[0];
+      let key = observerKey[1];
+      observer.notify(state, key);
     }
   }
 }
@@ -159,33 +161,121 @@ let remotes = new Remotes;
 class CPUTemp {
   constructor() {
     remotes.cputemp.observe(this);
+    
   }
   
   notify(state) {
     console.log(state);
     let d = document.querySelector('#cputemp_current');
     d.innerText = state.temp + " °C";
-    if (cputemp_data && cputemp_chart) {
-      let data = cputemp_data.series[0].data;
+  }
+}
+
+class Plot {
+  constructor(name) {
+    this.name = name;
+    this.chart = null;
+    this.tspan = null;
+    this.data = null;
+    this.chart_id = "#" + this.name + "_ct";
+    
+    document.getElementById(this.name + "_day").addEventListener("click",
+      () => {
+        this.plot_init(60*60*24);
+      }
+    );
+    document.getElementById(this.name + "_hour").addEventListener("click",
+      () => {
+        this.plot_init(60*60);
+      }
+    );
+  }
+  
+  unplot() {
+    if (this.chart) {
+      this.chart.detach();
+    }
+    this.chart = null;
+  }
+  
+  plot() {
+    this.unplot();
+    let labels = [];
+    let values = [];
+    this.data = {
+      series: [],
+    };
+    let config = {
+      axisX: {
+        type: Chartist.AutoScaleAxis,
+        onlyInteger: true,
+        scaleMinSpace: 100,
+      },
+      series: {
+      }
+    };
+    let n = 0;
+    for (let series of this.rawData) {
+      let series_name = 'plot' + (++n);
+      for (let r of series) {
+        values.push({x: r.time, y: r.temp});
+      }
+      values.reverse();
+      this.data.series.push({
+        name: series_name,
+        data: values
+      });
+      config.series[series_name] = {
+          showLine: true,
+          showPoint: false,
+          lineSmooth: false,
+        }
+    }
+    let smoothed = smooth(this.data, this.chart_id);
+    this.chart = new Chartist.Line(this.chart_id, smoothed, config);
+  }
+  
+  plot_init(seconds) {
+    let ctime = Date.now() / 1000;
+    let since = ctime - seconds;
+    this.tspan = seconds;
+    let promises = [];
+    for (let path of this.paths) {
+      promises.push(
+        fetch("/storage/" + this.name + "?since=" + since).then((response) => {
+          return response.json();
+        })
+      );
+    }
+    Promise.all(promises).then((jsons) => {
+      this.rawData = jsons;
+      this.plot();
+    });
+  }
+
+  notify(state, key) {
+    if (this.data) {
+      let data = this.data.series[key].data;
       data.push({x: state.time, y: state.temp});
-  //         console.log(cputemp_data.series[0].data);
       let now = Date.now() / 1000;
-  //         console.log(data[0].x + "<" + (now - cputemp_tspan));
-      while (data[0].x < now - cputemp_tspan) {
-  //           console.log("shifting out");
+      while (data[0].x < now - this.tspan) {
         data.shift();
       }
-      let smoothed = smooth(cputemp_data, '#cputemp_ct');
-      cputemp_chart.update(smoothed);
+    }
+    if (this.chart) {
+      let smoothed = smooth(this.data, this.chart_id);
+      this.chart.update(smoothed);
     }
   }
 }
 
-
-
-var cputemp_data;
-var cputemp_chart;
-var cputemp_tspan;
+class CPUTempPlot extends Plot {
+  constructor() {
+    this.paths = ["cputemp"];
+    super("cputemp");
+    remotes.cputemp.observe(this, 0);
+  }
+}
 
 function smooth(data, selector) {
   let serieses = data.series;
@@ -306,128 +396,10 @@ function smooth(data, selector) {
   return new_data;
 }
 
-function cputemp_plot_init(tspan) {
-  let ctime = Date.now() / 1000;
-  let since = ctime - (tspan);
-  fetch("/storage/cputemp?since=" + since).then((response) => {
-    return response.json();
-  }).then((json) => {
-    let labels = [];
-    let values = [];
-    for (let r of json) {
-      values.push({x: r.time, y: r.temp});
-    }
-    values.reverse();
-    cputemp_data = {
-      series: [{
-        name: 'temperature',
-        data: values
-      }],
-    };
-    let smoothed = smooth(cputemp_data, "#cputemp_ct");
-    let config = {
-      axisX: {
-        type: Chartist.AutoScaleAxis,
-        onlyInteger: true,
-        scaleMinSpace: 100,
-      },
-      series: {
-        'temperature': {
-          showLine: true,
-          showPoint: false,
-          lineSmooth: false,
-        }
-      }
-    };
-    if (cputemp_chart) {
-      cputemp_chart.detach();
-    }
-    cputemp_chart = new Chartist.Line('#cputemp_ct', smoothed, config);
-    cputemp_tspan = tspan;
-  });
-}
-
-var sm_data;
-var sm_chart;
-var sm_tspan;
-
-function sm_plot_init(tspan) {
-  let ctime = Date.now() / 1000;
-  let since = ctime - (tspan);
-  let p1 = fetch("/storage/sm1?since=" + since).then((response) => {
-    return response.json();
-  });
-  let p2 = fetch("/storage/sm2?since=" + since).then((response) => {
-    return response.json();
-  });
-  Promise.all([p1, p2]).then((jsons) => {
-    let labels = [];
-    let values1 = [];
-    let values2 = [];
-    let json1 = jsons[0];
-    let json2 = jsons[1];
-    for (let r of json1) {
-      values1.push({x: r.time, y: r.pct});
-    }
-    values1.reverse();
-    for (let r of json2) {
-      values2.push({x: r.time, y: r.pct});
-    }
-    values2.reverse();
-    sm_data = {
-      series: [
-        {
-          name: 'sm1',
-          data: values1
-        },
-        {
-          name: 'sm2',
-          data: values2
-        }
-      ],
-    };
-    let smoothed = smooth(sm_data, "#sm_ct");
-    let config = {
-      axisX: {
-        type: Chartist.AutoScaleAxis,
-        onlyInteger: true,
-        scaleMinSpace: 100,
-      },
-      series: {
-        'sm1': {
-          showLine: true,
-          showPoint: false,
-          lineSmooth: false,
-        },
-        'sm2': {
-          showLine: true,
-          showPoint: false,
-          lineSmooth: false,
-        }
-      }
-    };
-    if (sm_chart) {
-      sm_chart.detach();
-    }
-    sm_chart = new Chartist.Line('#sm_ct', smoothed, config);
-    sm_tspan = tspan;
-  });
-}
-
 document.addEventListener('DOMContentLoaded', function() {
   let cputemp = new CPUTemp();
+  let cputempplot = new CPUTempPlot();
   
-  document.getElementById("cputemp_day").addEventListener("click",
-    function() {
-      cputemp_plot_init(60*60*24);
-    }
-  );
-  document.getElementById("cputemp_hour").addEventListener("click",
-    function() {
-      cputemp_plot_init(60*60);
-    }
-  );
-
   document.getElementById("sm_day").addEventListener("click",
     function() {
       sm_plot_init(60*60*24);
