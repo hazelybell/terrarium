@@ -346,7 +346,7 @@ class Plot {
       }
     };
     let n = 0;
-    console.log(rawData);
+    console.log(this.rawData);
     for (let series of this.rawData) {
       let series_name = 'plot' + (++n);
       for (let r of series) {
