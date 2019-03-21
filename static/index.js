@@ -408,7 +408,7 @@ class CPUTempPlot extends Plot {
   }
 }
 
-class CPUTempPlot extends Plot {
+class SoilMoisturePlot extends Plot {
   constructor() {
     super("sm");
     this.paths = ["sm1", "sm2"];
@@ -423,6 +423,7 @@ document.addEventListener('DOMContentLoaded', function() {
   let log_ = new Log();
   let sm1 = new SoilMoisture(1);
   let sm2 = new SoilMoisture(2);
+  let soilMoisturePlot = new SoilMoisturePlot();
   
   document.getElementById("sm_day").addEventListener("click",
     function() {
