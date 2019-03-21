@@ -32,7 +32,7 @@ ERROR = logger.error
 CRITICAL = logger.critical
 
 class SoilMoist(Poller, Observable):
-    READINGS_GOOD = 20 # readings before considering the median good data
+    READINGS_GOOD = 20 # readings before considering the mean good data
     READING_MIN = 0.5 # readings under this are considered bogus
     READING_MAX = 3.5 # readings over this are considered bogus
     

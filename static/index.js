@@ -89,6 +89,88 @@ function sm(o, n) {
   }
 }
 
+class RemoteObserver {
+  setState(state) {
+    throw new Error("Not implemented");
+  }
+  
+//   updateState(state) {
+//     this.set_state(state);
+//     if (this.now_has_state) {
+//       this.now_has_state();
+//       this.now_has_state = false;
+//     }
+//   }
+  
+  connect() {
+    this.ws = new WebSocket("ws://" + location.host + '/' + this.path);
+    
+    this.ws.addEventListener('open', (openEvent) => {
+      ws.send(JSON.stringify({'refresh': viewID}));
+    });
+    
+    ws.addEventListener('close', (closeEvent) => {
+      this.connect();
+    });
+    
+    this.ws.addEventListener('message', (msg) => {
+      let new_state = JSON.parse(msg.data);
+      this.setState(new_state);
+    });
+  }
+  
+  constructor(path) {
+    this.path = path;
+    this.has_state = new Promise((resolve, reject) => {
+      console.log(resolve);
+      this.now_has_state = resolve;
+    });
+    this.connect();
+  }
+}
+
+let observableMixin = Base => class extends Base {
+  constructor() {
+    super(...arguments);
+    this.observers = [];
+  }
+  
+  getState() {
+    return this.state;
+  }
+  
+  setState(new_state) {
+    this.state = new_state;
+    this.notify_all();
+  }
+  
+  observe(observer) {
+    this.observers.push(observer);
+  }
+  
+  notify_all() {
+    let state = this.getState();
+    for (let observer of this.observers) {
+      observer.notify(state);
+    }
+  }
+}
+
+class RemoteObservable extends observableMixin(RemoteObserver) {
+}
+
+class Remotes {
+  constructor() {
+    this.log = new RemoteObservable("observables/log");
+    this.cpu_temp = new RemoteObservable("observables/cpu_temp");
+    this.sm = [
+      new RemoteObservable("observables/sm1"),
+      new RemoteObservable("observables/sm2")
+    ]
+  }
+}
+
+let remotes = new Remotes;
 
 function handle_message(o) {
   if (o.log) {
