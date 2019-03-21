@@ -28,7 +28,6 @@ class RemoteObserver {
     this.ws.addEventListener('message', (msg) => {
       let new_state = JSON.parse(msg.data);
       this.setState(new_state);
-      console.log(new_state);
     });
   }
   
@@ -62,6 +61,7 @@ let observableMixin = Base => class extends Base {
   
   notify_all() {
     let state = this.getState();
+    console.log(state);
     for (let observerKey of this.observers) {
       let observer = observerKey[0];
       let key = observerKey[1];
