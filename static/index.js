@@ -424,15 +424,4 @@ document.addEventListener('DOMContentLoaded', function() {
   let sm1 = new SoilMoisture(1);
   let sm2 = new SoilMoisture(2);
   let soilMoisturePlot = new SoilMoisturePlot();
-  
-  document.getElementById("sm_day").addEventListener("click",
-    function() {
-      sm_plot_init(60*60*24);
-    }
-  );
-  document.getElementById("sm_hour").addEventListener("click",
-    function() {
-      sm_plot_init(60*60);
-    }
-  );
 }, false);
