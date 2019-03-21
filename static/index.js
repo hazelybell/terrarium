@@ -156,6 +156,7 @@ class Log {
     p.appendChild(m);
     
     p.className = state.level + " " + state.module;
+    this.insertAt(p, state.time);
   }
   
   refresh() {
