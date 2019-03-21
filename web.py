@@ -36,57 +36,22 @@ storage = None
 observables = dict()
 
 class WebSocketObserver:
-    views = dict()
-    
-    def __init__(self, ws, observable, view_id, name):
+    def __init__(self, ws, observable):
         self.ws = ws
         assert observable is not None
         self.observable = observable
-        self.view_id = view_id
-        self.name = name
         self.observable.observe(self)
-        self.oid = id(observable)
-        if self.oid not in self.views:
-            self.views[self.oid] = set()
-        if view_id not in self.views[self.oid]:
-            # either the page refreshed or the server restarted
-            self.views[self.oid].add(view_id)
-            self.refresh() # initial load, send full state
-    
-    def send(self, msg):
-        try:
-            self.ws.send(json.dumps(msg))
-        except geventwebsocket.WebSocketError:
-            self.observable.unobserve(self)
     
     def notify(self, e):
         if self.ws.closed:
             self.observable.unobserve(self)
             return
-        if isinstance(e, list):
-            named = [{self.name: v} for v in e]
-            self.send(named)
-        else:
-            named = {self.name: e}
-            self.send(named)
+        try:
+            self.ws.send(json.dumps(e))
+        except geventwebsocket.WebSocketError:
+            self.observable.unobserve(self)
+        
     
-    def refresh(self):
-        self.observable.refresh(self)
-    
-@sockets.route('/log')
-def log_socket(ws):
-    observers = list()
-    while not ws.closed:
-        message = ws.receive()
-        if message is None:
-            continue
-        message = json.loads(message)
-        if 'viewID' in message:
-            view_id = message['viewID']
-            for name, observable in observables.items():
-                observer = WebSocketObserver(ws, observable, view_id, name)
-        else:
-            ValueError("Got bad command over websocket: " + str(message))
 
 @app.route('/')
 def index():
@@ -106,6 +71,20 @@ def get_storage(name):
     else:
         abort(400) # Bad Request
     return flask.jsonify(records)
+
+@sockets.route('/observables/<name>')
+def observable_socket(name, ws):
+    if name not in observables:
+        ws.close()
+        return
+    observer = WebSocketObserver(ws, observables[name])
+    while not ws.closed:
+        message = ws.receive()
+        if message is None:
+            continue
+        message = json.loads(message)
+        ValueError("Got bad command over websocket: " + str(message))
+    
 
 @app.route('/static/<path:path>')
 def get_static(path):

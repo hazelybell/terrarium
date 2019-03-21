@@ -122,7 +122,6 @@ class RemoteObserver {
   constructor(path) {
     this.path = path;
     this.has_state = new Promise((resolve, reject) => {
-      console.log(resolve);
       this.now_has_state = resolve;
     });
     this.connect();
@@ -171,48 +170,6 @@ class Remotes {
 }
 
 let remotes = new Remotes;
-
-function handle_message(o) {
-  if (o.log) {
-    add_to_log(o.log);
-  } else if (o.cputemp) {
-    cputemp(o.cputemp);
-  } else if (o.lamp) {
-    lamp(o.lamp);
-  } else if (o.sm1) {
-    sm(o.sm1, 1);
-  } else if (o.sm2) {
-    sm(o.sm2, 2);
-  } else {
-    console.log("Unknown state!");
-  }
-}
-
-function resume_logging() {
-  let ws = new WebSocket('ws://' + location.host + '/log');
-  
-  ws.addEventListener('message', (msg) => {
-    let l = JSON.parse(msg.data);
-    if (Array.isArray(l)) {
-      for (let i of l) {
-        handle_message(i);
-      }
-    } else {
-      handle_message(l);
-    }
-  });
-  
-  ws.addEventListener('close', (closeEvent) => {
-    resume_logging();
-  });
-  
-  ws.addEventListener('open', (openEvent) => {
-    let msg = 'refresh';
-    ws.send(JSON.stringify({'viewID': viewID}));
-  });
-  
-  return ws;
-}
 
 var cputemp_data;
 var cputemp_chart;
@@ -446,8 +403,6 @@ function sm_plot_init(tspan) {
 }
 
 document.addEventListener('DOMContentLoaded', function(){
-  let ws = resume_logging();
-
   document.getElementById("cputemp_day").addEventListener("click",
     function() {
       cputemp_plot_init(60*60*24);
