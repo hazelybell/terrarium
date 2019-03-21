@@ -387,7 +387,7 @@ class Plot {
   notify(state, key) {
     if (this.data) {
       let data = this.data.series[key].data;
-      data.push({x: state.time, y: state.temp});
+      data.push({x: state.time, y: state[this.key]});
       let now = Date.now() / 1000;
       while (data[0].x < now - this.tspan) {
         data.shift();
