@@ -106,10 +106,10 @@ class RemoteObserver {
     this.ws = new WebSocket("ws://" + location.host + '/' + this.path);
     
     this.ws.addEventListener('open', (openEvent) => {
-      ws.send(JSON.stringify({'refresh': viewID}));
+      this.ws.send(JSON.stringify({'refresh': viewID}));
     });
     
-    ws.addEventListener('close', (closeEvent) => {
+    this.ws.addEventListener('close', (closeEvent) => {
       this.connect();
     });
     
