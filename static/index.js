@@ -61,9 +61,10 @@ let observableMixin = Base => class extends Base {
   
   notify_all() {
     let state = this.getState();
-      if (state.power) {
-        console.log(state);
-      }
+    if (this.observers.length === 0) {
+      console.log(this);
+      console.log(state);
+    }
     for (let observerKey of this.observers) {
       let observer = observerKey[0];
       let key = observerKey[1];
