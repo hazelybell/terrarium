@@ -161,7 +161,7 @@ class RemoteObservable extends observableMixin(RemoteObserver) {
 class Remotes {
   constructor() {
     this.log = new RemoteObservable("observables/log");
-    this.cpu_temp = new RemoteObservable("observables/cpu_temp");
+    this.cputemp = new RemoteObservable("observables/cputemp");
     this.sm = [
       new RemoteObservable("observables/sm1"),
       new RemoteObservable("observables/sm2")
