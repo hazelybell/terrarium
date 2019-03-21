@@ -136,8 +136,6 @@ class Log {
       this.logDiv.appendChild(elt);
       this.entries.push([time, elt]);
     }
-    var eltOffset = elt.offsetTop;
-    this.logInner.scrollTop = eltOffset;
   }
   
   addEntry(state) {
@@ -183,6 +181,9 @@ class Log {
   
   notify(state) {
     this.addEntry(state);
+    let elt = this.entries[this.entries.length - 1][1];
+    let eltOffset = elt.offsetTop;
+    this.logInner.scrollTop = eltOffset;
   }
 }
 
