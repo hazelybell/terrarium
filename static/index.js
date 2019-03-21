@@ -65,7 +65,6 @@ let observableMixin = Base => class extends Base {
       let observer = observerKey[0];
       let key = observerKey[1];
       observer.notify(state, key);
-      console.log(state, key);
     }
   }
 }
@@ -140,6 +139,7 @@ class Lamp {
   }
   
   notify(state) {
+    console.log(state);
     let d = document.querySelector('#lamp .boxinner');
     d.innerText = "Outlet: power " + state.power;
     d.className = "boxinner " + state.power;
