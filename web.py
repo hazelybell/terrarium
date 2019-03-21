@@ -67,16 +67,13 @@ def get_storage(name):
     since = flask.request.args.get('since', None)
     until = flask.request.args.get('until', None)
     records = None
-    DEBUG("DB QUERY")
     if number:
         records = storage_observer.last(number)
     elif since:
         records = storage_observer.since(since, until)
     else:
         abort(400) # Bad Request
-    DEBUG("JSON")
     json = flask.jsonify(records)
-    DEBUG("SEND")
     return json
 
 @sockets.route('/observables/<name>')
