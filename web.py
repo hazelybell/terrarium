@@ -76,6 +76,7 @@ def get_storage(name):
 def observable_socket(ws, name):
     if name not in observables:
         ws.close()
+        WARNING("Remote end asked for bad observable " + name)
         return
     observer = WebSocketObserver(ws, observables[name])
     while not ws.closed:
