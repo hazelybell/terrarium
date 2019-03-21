@@ -39,9 +39,6 @@ function add_to_log(l) {
   document.getElementById('loginner').scrollTop = pOffset;
 }
 
-function cputemp(o) {
-}
-
 function lamp(o) {
   let d = document.querySelector('#lamp .boxinner');
   d.innerText = "Outlet: power " + o.power;
@@ -78,14 +75,6 @@ class RemoteObserver {
   setState(state) {
     throw new Error("Not implemented");
   }
-  
-//   updateState(state) {
-//     this.set_state(state);
-//     if (this.now_has_state) {
-//       this.now_has_state();
-//       this.now_has_state = false;
-//     }
-//   }
   
   connect() {
     this.ws = new WebSocket("ws://" + location.host + '/' + this.path);
@@ -271,8 +260,8 @@ class Plot {
 
 class CPUTempPlot extends Plot {
   constructor() {
-    this.paths = ["cputemp"];
     super("cputemp");
+    this.paths = ["cputemp"];
     remotes.cputemp.observe(this, 0);
   }
 }
