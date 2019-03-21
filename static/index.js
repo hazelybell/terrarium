@@ -166,7 +166,7 @@ class SoilMoisture {
   }
   
   notify(state) {
-    let selector = '#sm #sm' + self.n;
+    let selector = '#sm #sm' + this.n;
     console.log(selector);
     let d = document.querySelector(selector);
     let v = Math.round(state.v * 100)/100;
