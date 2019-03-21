@@ -162,7 +162,7 @@ class SoilMoisture {
   constructor(n) {
     this.i = n - 1;
     this.n = n;
-    remotes.sm[this.i].observe(this, i);
+    remotes.sm[this.i].observe(this);
   }
   
   notify(state) {
