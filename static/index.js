@@ -167,7 +167,6 @@ class SoilMoisture {
   
   notify(state) {
     let selector = '#sm #sm' + this.n;
-    console.log(selector);
     let d = document.querySelector(selector);
     let v = Math.round(state.v * 100)/100;
     let pct = Math.round(state.pct * 10)/10;
@@ -405,6 +404,14 @@ class CPUTempPlot extends Plot {
   constructor() {
     super("cputemp");
     this.paths = ["cputemp"];
+    remotes.cputemp.observe(this, 0);
+  }
+}
+
+class CPUTempPlot extends Plot {
+  constructor() {
+    super("sm");
+    this.paths = ["sm1", "sm2"];
     remotes.cputemp.observe(this, 0);
   }
 }
