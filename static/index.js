@@ -10,33 +10,6 @@ var viewID = uuidv4();
 console.log(viewID);
 
 function add_to_log(l) {
-  let p = document.createElement('tr');
-  
-  let lev = document.createElement('td');
-  lev.className = "level";
-  lev.innerText = l.level;
-  p.appendChild(lev);
-  
-  let t = document.createElement('td');
-  t.className = "time";
-  t.innerText = l.time;
-  p.appendChild(t);
-  
-  let mod = document.createElement('td');
-  mod.className = "module";
-  mod.innerText = l.module;
-  p.appendChild(mod);
-  
-  let m = document.createElement('td');
-  m.className = "msg";
-  m.innerText = l.msg;
-  p.appendChild(m);
-  
-  p.className = l.level + " " + l.module;
-  var logDiv = document.getElementById('logbody')
-  logDiv.appendChild(p);
-  var pOffset = p.offsetTop;
-  document.getElementById('loginner').scrollTop = pOffset;
 }
 
 function lamp(o) {
@@ -150,13 +123,48 @@ let remotes = new Remotes;
 class CPUTemp {
   constructor() {
     remotes.cputemp.observe(this);
-    
   }
   
   notify(state) {
     console.log(state);
     let d = document.querySelector('#cputemp_current');
     d.innerText = state.temp + " °C";
+  }
+}
+
+class Log {
+  constructor() {
+    remotes.log.observe(this);
+  }
+  
+  notify(state) {
+    let p = document.createElement('tr');
+    
+    let lev = document.createElement('td');
+    lev.className = "level";
+    lev.innerText = state.level;
+    p.appendChild(lev);
+    
+    let t = document.createElement('td');
+    t.className = "time";
+    t.innerText = state.time;
+    p.appendChild(t);
+    
+    let mod = document.createElement('td');
+    mod.className = "module";
+    mod.innerText = state.module;
+    p.appendChild(mod);
+    
+    let m = document.createElement('td');
+    m.className = "msg";
+    m.innerText = state.msg;
+    p.appendChild(m);
+    
+    p.className = state.level + " " + state.module;
+    var logDiv = document.getElementById('logbody')
+    logDiv.appendChild(p);
+    var pOffset = p.offsetTop;
+    document.getElementById('loginner').scrollTop = pOffset;
   }
 }
 
@@ -187,6 +195,125 @@ class Plot {
     this.chart = null;
   }
   
+  smooth(data, selector) {
+    let serieses = data.series;
+    let elt = document.querySelector(selector);
+    let width = elt.clientWidth;
+    let goal = (width - 200) / 5; // TODO: get actual width of inner plot
+  //   console.log("goal " + goal);
+    
+    let new_data = {};
+    Object.assign(new_data, data);
+    let new_serieses = [];
+    
+    for (let series of serieses) {
+      let raw = series.data;
+      let name = series.name;
+      let x_min = Infinity;
+      let x_max = -Infinity;
+      if (raw.length === 0) {
+        return data;
+      }
+      for (let i of raw) {
+        let x = i.x;
+        if (x < x_min) {
+          x_min = x;
+        }
+        if (x > x_max) {
+          x_max = x;
+        }
+      }
+      let x_width = x_max - x_min;
+      let every = x_width / goal;
+      console.log(
+        "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
+      let smoothed = [];
+      let maxed = [];
+      let mined = [];
+      function point(center_i) {
+        let center_x = raw[center_i].x;
+        let center_y = raw[center_i].y;
+        let count = 0;
+        let x_acc = 0;
+        let y_acc = 0;
+        let y_min = center_y;
+        let y_max = center_y;
+        for (
+          let j = center_i-1; // start at the point before the center
+          (j - 1 > 0) && (center_x - raw[j-1].x < every);
+          j--
+        ) { // left side
+          let weight = raw[j].x - raw[j-1].x;
+          x_acc = x_acc + (raw[j].x * weight);
+          y_acc = y_acc + (raw[j].y * weight);
+          if (raw[j].y > y_max) {
+            y_max = raw[j].y;
+          }
+          if (raw[j].y < y_min) {
+            y_min = raw[j].y;
+          }
+          count += weight;
+        }
+        for (
+          let j = center_i;
+          (j < raw.length) && (raw[j].x - center_x < every);
+          j++
+        ) { // right side
+          let weight;
+          if (j-1 >= 0) {
+            weight = raw[j].x - raw[j-1].x;
+          } else {
+            weight = 1;
+          }
+          x_acc = x_acc + (raw[j].x * weight);
+          y_acc = y_acc + (raw[j].y * weight);
+          if (raw[j].y > y_max) {
+            y_max = raw[j].y;
+          }
+          if (raw[j].y < y_min) {
+            y_min = raw[j].y;
+          }
+          count += weight;
+        }
+        // emit point
+        smoothed.push({
+          x: center_x,
+          y: y_acc / count,
+        });
+        maxed.push({
+          x: center_x,
+          y: y_max,
+        });
+        mined.push({
+          x: center_x,
+          y: y_min,
+        });
+      }
+      let prev_x = 0;
+      for (let i = 0; i < raw.length; i++) {
+        if (raw[i].x - prev_x > every) {
+          point(i);
+          prev_x = raw[i].x;
+        }
+      }
+  //     console.log("new length: " + smoothed.length);
+      let new_series = {};
+      Object.assign(new_series, series);
+      new_series.data = smoothed;
+      new_serieses.push(new_series);
+      let max_series = {};
+      Object.assign(max_series, series);
+      max_series.data = maxed;
+      new_serieses.push(max_series);
+      let min_series = {};
+      Object.assign(min_series, series);
+      min_series.data = mined;
+      new_serieses.push(min_series);
+    }
+    new_data.series = new_serieses;
+    return new_data;
+  }
+
   plot() {
     this.unplot();
     let labels = [];
@@ -220,7 +347,7 @@ class Plot {
           lineSmooth: false,
         }
     }
-    let smoothed = smooth(this.data, this.chart_id);
+    let smoothed = this.smooth(this.data, this.chart_id);
     this.chart = new Chartist.Line(this.chart_id, smoothed, config);
   }
   
@@ -252,7 +379,7 @@ class Plot {
       }
     }
     if (this.chart) {
-      let smoothed = smooth(this.data, this.chart_id);
+      let smoothed = this.smooth(this.data, this.chart_id);
       this.chart.update(smoothed);
     }
   }
@@ -266,128 +393,11 @@ class CPUTempPlot extends Plot {
   }
 }
 
-function smooth(data, selector) {
-  let serieses = data.series;
-  let elt = document.querySelector(selector);
-  let width = elt.clientWidth;
-  let goal = (width - 200) / 5; // TODO: get actual width of inner plot
-//   console.log("goal " + goal);
-  
-  let new_data = {};
-  Object.assign(new_data, data);
-  let new_serieses = [];
-  
-  for (let series of serieses) {
-    let raw = series.data;
-    let name = series.name;
-    let x_min = Infinity;
-    let x_max = -Infinity;
-    if (raw.length === 0) {
-      return data;
-    }
-    for (let i of raw) {
-      let x = i.x;
-      if (x < x_min) {
-        x_min = x;
-      }
-      if (x > x_max) {
-        x_max = x;
-      }
-    }
-    let x_width = x_max - x_min;
-    let every = x_width / goal;
-    console.log(
-      "xmin: " + x_min + " x_max: " + x_max + "every: " + every);
-    let smoothed = [];
-    let maxed = [];
-    let mined = [];
-    function point(center_i) {
-      let center_x = raw[center_i].x;
-      let center_y = raw[center_i].y;
-      let count = 0;
-      let x_acc = 0;
-      let y_acc = 0;
-      let y_min = center_y;
-      let y_max = center_y;
-      for (
-        let j = center_i-1; // start at the point before the center
-        (j - 1 > 0) && (center_x - raw[j-1].x < every);
-        j--
-      ) { // left side
-        let weight = raw[j].x - raw[j-1].x;
-        x_acc = x_acc + (raw[j].x * weight);
-        y_acc = y_acc + (raw[j].y * weight);
-        if (raw[j].y > y_max) {
-          y_max = raw[j].y;
-        }
-        if (raw[j].y < y_min) {
-          y_min = raw[j].y;
-        }
-        count += weight;
-      }
-      for (
-        let j = center_i;
-        (j < raw.length) && (raw[j].x - center_x < every);
-        j++
-      ) { // right side
-        let weight;
-        if (j-1 >= 0) {
-          weight = raw[j].x - raw[j-1].x;
-        } else {
-          weight = 1;
-        }
-        x_acc = x_acc + (raw[j].x * weight);
-        y_acc = y_acc + (raw[j].y * weight);
-        if (raw[j].y > y_max) {
-          y_max = raw[j].y;
-        }
-        if (raw[j].y < y_min) {
-          y_min = raw[j].y;
-        }
-        count += weight;
-      }
-      // emit point
-      smoothed.push({
-        x: center_x,
-        y: y_acc / count,
-      });
-      maxed.push({
-        x: center_x,
-        y: y_max,
-      });
-      mined.push({
-        x: center_x,
-        y: y_min,
-      });
-    }
-    let prev_x = 0;
-    for (let i = 0; i < raw.length; i++) {
-      if (raw[i].x - prev_x > every) {
-        point(i);
-        prev_x = raw[i].x;
-      }
-    }
-//     console.log("new length: " + smoothed.length);
-    let new_series = {};
-    Object.assign(new_series, series);
-    new_series.data = smoothed;
-    new_serieses.push(new_series);
-    let max_series = {};
-    Object.assign(max_series, series);
-    max_series.data = maxed;
-    new_serieses.push(max_series);
-    let min_series = {};
-    Object.assign(min_series, series);
-    min_series.data = mined;
-    new_serieses.push(min_series);
-  }
-  new_data.series = new_serieses;
-  return new_data;
-}
 
 document.addEventListener('DOMContentLoaded', function() {
   let cputemp = new CPUTemp();
   let cputempplot = new CPUTempPlot();
+  let log_ = new Log();
   
   document.getElementById("sm_day").addEventListener("click",
     function() {
