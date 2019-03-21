@@ -31,7 +31,7 @@ ERROR = logger.error
 CRITICAL = logger.critical
 
 app = flask.Flask(__name__)
-flask_compress.Compress(app)
+#flask_compress.Compress(app)
 sockets = flask_sockets.Sockets(app)
 
 storage = None
