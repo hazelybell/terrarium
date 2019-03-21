@@ -120,6 +120,9 @@ class Log {
     }
     if (this.entries.length > 0) {
       if (time > this.entries[m][0]) {
+        console.log("length:" + this.entries.length
+          + " l:" + l + " m:" + m + " r:" + r
+        );
         throw new Error("binary search error");
       }
       this.logDiv.insertBefore(elt, this.entries[m][1]);
