@@ -40,21 +40,6 @@ function add_to_log(l) {
 }
 
 function cputemp(o) {
-  let d = document.querySelector('#cputemp_current');
-  d.innerText = o.temp + " °C";
-  if (cputemp_data && cputemp_chart) {
-    let data = cputemp_data.series[0].data;
-    data.push({x: o.time, y: o.temp});
-//         console.log(cputemp_data.series[0].data);
-    let now = Date.now() / 1000;
-//         console.log(data[0].x + "<" + (now - cputemp_tspan));
-    while (data[0].x < now - cputemp_tspan) {
-//           console.log("shifting out");
-      data.shift();
-    }
-    let smoothed = smooth(cputemp_data, '#cputemp_ct');
-    cputemp_chart.update(smoothed);
-  }
 }
 
 function lamp(o) {
@@ -178,6 +163,21 @@ class CPUTemp {
   
   notify(state) {
     console.log(state);
+    let d = document.querySelector('#cputemp_current');
+    d.innerText = o.temp + " °C";
+    if (cputemp_data && cputemp_chart) {
+      let data = cputemp_data.series[0].data;
+      data.push({x: o.time, y: o.temp});
+  //         console.log(cputemp_data.series[0].data);
+      let now = Date.now() / 1000;
+  //         console.log(data[0].x + "<" + (now - cputemp_tspan));
+      while (data[0].x < now - cputemp_tspan) {
+  //           console.log("shifting out");
+        data.shift();
+      }
+      let smoothed = smooth(cputemp_data, '#cputemp_ct');
+      cputemp_chart.update(smoothed);
+    }
   }
 }
 
