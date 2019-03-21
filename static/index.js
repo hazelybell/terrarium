@@ -413,7 +413,7 @@ class SoilMoisturePlot extends Plot {
   constructor() {
     super("sm");
     this.paths = ["sm1", "sm2"];
-    this.key = pct;
+    this.key = "pct";
     for (let i = 0; i < remotes.sm.length; i++) {
       remotes.sm[i].observe(this, i);
     }
