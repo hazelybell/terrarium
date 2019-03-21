@@ -94,6 +94,42 @@ class Log {
   constructor() {
     this.refresh();
     remotes.log.observe(this);
+    this.entries = [];
+    this.logDiv = document.getElementById('logbody');
+    this.logInner = document.getElementById('loginner');
+
+  }
+  
+  insertAt(elt, time) {
+    let l = 0;
+    let r = this.entries.length - 1;
+    let m = 0;
+    while (true) { // simple binary search
+      if (l >= r) {
+        break;
+      }
+      m = Math.floor((l + r)/2);
+      if (this.entries[m][0] < time) {
+        l = m + 1;
+      } else if (this.entries[m][0] > time) {
+        r = m;
+      } else if (this.entries[m][0] == time) {
+        // found the exact log entry, do nothing
+        return;
+      }
+    }
+    if (this.entries.length > 0) {
+      if (time > this.entries[m][0]) {
+        throw new Error("binary search error");
+      }
+      this.logDiv.insertBefore(elt, this.entries[m][1]);
+      this.entries.splice(m, 0, [time, elt]);
+    } else {
+      this.logDiv.appendChild(elt);
+      this.entries[0] = [time, elt];
+    }
+    var eltOffset = elt.offsetTop;
+    this.logInner.scrollTop = eltOffset;
   }
   
   addEntry(state) {
@@ -120,10 +156,6 @@ class Log {
     p.appendChild(m);
     
     p.className = state.level + " " + state.module;
-    var logDiv = document.getElementById('logbody')
-    logDiv.appendChild(p);
-    var pOffset = p.offsetTop;
-    document.getElementById('loginner').scrollTop = pOffset;
   }
   
   refresh() {
