@@ -19,6 +19,7 @@ import json
 
 import flask
 import flask_sockets
+import flask_compress
 import geventwebsocket
 
 import logging
@@ -30,6 +31,7 @@ ERROR = logger.error
 CRITICAL = logger.critical
 
 app = flask.Flask(__name__)
+flask_compress.Compress(app)
 sockets = flask_sockets.Sockets(app)
 
 storage = None
