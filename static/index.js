@@ -365,6 +365,8 @@ class Plot {
         }
     }
     let smoothed = this.smooth(this.data, this.chart_id);
+    console.log(smoothed);
+    console.log(config);
     this.chart = new Chartist.Line(this.chart_id, smoothed, config);
   }
   
