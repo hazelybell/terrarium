@@ -73,7 +73,7 @@ def get_storage(name):
     return flask.jsonify(records)
 
 @sockets.route('/observables/<name>')
-def observable_socket(name, ws):
+def observable_socket(ws, name):
     if name not in observables:
         ws.close()
         return
