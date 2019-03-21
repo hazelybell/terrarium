@@ -33,9 +33,6 @@ class RemoteObserver {
   
   constructor(path) {
     this.path = path;
-    this.has_state = new Promise((resolve, reject) => {
-      this.now_has_state = resolve;
-    });
     this.connect();
   }
 }
@@ -423,4 +420,5 @@ document.addEventListener('DOMContentLoaded', function() {
   let sm1 = new SoilMoisture(1);
   let sm2 = new SoilMoisture(2);
   let soilMoisturePlot = new SoilMoisturePlot();
+  let lamp = new Lamp();
 }, false);
