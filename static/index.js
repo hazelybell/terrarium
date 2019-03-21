@@ -164,10 +164,10 @@ class CPUTemp {
   notify(state) {
     console.log(state);
     let d = document.querySelector('#cputemp_current');
-    d.innerText = o.temp + " °C";
+    d.innerText = state.temp + " °C";
     if (cputemp_data && cputemp_chart) {
       let data = cputemp_data.series[0].data;
-      data.push({x: o.time, y: o.temp});
+      data.push({x: state.time, y: state.temp});
   //         console.log(cputemp_data.series[0].data);
       let now = Date.now() / 1000;
   //         console.log(data[0].x + "<" + (now - cputemp_tspan));
