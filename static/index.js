@@ -134,7 +134,7 @@ class Log {
       this.entries.splice(m, 0, [time, elt]);
     } else {
       this.logDiv.appendChild(elt);
-      this.entries[0] = [time, elt];
+      this.entries.push([time, elt]);
     }
 //     var eltOffset = elt.offsetTop;
 //     this.logInner.scrollTop = eltOffset;
