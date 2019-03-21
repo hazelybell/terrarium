@@ -332,7 +332,6 @@ class Plot {
   plot() {
     this.unplot();
     let labels = [];
-    let values = [];
     this.data = {
       series: [],
     };
@@ -349,6 +348,7 @@ class Plot {
     console.log(this.rawData);
     for (let series of this.rawData) {
       let series_name = 'plot' + (++n);
+      let values = [];
       console.log(series_name);
       for (let r of series) {
         values.push({x: r.time, y: r[this.key]});
