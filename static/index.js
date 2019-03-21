@@ -373,7 +373,7 @@ class Plot {
     let promises = [];
     for (let path of this.paths) {
       promises.push(
-        fetch("/storage/" + this.name + "?since=" + since).then((response) => {
+        fetch("/storage/" + path + "?since=" + since).then((response) => {
           return response.json();
         })
       );
