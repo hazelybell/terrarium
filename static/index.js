@@ -140,7 +140,6 @@ class Lamp {
   }
   
   notify(state) {
-    console.log(state);
     let d = document.querySelector('#lamp .boxinner');
     d.innerText = "Outlet: power " + state.power;
     d.className = "boxinner " + state.power;
