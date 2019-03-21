@@ -128,8 +128,8 @@ class Log {
       this.logDiv.appendChild(elt);
       this.entries[0] = [time, elt];
     }
-    var eltOffset = elt.offsetTop;
-    this.logInner.scrollTop = eltOffset;
+//     var eltOffset = elt.offsetTop;
+//     this.logInner.scrollTop = eltOffset;
   }
   
   addEntry(state) {
