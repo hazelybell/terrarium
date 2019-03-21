@@ -39,6 +39,13 @@ class StorageObserver:
             + " (time real NOT NULL)"
             )
         c.execute(command)
+        command = (
+            "CREATE UNIQUE INDEX IF NOT EXISTS "
+            + name+"_timeindex"
+            + " ON " + name
+            + " (time)"
+            )
+        c.execute(command)
         
         json = self.observable.json()
         for k, v in json.items():
