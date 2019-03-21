@@ -349,7 +349,7 @@ class Plot {
     for (let series of this.rawData) {
       let series_name = 'plot' + (++n);
       for (let r of series) {
-        values.push({x: r.time, y: r.temp});
+        values.push({x: r.time, y: r[this.key]});
       }
       values.reverse();
       this.data.series.push({
@@ -404,6 +404,7 @@ class CPUTempPlot extends Plot {
   constructor() {
     super("cputemp");
     this.paths = ["cputemp"];
+    this.key = "temp";
     remotes.cputemp.observe(this, 0);
   }
 }
@@ -412,7 +413,10 @@ class SoilMoisturePlot extends Plot {
   constructor() {
     super("sm");
     this.paths = ["sm1", "sm2"];
-    remotes.cputemp.observe(this, 0);
+    this.key = pct;
+    for (let i = 0; i < remotes.sm.length; i++) {
+      remotes.sm[i].observe(this, i);
+    }
   }
 }
 
