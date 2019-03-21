@@ -349,6 +349,7 @@ class Plot {
     console.log(this.rawData);
     for (let series of this.rawData) {
       let series_name = 'plot' + (++n);
+      console.log(series_name);
       for (let r of series) {
         values.push({x: r.time, y: r[this.key]});
       }
