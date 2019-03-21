@@ -13,9 +13,6 @@ function add_to_log(l) {
 }
 
 function lamp(o) {
-  let d = document.querySelector('#lamp .boxinner');
-  d.innerText = "Outlet: power " + o.power;
-  d.className = "boxinner " + o.power;
 }
 
 function sm(o, n) {
@@ -114,7 +111,8 @@ class Remotes {
     this.sm = [
       new RemoteObservable("observables/sm1"),
       new RemoteObservable("observables/sm2")
-    ]
+    ];
+    this.lamp = new RemoteObservable("observables/lamp");
   }
 }
 
@@ -126,7 +124,6 @@ class CPUTemp {
   }
   
   notify(state) {
-    console.log(state);
     let d = document.querySelector('#cputemp_current');
     d.innerText = state.temp + " °C";
   }
@@ -165,6 +162,18 @@ class Log {
     logDiv.appendChild(p);
     var pOffset = p.offsetTop;
     document.getElementById('loginner').scrollTop = pOffset;
+  }
+}
+
+class Lamp {
+  constructor() {
+    remotes.lamp.observe(this);
+  }
+  
+  notify(state) {
+    let d = document.querySelector('#lamp .boxinner');
+    d.innerText = "Outlet: power " + state.power;
+    d.className = "boxinner " + state.power;
   }
 }
 
