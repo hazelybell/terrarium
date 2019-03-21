@@ -9,26 +9,7 @@ var viewID = uuidv4();
 
 console.log(viewID);
 
-function add_to_log(l) {
-}
-
-function lamp(o) {
-}
-
 function sm(o, n) {
-  let d = document.querySelector('#sm #sm' + n);
-  let v = Math.round(o.v * 100)/100;
-  let pct = Math.round(o.pct * 10)/10;
-  let word;
-  if (pct > 66.6) {
-    word = "water";
-  } else if (pct < 33.3) {
-    word = "dry";
-  } else {
-    word = "wet";
-  }
-  d.className = word;
-  d.innerText = v + "V " + pct + "% " + word;
   if (sm_data && sm_chart) {
     let data = sm_data.series[n-1].data;
     data.push({x: o.time, y: o.pct});
@@ -174,6 +155,30 @@ class Lamp {
     let d = document.querySelector('#lamp .boxinner');
     d.innerText = "Outlet: power " + state.power;
     d.className = "boxinner " + state.power;
+  }
+}
+
+class SoilMoisture {
+  constructor(n) {
+    this.i = n - 1;
+    this.n = n;
+    remotes.sm[this.i].observe(this, i);
+  }
+  
+  notify(state) {
+    let d = document.querySelector('#sm #sm' + self.n);
+    let v = Math.round(o.v * 100)/100;
+    let pct = Math.round(o.pct * 10)/10;
+    let word;
+    if (pct > 66.6) {
+      word = "water";
+    } else if (pct < 33.3) {
+      word = "dry";
+    } else {
+      word = "wet";
+    }
+    d.className = word;
+    d.innerText = v + "V " + pct + "% " + word;
   }
 }
 
@@ -407,6 +412,8 @@ document.addEventListener('DOMContentLoaded', function() {
   let cputemp = new CPUTemp();
   let cputempplot = new CPUTempPlot();
   let log_ = new Log();
+  let sm1 = new SoilMoisture(1);
+  let sm2 = new SoilMoisture(2);
   
   document.getElementById("sm_day").addEventListener("click",
     function() {
