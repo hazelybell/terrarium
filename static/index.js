@@ -171,6 +171,18 @@ class Remotes {
 
 let remotes = new Remotes;
 
+class CPUTemp {
+  constructor() {
+    remotes.cputemp.observe(this);
+  }
+  
+  notify(state) {
+    console.log(state);
+  }
+}
+
+
+
 var cputemp_data;
 var cputemp_chart;
 var cputemp_tspan;
@@ -402,7 +414,9 @@ function sm_plot_init(tspan) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', function(){
+document.addEventListener('DOMContentLoaded', function() {
+  let cputemp = new CPUTemp();
+  
   document.getElementById("cputemp_day").addEventListener("click",
     function() {
       cputemp_plot_init(60*60*24);
