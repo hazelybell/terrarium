@@ -1,14 +1,5 @@
 'use strict';
 
-function uuidv4() { /* https://stackoverflow.com/a/2117523 2019-03-14 */
-  return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
-    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
-  )
-}    
-var viewID = uuidv4();
-
-console.log(viewID);
-
 class RemoteObserver {
   setState(state) {
     throw new Error("Not implemented");
@@ -59,6 +50,7 @@ let observableMixin = Base => class extends Base {
   notify_all() {
     let state = this.getState();
     if (this.observers.length === 0) {
+      console.log("Unobserved:");
       console.log(this);
       console.log(state);
     }
@@ -333,11 +325,9 @@ class Plot {
       }
     };
     let n = 0;
-    console.log(this.rawData);
     for (let series of this.rawData) {
       let series_name = 'plot' + (++n);
       let values = [];
-      console.log(series_name);
       for (let r of series) {
         values.push({x: r.time, y: r[this.key]});
       }
