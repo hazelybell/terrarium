@@ -92,6 +92,7 @@ class CPUTemp {
 
 class Log {
   constructor() {
+    this.refresh();
     remotes.log.observe(this);
   }
   
