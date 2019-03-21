@@ -9,19 +9,6 @@ var viewID = uuidv4();
 
 console.log(viewID);
 
-function sm(o, n) {
-  if (sm_data && sm_chart) {
-    let data = sm_data.series[n-1].data;
-    data.push({x: o.time, y: o.pct});
-    let now = Date.now() / 1000;
-    while (data[0].x < now - sm_tspan) {
-      data.shift();
-    }
-    let smoothed = smooth(sm_data, '#sm_ct');
-    sm_chart.update(smoothed);
-  }
-}
-
 class RemoteObserver {
   setState(state) {
     throw new Error("Not implemented");
@@ -155,6 +142,7 @@ class Lamp {
     let d = document.querySelector('#lamp .boxinner');
     d.innerText = "Outlet: power " + state.power;
     d.className = "boxinner " + state.power;
+    console.log("lamp: " + state.power);
   }
 }
 
