@@ -166,7 +166,9 @@ class SoilMoisture {
   }
   
   notify(state) {
-    let d = document.querySelector('#sm #sm' + self.n);
+    let selector = '#sm #sm' + self.n;
+    console.log(selector);
+    let d = document.querySelector(selector);
     let v = Math.round(state.v * 100)/100;
     let pct = Math.round(state.pct * 10)/10;
     let word;
