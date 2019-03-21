@@ -40,7 +40,7 @@ class StorageObserver:
             )
         c.execute(command)
         command = (
-            "CREATE UNIQUE INDEX IF NOT EXISTS "
+            "CREATE INDEX IF NOT EXISTS "
             + name+"_timeindex"
             + " ON " + name
             + " (time)"
