@@ -123,7 +123,7 @@ class Log {
         m = m + 1;
       }
     }
-    if (this.entries.length > m)
+    if (this.entries.length > m) {
       if (time > this.entries[m][0]) {
         console.log("length:" + this.entries.length
           + " l:" + l + " m:" + m + " r:" + r
