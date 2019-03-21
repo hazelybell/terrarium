@@ -9,7 +9,7 @@ class RemoteObserver {
     this.ws = new WebSocket("ws://" + location.host + '/' + this.path);
     
     this.ws.addEventListener('open', (openEvent) => {
-      this.ws.send(JSON.stringify({'refresh': viewID}));
+      
     });
     
     this.ws.addEventListener('close', (closeEvent) => {
