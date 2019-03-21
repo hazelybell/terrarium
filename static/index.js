@@ -95,7 +95,7 @@ class Log {
     remotes.log.observe(this);
   }
   
-  notify(state) {
+  addEntry(state) {
     let p = document.createElement('tr');
     
     let lev = document.createElement('td');
@@ -123,6 +123,24 @@ class Log {
     logDiv.appendChild(p);
     var pOffset = p.offsetTop;
     document.getElementById('loginner').scrollTop = pOffset;
+  }
+  
+  refresh() {
+    let seconds = 24*60*60;
+    let ctime = Date.now() / 1000;
+    let since = ctime - seconds;
+
+    fetch("/storage/log?since=" + since).then((response) => {
+      return response.json();
+    }).then((json) => {
+      for (let e of json) {
+        this.addEntry(e);
+      }
+    });
+  }
+  
+  notify(state) {
+    this.addEntry(state);
   }
 }
 
