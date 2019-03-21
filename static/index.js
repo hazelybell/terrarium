@@ -105,20 +105,23 @@ class Log {
     let r = this.entries.length - 1;
     let m = 0;
     while (true) { // simple binary search
-      if (l >= r) {
+      if (l > r) {
         break;
       }
       m = Math.floor((l + r)/2);
       if (this.entries[m][0] < time) {
         l = m + 1;
       } else if (this.entries[m][0] > time) {
-        r = m;
+        r = m - 1;
       } else if (this.entries[m][0] == time) {
         // found the exact log entry, do nothing
         return;
       }
     }
     if (this.entries.length > 0) {
+      if (time > this.entries[m][0]) {
+        m = m + 1;
+      }
       if (time > this.entries[m][0]) {
         console.log("length:" + this.entries.length
           + " l:" + l + " m:" + m + " r:" + r
